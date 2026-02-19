@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salınım - Nature of Code Türkçe</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <h1>🌊 Salınım</h1>
+            <p class="subtitle">Nature of Code - Bölüm 3</p>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+            <span class="theme-icon">🌙</span>
+        </button>
+    </header>
+
+    <main class="container">
+        <section class="intro-section">
+            <h2>Bu Bölümde Neler Öğreneceksiniz?</h2>
+            <p>
+                Bu bölümde <strong>salınım hareketlerini</strong> (oscillation) öğreneceksiniz.
+                Trigonometri kullanarak sarkaçlar, dalgalar ve dönen nesneler oluşturacağız.
+                Doğadaki periyodik hareketleri simüle etmeyi keşfedeceğiz.
+            </p>
+
+            <div class="concept-box">
+                <h3>📐 Açı ve Radyan Nedir?</h3>
+                <p>Salınıma başlamadan önce <strong>açı birimlerini</strong> anlayalım:</p>
+                <ul>
+                    <li><strong>Derece (°):</strong> Tam daire = 360°. Günlük hayatta kullanılır.</li>
+                    <li><strong>Radyan:</strong> Tam daire = 2π ≈ 6.28. Matematik ve programlamada tercih edilir.</li>
+                </ul>
+                <p>p5.js'te açı dönüşümü için:</p>
+                <pre><code class="language-javascript">let derece = 90;
+let radyan = radians(derece);  // 90° → π/2 ≈ 1.57
+
+// Veya tersi:
+let aci = degrees(radyan);     // π/2 → 90°</code></pre>
+            </div>
+        </section>
+
+        <section class="topics-grid">
+            <a href="pages/acilar-trigonometri.html" class="topic-card">
+                <div class="topic-icon">📐</div>
+                <h3>Açılar ve Trigonometri</h3>
+                <p>Radyan, derece, sin, cos ve tan fonksiyonları</p>
+                <span class="topic-en">Angles & Trigonometry</span>
+                <span class="topic-level">Başlangıç</span>
+            </a>
+
+            <a href="pages/acisal-hareket.html" class="topic-card">
+                <div class="topic-icon">🔄</div>
+                <h3>Açısal Hareket</h3>
+                <p>Dönen nesneler ve açısal hız/ivme</p>
+                <span class="topic-en">Angular Motion</span>
+                <span class="topic-level">Başlangıç</span>
+            </a>
+
+            <a href="pages/kutupsal-koordinatlar.html" class="topic-card">
+                <div class="topic-icon">🎯</div>
+                <h3>Kutupsal Koordinatlar</h3>
+                <p>Kartezyen ve kutupsal sistemler arası dönüşüm</p>
+                <span class="topic-en">Polar Coordinates</span>
+                <span class="topic-level">Orta</span>
+            </a>
+
+            <a href="pages/basit-harmonik-hareket.html" class="topic-card">
+                <div class="topic-icon">〰️</div>
+                <h3>Basit Harmonik Hareket</h3>
+                <p>Sinüs dalgası ile yumuşak salınımlar</p>
+                <span class="topic-en">Simple Harmonic Motion</span>
+                <span class="topic-level">Orta</span>
+            </a>
+
+            <a href="pages/sarkac.html" class="topic-card">
+                <div class="topic-icon">🕰️</div>
+                <h3>Sarkaç</h3>
+                <p>Yerçekimi etkisiyle sallanan cisimler</p>
+                <span class="topic-en">Pendulum</span>
+                <span class="topic-level">İleri</span>
+            </a>
+
+            <a href="pages/yaylar.html" class="topic-card">
+                <div class="topic-icon">🧵</div>
+                <h3>Yaylar</h3>
+                <p>Hooke yasası ve elastik kuvvetler</p>
+                <span class="topic-en">Springs</span>
+                <span class="topic-level">İleri</span>
+            </a>
+        </section>
+
+        <section class="resources-section">
+            <h2>📚 Kaynaklar</h2>
+            <div class="resources-grid">
+                <a href="https://natureofcode.com/oscillation" target="_blank" class="resource-link">
+                    <span>📖</span> Nature of Code (Orijinal)
+                </a>
+                <a href="https://p5js.org/reference/" target="_blank" class="resource-link">
+                    <span>📝</span> p5.js Referans
+                </a>
+                <a href="https://github.com/nature-of-code/noc-book-2" target="_blank" class="resource-link">
+                    <span>💻</span> GitHub Repo
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+</html>
+

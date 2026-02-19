@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olasılık ve Dağılım - Rastgelelik</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>📊 Olasılık ve Dağılım</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Olasılık Nedir? <span class="term-en">(Probability)</span></h2>
+
+            <p>
+                <strong>Olasılık</strong>, bir olayın gerçekleşme şansını ifade eder.
+                0 ile 1 arasında (veya %0 ile %100 arası) bir değerdir.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">P = İstenen Sonuç Sayısı / Toplam Sonuç Sayısı</div>
+                <div class="formula-desc">Olasılık formülü</div>
+            </div>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">Yazı-Tura</span>
+                    <div class="explanation-text">
+                        2 sonuç, 1 yazı → P(yazı) = 1/2 = 0.5 = %50
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Zar Atma</span>
+                    <div class="explanation-text">
+                        6 sonuç, 1 tane "6" → P(6) = 1/6 ≈ 0.167 = %16.7
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">random()</span>
+                    <div class="explanation-text">
+                        Sonsuz sonuç, her değer eşit olasılıklı → Uniform dağılım
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- UNIFORM DAĞILIM -->
+        <section class="content-section">
+            <h2>Uniform Dağılım <span class="term-en">(Uniform Distribution)</span></h2>
+
+            <p>
+                <code>random()</code> fonksiyonu <strong>uniform dağılım</strong> üretir:
+                her değer eşit olasılıklıdır.
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="info-box note">
+                <h4>💡 Histogram Nedir?</h4>
+                <p>
+                    Histogram, değerlerin ne sıklıkta görüldüğünü gösteren bir grafiktir.
+                    Uniform dağılımda tüm çubuklar yaklaşık aynı yüksekliktedir.
+                </p>
+            </div>
+        </section>
+
+        <!-- OLASILIK KODLAMA -->
+        <section class="content-section">
+            <h2>Olasılık ile Kodlama <span class="term-en">(Coding with Probability)</span></h2>
+
+            <p>
+                <code>random(1)</code> ile 0-1 arası değer üretip, olasılık kontrol edebiliriz:
+            </p>
+
+            <pre><code class="language-javascript">// %10 olasılık
+if (random(1) < 0.1) {
+  console.log("Bu %10 olasılıkla çalışır!");
+}
+
+// %75 olasılık
+if (random(1) < 0.75) {
+  console.log("Bu %75 olasılıkla çalışır!");
+}
+
+// Yazı-tura (%50)
+if (random(1) < 0.5) {
+  console.log("Yazı!");
+} else {
+  console.log("Tura!");
+}</code></pre>
+
+            <div id="editor2"></div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 8:</strong> <code>0.9</code> yapın
+                        <span class="expectation">Beklenti: Daha çok kırmızı daire</span>
+                    </li>
+                    <li>
+                        <strong>Satır 8:</strong> <code>0.1</code> yapın
+                        <span class="expectation">Beklenti: Çoğunlukla mavi daire</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- AĞIRLIKLI OLASILIK -->
+        <section class="content-section">
+            <h2>Ağırlıklı Olasılık <span class="term-en">(Weighted Probability)</span></h2>
+
+            <p>
+                Farklı seçeneklere farklı olasılıklar atamak istiyorsak
+                <strong>ağırlıklı olasılık</strong> kullanırız:
+            </p>
+
+            <div id="editor3"></div>
+
+            <div class="explanation-list">
+                <h4>Ağırlıklı Seçim Algoritması:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">1. Rastgele sayı</span>
+                    <div class="explanation-text">
+                        <code>random(toplam)</code> ile 0'dan toplam ağırlığa kadar sayı seç
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">2. Kümülatif toplam</span>
+                    <div class="explanation-text">
+                        Ağırlıkları topla, rastgele sayıyı geçince dur
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÖZEL OLASILIK FONKSİYONU -->
+        <section class="content-section">
+            <h2>Özel Olasılık: Büyük Sayıları Tercih Etme <span class="term-en">(Custom Probability)</span></h2>
+
+            <p>
+                Ya daha büyük sayıların seçilme olasılığı daha yüksek olsun istiyorsak?
+                Mesela 0-1 arası bir sayı seçelim ama <strong>1'e yakın sayılar daha çok seçilsin</strong>.
+            </p>
+
+            <div class="image-container">
+                <img src="https://raw.githubusercontent.com/nature-of-code/noc-book-2/main/content/images/00_randomness/00_randomness_4.png"
+                     alt="y=x olasılık grafiği" class="content-image">
+                <figcaption>Şekil 0.3: y = x grafiği. y, x değerinin seçilme olasılığını gösterir. x büyüdükçe seçilme şansı artar.</figcaption>
+            </div>
+
+            <p>
+                Bunu yapmak için <strong>"qualifying random"</strong> yöntemi kullanabiliriz:
+                iki rastgele sayı seç, ikincisi birinciden küçükse kabul et.
+            </p>
+
+            <div id="editor4"></div>
+
+            <div class="explanation-list">
+                <h4>Algoritma Nasıl Çalışır:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">1. r1 seç</span>
+                    <div class="explanation-text">
+                        İlk rastgele sayı (0-1 arası) - bu aday değerimiz
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">2. r2 seç</span>
+                    <div class="explanation-text">
+                        İkinci rastgele sayı - bu "eleme" değerimiz
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">3. r2 < r1 ise kabul</span>
+                    <div class="explanation-text">
+                        r1 büyükse (1'e yakınsa) r2'nin ondan küçük olma olasılığı yüksek!
+                        Yani büyük r1 değerleri daha çok kabul edilir.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAP FONKSİYONU -->
+        <section class="content-section">
+            <h2>map() Fonksiyonu <span class="term-en">(The map() Function)</span></h2>
+
+            <p>
+                <code>map()</code> fonksiyonu, bir değeri bir aralıktan başka bir aralığa dönüştürür.
+                Rastgelelikle çalışırken çok kullanışlıdır!
+            </p>
+
+            <div class="image-container">
+                <img src="https://raw.githubusercontent.com/nature-of-code/noc-book-2/main/content/images/00_randomness/00_randomness_6.png"
+                     alt="map() fonksiyonu" class="content-image">
+                <figcaption>Şekil 0.6: map() fonksiyonu bir değeri oransal olarak başka bir aralığa dönüştürür</figcaption>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula">map(değer, eski_min, eski_max, yeni_min, yeni_max)</div>
+                <div class="formula-desc">Değeri bir aralıktan diğerine oransal olarak dönüştürür</div>
+            </div>
+
+            <pre><code class="language-javascript">// random() 0-1 verir, bunu 100-500'e çevir
+let size = map(random(), 0, 1, 100, 500);
+
+// Fare x pozisyonunu (0-width) renge (0-255) çevir
+let red = map(mouseX, 0, width, 0, 255);
+
+// noise() 0-1 verir, bunu -50 ile 50'ye çevir
+let offset = map(noise(t), 0, 1, -50, 50);</code></pre>
+
+            <div id="editor5"></div>
+
+            <div class="info-box tip">
+                <h4>🎮 map() Kullanım Alanları</h4>
+                <ul>
+                    <li><strong>Noise → Konum:</strong> <code>map(noise(t), 0, 1, 0, width)</code></li>
+                    <li><strong>Fare → Renk:</strong> <code>map(mouseX, 0, width, 0, 255)</code></li>
+                    <li><strong>Mesafe → Boyut:</strong> <code>map(dist, 0, maxDist, 50, 10)</code></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- BAĞIMSIZLIK -->
+        <section class="content-section">
+            <h2>Bağımsız Olaylar <span class="term-en">(Independent Events)</span></h2>
+
+            <p>
+                İki olay <strong>bağımsız</strong> ise, birinin sonucu diğerini etkilemez.
+                Her <code>random()</code> çağrısı bağımsızdır!
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">P(A ve B) = P(A) × P(B)</div>
+                <div class="formula-desc">Bağımsız olaylarda olasılıklar çarpılır</div>
+            </div>
+
+            <pre><code class="language-javascript">// İki yazı üst üste gelme olasılığı
+// P(yazı) = 0.5
+// P(yazı ve yazı) = 0.5 × 0.5 = 0.25 = %25
+
+// Üç 6 üst üste gelme olasılığı
+// P(6) = 1/6 ≈ 0.167
+// P(6 ve 6 ve 6) = (1/6)³ ≈ 0.005 = %0.5</code></pre>
+
+            <div class="info-box warning">
+                <h4>⚠️ Kumarbaz Yanılgısı</h4>
+                <p>
+                    "5 kez yazı geldi, artık tura gelme olasılığı arttı!" → YANLIŞ!
+                    Her atış bağımsız, olasılık hep %50 kalır. Bu yanlış inanışa
+                    "Gambler's Fallacy" denir.
+                </p>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Olasılık:</strong> 0-1 arası, olayın gerçekleşme şansı</li>
+                <li><strong>Uniform dağılım:</strong> Her değer eşit olasılıklı (random())</li>
+                <li><strong>Ağırlıklı olasılık:</strong> Farklı seçeneklere farklı şanslar</li>
+                <li><strong>Bağımsız olaylar:</strong> Olasılıklar çarpılır</li>
+                <li><strong>Histogram:</strong> Dağılımı görselleştirme</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="random-walker.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Random Walker</span>
+                </div>
+            </a>
+            <a href="gaussian-dagilim.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Gaussian Dağılım</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Uniform dağılım histogramı
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let randomCounts = [];
+let numBuckets = 20;
+
+function setup() {
+  createCanvas(400, 300);
+
+  // Histogram için dizi oluştur
+  for (let i = 0; i < numBuckets; i++) {
+    randomCounts[i] = 0;
+  }
+}
+
+function draw() {
+  background(220);
+
+  // Her frame'de rastgele bir değer seç
+  let index = floor(random(numBuckets));
+  randomCounts[index]++;
+
+  // Histogramı çiz
+  let w = width / numBuckets;
+
+  for (let i = 0; i < numBuckets; i++) {
+    fill(100, 150, 200);
+    stroke(0);
+    strokeWeight(1);
+
+    // Yükseklik: sayının kendisi
+    let h = randomCounts[i];
+    rect(i * w, height - h, w - 2, h);
+  }
+
+  // Başlık
+  fill(0);
+  noStroke();
+  textSize(14);
+  text("Uniform Dağılım (random)", 10, 20);
+  text("Tüm çubuklar benzer yükseklikte olmalı", 10, 40);
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Olasılık ile daire rengi
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `function setup() {
+  createCanvas(400, 400);
+  frameRate(5);  // Yavaşlat
+}
+
+function draw() {
+  // %50 olasılık
+  if (random(1) < 0.5) {
+    background(255, 100, 100);  // Kırmızı
+    fill(200, 50, 50);
+  } else {
+    background(100, 100, 255);  // Mavi
+    fill(50, 50, 200);
+  }
+
+  // Daire çiz
+  noStroke();
+  circle(width / 2, height / 2, 150);
+
+  // Bilgi
+  fill(255);
+  textSize(16);
+  textAlign(CENTER);
+  text("Her frame %50 kırmızı, %50 mavi", width/2, 50);
+}`
+                }
+            ]
+        });
+
+        // Editor 3: Ağırlıklı olasılık
+        new LiveEditor('#editor3', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `// Ağırlıklar (olasılıklar)
+let weights = [1, 2, 5, 2, 1];  // Ortadaki en yüksek
+let colors;
+let counts = [0, 0, 0, 0, 0];
+
+function setup() {
+  createCanvas(400, 300);
+  colors = [
+    color(255, 100, 100),
+    color(255, 200, 100),
+    color(100, 255, 100),
+    color(100, 200, 255),
+    color(200, 100, 255)
+  ];
+}
+
+function draw() {
+  background(220);
+
+  // Ağırlıklı seçim yap
+  let index = weightedRandom(weights);
+  counts[index]++;
+
+  // Çubukları çiz
+  let w = width / weights.length;
+  for (let i = 0; i < weights.length; i++) {
+    fill(colors[i]);
+    stroke(0);
+    let h = counts[i] * 0.5;
+    rect(i * w + 10, height - h, w - 20, h);
+
+    // Ağırlık etiketi
+    fill(0);
+    noStroke();
+    textAlign(CENTER);
+    text("w:" + weights[i], i * w + w/2, height - 10);
+  }
+
+  fill(0);
+  textAlign(LEFT);
+  text("Ağırlıklı Dağılım", 10, 20);
+  text("Ortadaki (w:5) daha sık seçilir", 10, 40);
+}
+
+function weightedRandom(weights) {
+  // Toplam ağırlık
+  let total = 0;
+  for (let w of weights) total += w;
+
+  // 0-toplam arası rastgele
+  let r = random(total);
+
+  // Kümülatif toplam ile seç
+  let cumulative = 0;
+  for (let i = 0; i < weights.length; i++) {
+    cumulative += weights[i];
+    if (r < cumulative) {
+      return i;
+    }
+  }
+  return weights.length - 1;
+}`
+                }
+            ]
+        });
+
+        // Editor 4: Özel olasılık (büyük sayılar daha çok)
+        new LiveEditor('#editor4', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let values = [];
+
+function setup() {
+  createCanvas(400, 300);
+  for (let i = 0; i < width; i++) {
+    values[i] = 0;
+  }
+}
+
+function draw() {
+  background(220);
+
+  // Büyük sayıları tercih eden rastgele
+  let r = acceptReject();
+
+  // Histograma ekle
+  let index = floor(r * width);
+  if (index >= 0 && index < width) {
+    values[index]++;
+  }
+
+  // Histogram çiz
+  stroke(200, 100, 100);
+  for (let i = 0; i < width; i++) {
+    line(i, height, i, height - values[i]);
+  }
+
+  // Bilgi
+  fill(0);
+  noStroke();
+  textSize(12);
+  text("Büyük sayılar (sağ taraf) daha sık seçilir", 10, 20);
+  text("acceptReject() algoritması", 10, 40);
+}
+
+// Büyük sayıları tercih eden fonksiyon
+function acceptReject() {
+  while (true) {
+    let r1 = random(1);  // Aday değer
+    let r2 = random(1);  // Eleme değeri
+
+    // r1 ne kadar büyükse, r2'nin ondan küçük
+    // olma olasılığı o kadar yüksek!
+    if (r2 < r1) {
+      return r1;  // Kabul et
+    }
+    // Değilse tekrar dene...
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 5: map() fonksiyonu
+        new LiveEditor('#editor5', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(220);
+
+  // Fare X pozisyonunu renklere dönüştür
+  let r = map(mouseX, 0, width, 0, 255);
+  let b = map(mouseX, 0, width, 255, 0);
+
+  // Fare Y pozisyonunu boyuta dönüştür
+  let size = map(mouseY, 0, height, 20, 200);
+
+  // Daire çiz
+  fill(r, 100, b);
+  noStroke();
+  circle(width / 2, height / 2, size);
+
+  // Bilgi göster
+  fill(0);
+  textSize(14);
+  text("mouseX: " + mouseX + " → R: " + floor(r), 10, 25);
+  text("mouseY: " + mouseY + " → Size: " + floor(size), 10, 45);
+
+  // Skala çiz
+  noFill();
+  stroke(100);
+  rect(10, height - 40, width - 20, 20);
+
+  // Fare pozisyonunu skalada göster
+  fill(r, 100, b);
+  noStroke();
+  let markerX = map(mouseX, 0, width, 10, width - 10);
+  circle(markerX, height - 30, 15);
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

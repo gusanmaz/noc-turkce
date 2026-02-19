@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kutupsal Koordinatlar - Salınım</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>🎯 Kutupsal Koordinatlar</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>İki Farklı Koordinat Sistemi <span class="term-en">(Polar vs Cartesian)</span></h2>
+
+            <p>
+                Şimdiye kadar <strong>Kartezyen koordinat sistemi</strong> kullandık:
+                bir noktayı (x, y) ile tanımladık. Ama bazı durumlarda
+                <strong>kutupsal koordinatlar</strong> çok daha pratik!
+            </p>
+
+            <div class="info-box note">
+                <h4>💡 Ne Zaman Kutupsal Kullanmalı?</h4>
+                <p>
+                    Dairesel hareketler, spiral desenler, radyal dağılımlar için
+                    kutupsal koordinatlar çok daha doğal ve kolay.
+                </p>
+            </div>
+        </section>
+
+        <!-- KARTEZYEN VS KUTUPSAL -->
+        <section class="content-section">
+            <h2>Kartezyen vs Kutupsal <span class="term-en">(Cartesian vs Polar)</span></h2>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">Kartezyen (x, y)</span>
+                    <div class="explanation-text">
+                        Noktayı yatay (x) ve dikey (y) uzaklıklarla tanımlar.
+                        "3 adım sağa, 4 adım yukarı" gibi.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Kutupsal (r, θ)</span>
+                    <div class="explanation-text">
+                        Noktayı merkeze uzaklık (r) ve açı (θ) ile tanımlar.
+                        "5 adım, kuzeydoğu yönünde" gibi.
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/vector-components.png" alt="Vektör bileşenleri ve açı" class="content-image">
+                <figcaption>Şekil 3.5: Bir vektör v; x bileşeni, y bileşeni ve açısı ile tanımlanabilir.</figcaption>
+            </div>
+
+            <!-- SVG Diyagram -->
+            <div class="vector-diagram">
+                <svg viewBox="0 0 400 220" class="vector-svg">
+                    <defs>
+                        <marker id="arrowR" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#ef4444" />
+                        </marker>
+                    </defs>
+
+                    <!-- Sol: Kartezyen -->
+                    <text x="100" y="20" fill="var(--text-primary)" font-size="14" text-anchor="middle"
+                        font-weight="bold">KARTEZYEN (x, y)</text>
+                    <line x1="30" y1="180" x2="170" y2="180" stroke="var(--border-color)" stroke-width="1" />
+                    <line x1="30" y1="180" x2="30" y2="40" stroke="var(--border-color)" stroke-width="1" />
+                    <text x="175" y="185" fill="var(--text-muted)" font-size="11">x</text>
+                    <text x="25" y="35" fill="var(--text-muted)" font-size="11">y</text>
+
+                    <!-- Nokta ve çizgiler -->
+                    <line x1="30" y1="180" x2="130" y2="180" stroke="#22c55e" stroke-width="2" stroke-dasharray="5,5" />
+                    <line x1="130" y1="180" x2="130" y2="80" stroke="#6366f1" stroke-width="2" stroke-dasharray="5,5" />
+                    <circle cx="130" cy="80" r="6" fill="#ef4444" />
+                    <text x="80" y="195" fill="#22c55e" font-size="12">x = 100</text>
+                    <text x="140" y="130" fill="#6366f1" font-size="12">y = 100</text>
+
+                    <!-- Sağ: Kutupsal -->
+                    <text x="300" y="20" fill="var(--text-primary)" font-size="14" text-anchor="middle"
+                        font-weight="bold">KUTUPSAL (r, θ)</text>
+                    <circle cx="230" cy="130" r="80" fill="none" stroke="var(--border-color)" stroke-width="1"
+                        stroke-dasharray="5,5" />
+                    <line x1="230" y1="130" x2="370" y2="130" stroke="var(--border-color)" stroke-width="1" />
+
+                    <!-- r ve theta -->
+                    <line x1="230" y1="130" x2="310" y2="60" stroke="#ef4444" stroke-width="2"
+                        marker-end="url(#arrowR)" />
+                    <circle cx="310" cy="60" r="6" fill="#ef4444" />
+                    <text x="265" y="85" fill="#ef4444" font-size="12">r</text>
+
+                    <!-- Açı yayı -->
+                    <path d="M 260 130 A 30 30 0 0 0 252 105" fill="none" stroke="#fbbf24" stroke-width="2" />
+                    <text x="265" y="115" fill="#fbbf24" font-size="12">θ</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- DÖNÜŞÜM FORMÜLLERİ -->
+        <section class="content-section">
+            <h2>Dönüşüm Formülleri <span class="term-en">(Conversion Formulas)</span></h2>
+
+            <p>
+                İki sistem arasında dönüşüm yapmak için trigonometri kullanıyoruz:
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">
+                    <div>Kutupsal → Kartezyen:</div>
+                    <div style="margin-top: 0.5rem;">x = r × cos(θ)</div>
+                    <div>y = r × sin(θ)</div>
+                </div>
+                <div class="formula-desc">En sık kullanacağımız formüller!</div>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula">
+                    <div>Kartezyen → Kutupsal:</div>
+                    <div style="margin-top: 0.5rem;">r = √(x² + y²)</div>
+                    <div>θ = atan2(y, x)</div>
+                </div>
+                <div class="formula-desc">Ters dönüşüm (daha az kullanılır)</div>
+            </div>
+
+            <pre><code class="language-javascript">// Kutupsal → Kartezyen (en sık kullanılan)
+let r = 100;        // Merkeze uzaklık
+let theta = PI / 4; // 45 derece
+
+let x = r * cos(theta);  // ≈ 70.7
+let y = r * sin(theta);  // ≈ 70.7
+
+// Kartezyen → Kutupsal
+let x = 70.7, y = 70.7;
+let r = sqrt(x*x + y*y);  // ≈ 100
+let theta = atan2(y, x);  // ≈ 0.785 (PI/4)</code></pre>
+        </section>
+
+        <!-- DAİRESEL HAREKET -->
+        <section class="content-section">
+            <h2>Dairesel Hareket <span class="term-en">(Circular Motion)</span></h2>
+
+            <p>
+                Kutupsal koordinatların en güzel kullanımı: <strong>dairesel hareket</strong>.
+                Bir noktanın daire üzerinde hareket etmesi için sadece açıyı değiştirmemiz yeterli!
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Satır Satır Açıklama:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 1-2</span>
+                    <div class="explanation-text">
+                        <code>r</code> dairenin yarıçapı (merkeze uzaklık).
+                        <code>theta</code> şu anki açı (radyan).
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 13-14</span>
+                    <div class="explanation-text">
+                        <strong>Kutupsal → Kartezyen dönüşümü!</strong>
+                        Bu iki satır (r, theta) → (x, y) dönüşümünü yapar.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 20</span>
+                    <div class="explanation-text">
+                        Her frame'de açıyı biraz artırıyoruz. Bu kadar basit!
+                        Daire hareketi otomatik olarak oluşuyor.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <h4>🎮 Neden Kutupsal Daha Kolay?</h4>
+                <p>
+                    Kartezyen ile daire çizmek için karmaşık formüller gerekir.
+                    Kutupsal ile sadece açıyı değiştiriyoruz, x ve y otomatik hesaplanıyor!
+                </p>
+            </div>
+        </section>
+
+        <!-- SPİRAL -->
+        <section class="content-section">
+            <h2>Spiral Deseni <span class="term-en">(Spiral Pattern)</span></h2>
+
+            <p>
+                Daire hareketinde <code>r</code> sabit tutuyorduk. Eğer <code>r</code>'yi de
+                değiştirirsek <strong>spiral</strong> elde ederiz!
+            </p>
+
+
+
+            <div id="editor2"></div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 19:</strong> <code>r += 0.5</code> yapın.
+                        <span class="expectation">Beklenti: Spiral daha hızlı genişler</span>
+                    </li>
+                    <li>
+                        <strong>Satır 17:</strong> <code>theta += 0.2</code> yapın.
+                        <span class="expectation">Beklenti: Spiral daha sık sarmal yapar</span>
+                    </li>
+                    <li>
+                        <strong>Satır 19:</strong> <code>r -= 0.1</code> yapın.
+                        <span class="expectation">Beklenti: Spiral içe doğru daralır</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- OYUN PROGRAMLAMADA KUTUPSAL KOORDİNATLAR -->
+        <section class="content-section">
+            <h2>🎮 Oyun Programlamada Kutupsal Koordinatlar</h2>
+
+            <p>
+                Kutupsal koordinatlar, oyun geliştirmede <strong>dairesel hareketler</strong> için
+                vazgeçilmezdir. İşte bazı pratik kullanım alanları:
+            </p>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">Radar Taraması</span>
+                    <div class="explanation-text">
+                        Dönen bir radar çizgisi? Sadece θ'yı artır, r sabit tut!
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Dairesel Mermi Paterni</span>
+                    <div class="explanation-text">
+                        Bullet hell oyunlarında daire şeklinde yayılan mermiler.
+                        Her mermi için farklı θ, aynı r.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Gezegen Yörüngeleri</span>
+                    <div class="explanation-text">
+                        Uzay simülasyonlarında gezegenler güneş etrafında döner.
+                        Eliptik yörünge için r = f(θ) fonksiyonu kullan.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Joystick Girişi</span>
+                    <div class="explanation-text">
+                        Analog joystick (x, y) verir, ama yön ve güç için
+                        (r, θ) dönüşümü daha kullanışlı!
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Kamera Döndürme</span>
+                    <div class="explanation-text">
+                        3D oyunlarda kamera karakterin etrafında dönerken
+                        kutupsal koordinatlar kullanılır.
+                    </div>
+                </div>
+            </div>
+
+            <h3>🎮 İnteraktif: Kutupsal Koordinat Keşfi</h3>
+            <p>
+                Fareyi hareket ettirerek aynı noktanın hem Kartezyen hem Kutupsal
+                koordinatlarını görün:
+            </p>
+            <div id="editorPolarExplorer"></div>
+
+            <div class="info-box tip">
+                <h4>💡 Neden Kutupsal Daha Kolay?</h4>
+                <p>
+                    Bir noktayı daire üzerinde hareket ettirmek için:
+                </p>
+                <ul>
+                    <li><strong>Kartezyen ile:</strong> <code>x = cos(angle) * radius</code> ve
+                        <code>y = sin(angle) * radius</code> - iki hesaplama
+                    </li>
+                    <li><strong>Kutupsal ile:</strong> Sadece <code>theta += 0.01</code> - tek değer değiştir!</li>
+                </ul>
+                <p>Kutupsal koordinatlar dairesel hareket için doğal bir yoldur.</p>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Kartezyen:</strong> (x, y) - yatay ve dikey uzaklık</li>
+                <li><strong>Kutupsal:</strong> (r, θ) - merkeze uzaklık ve açı</li>
+                <li><strong>x = r × cos(θ):</strong> Kutupsal → x koordinatı</li>
+                <li><strong>y = r × sin(θ):</strong> Kutupsal → y koordinatı</li>
+                <li><strong>Dairesel hareket:</strong> r sabit, θ değişken</li>
+                <li><strong>Spiral:</strong> Hem r hem θ değişken</li>
+                <li><strong>Oyunlarda:</strong> Radar, mermiler, yörüngeler, joystick, kamera</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="acisal-hareket.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Açısal Hareket</span>
+                </div>
+            </a>
+            <a href="basit-harmonik-hareket.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Basit Harmonik Hareket</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // =============================================
+        // DEMO 1: Dairesel Hareket (Kutupsal → Kartezyen)
+        // =============================================
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `// Kutupsal koordinatlarla dairesel hareket
+// r = yarıçap (sabit), θ = açı (değişen)
+
+let r = 100;     // Yarıçap (merkeze uzaklık)
+let theta = 0;   // Açı (radyan)
+
+function setup() {
+  createCanvas(400, 400);
+  textAlign(CENTER, CENTER);
+}
+
+function draw() {
+  background(240);
+  translate(width / 2, height / 2);
+  
+  // Eksenler
+  stroke(200);
+  strokeWeight(1);
+  line(-r - 50, 0, r + 50, 0);
+  line(0, -r - 50, 0, r + 50);
+  
+  // Yörünge çemberi
+  noFill();
+  stroke(180);
+  strokeWeight(1);
+  circle(0, 0, r * 2);
+
+  // ★ KUTUPSAL → KARTEZYEN DÖNÜŞÜMÜ ★
+  let x = r * cos(theta);  // x = r × cos(θ)
+  let y = r * sin(theta);  // y = r × sin(θ)
+
+  // Merkeze çizgi (yarıçap)
+  stroke(100, 100, 255);
+  strokeWeight(2);
+  line(0, 0, x, y);
+  
+  // Projeksiyon çizgileri
+  stroke(34, 197, 94, 150);
+  strokeWeight(1);
+  line(x, y, x, 0);
+  line(x, y, 0, y);
+  
+  // Noktayı çiz
+  fill(255, 100, 100);
+  noStroke();
+  circle(x, y, 24);
+
+  // Merkez noktası
+  fill(100, 100, 255);
+  circle(0, 0, 10);
+  
+  // Bilgi paneli
+  fill(0);
+  textSize(12);
+  
+  // Kutupsal koordinatlar
+  fill(100, 100, 255);
+  textAlign(LEFT);
+  text("KUTUPSAL:", -r - 40, -r - 40);
+  text("r = " + nf(r, 0, 0), -r - 40, -r - 25);
+  let deg = (degrees(theta) % 360 + 360) % 360;
+  text("θ = " + nf(deg, 0, 1) + "°", -r - 40, -r - 10);
+  
+  // Kartezyen koordinatlar
+  fill(34, 197, 94);
+  text("KARTEZYEN:", r - 20, -r - 40);
+  text("x = " + nf(x, 0, 1), r - 20, -r - 25);
+  text("y = " + nf(y, 0, 1), r - 20, -r - 10);
+  
+  // Formüller
+  fill(80);
+  textAlign(CENTER);
+  textSize(11);
+  text("x = r × cos(θ)", 0, r + 30);
+  text("y = r × sin(θ)", 0, r + 45);
+
+  // Açıyı güncelle
+  theta += 0.02;
+}`
+                }
+            ]
+        });
+
+        // =============================================
+        // DEMO 2: Spiral (r ve θ birlikte değişiyor)
+        // =============================================
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `// Spiral: hem r hem θ artıyor
+// Daire: r sabit, θ değişir
+// Spiral: r VE θ birlikte değişir!
+
+let r = 0;       // Yarıçap (başlangıçta 0)
+let theta = 0;   // Açı
+
+function setup() {
+  createCanvas(400, 400);
+  background(240);
+}
+
+function draw() {
+  translate(width / 2, height / 2);
+
+  // Kutupsal → Kartezyen
+  let x = r * cos(theta);
+  let y = r * sin(theta);
+
+  // Nokta çiz
+  noStroke();
+  // Renk açıya göre değişsin
+  let hue = (theta * 30) % 360;
+  fill(
+    128 + 127 * sin(theta),
+    128 + 127 * sin(theta + 2),
+    128 + 127 * sin(theta + 4),
+    200
+  );
+  circle(x, y, 6);
+
+  // Hem açıyı hem yarıçapı artır
+  theta += 0.1;  // Açısal hız
+  r += 0.15;     // Radyal hız
+
+  // Spiral canvas dışına çıktığında baştan başla
+  if (r > width / 2) {
+    r = 0;
+    theta = 0;
+    background(240);
+  }
+  
+  // Bilgi metni (sabit pozisyonda)
+  resetMatrix();
+  fill(60);
+  textSize(11);
+  textAlign(LEFT);
+  text("θ (açı) += 0.1", 10, 20);
+  text("r (yarıçap) += 0.15", 10, 35);
+  text("Kutupsal: (" + nf(r, 0, 1) + ", " + nf(degrees(theta) % 360, 0, 0) + "°)", 10, 55);
+}`
+                }
+            ]
+        });
+
+        // =============================================
+        // DEMO 3: İnteraktif Kutupsal Koordinat Keşfi
+        // =============================================
+        new LiveEditor('#editorPolarExplorer', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `// Fareyi hareket ettirin
+// Aynı noktayı iki farklı sistemde görün!
+
+function setup() {
+  createCanvas(400, 400);
+  textAlign(CENTER, CENTER);
+}
+
+function draw() {
+  background(240);
+  translate(width / 2, height / 2);
+  
+  // Fare pozisyonunu merkeze göre hesapla
+  let mx = mouseX - width / 2;
+  let my = mouseY - height / 2;
+  
+  // Kartezyen → Kutupsal dönüşüm
+  let r = sqrt(mx * mx + my * my);
+  let theta = atan2(my, mx);
+  if (theta < 0) theta += TWO_PI;
+  
+  // Arka plan çemberleri (kutupsal ızgara)
+  noFill();
+  stroke(220);
+  strokeWeight(1);
+  for (let i = 50; i <= 150; i += 50) {
+    circle(0, 0, i * 2);
+  }
+  
+  // Eksenler
+  stroke(180);
+  line(-180, 0, 180, 0);
+  line(0, -180, 0, 180);
+  
+  // Açı çizgileri (30° aralıklarla)
+  stroke(230);
+  for (let a = 0; a < TWO_PI; a += PI / 6) {
+    line(0, 0, 170 * cos(a), 170 * sin(a));
+  }
+  
+  // Yarıçap çizgisi
+  stroke(100, 100, 255);
+  strokeWeight(2);
+  line(0, 0, mx, my);
+  
+  // Açı yayı
+  noFill();
+  stroke(255, 150, 50);
+  strokeWeight(3);
+  let arcR = min(r * 0.4, 40);
+  arc(0, 0, arcR * 2, arcR * 2, 0, theta);
+  
+  // Projeksiyon çizgileri
+  stroke(34, 197, 94, 150);
+  strokeWeight(1);
+  line(mx, my, mx, 0);
+  line(mx, my, 0, my);
+  
+  // Projeksiyon noktaları
+  fill(34, 197, 94);
+  noStroke();
+  circle(mx, 0, 8);
+  circle(0, my, 8);
+  
+  // Fare noktası
+  fill(239, 68, 68);
+  noStroke();
+  circle(mx, my, 16);
+  
+  // Merkez
+  fill(100, 100, 255);
+  circle(0, 0, 8);
+  
+  // Bilgi panelleri
+  textSize(13);
+  
+  // Sol üst: Kartezyen
+  fill(34, 197, 94);
+  textAlign(LEFT);
+  text("KARTEZYEN", -170, -160);
+  textSize(12);
+  text("x = " + nf(mx, 0, 1), -170, -140);
+  text("y = " + nf(my, 0, 1), -170, -125);
+  
+  // Sağ üst: Kutupsal
+  textSize(13);
+  fill(100, 100, 255);
+  textAlign(RIGHT);
+  text("KUTUPSAL", 170, -160);
+  textSize(12);
+  text("r = " + nf(r, 0, 1), 170, -140);
+  let deg = degrees(theta);
+  text("θ = " + nf(deg, 0, 1) + "°", 170, -125);
+  
+  // Formüller
+  fill(80);
+  textSize(10);
+  textAlign(CENTER);
+  text("r = √(x² + y²) = " + nf(r, 0, 1), 0, 160);
+  text("θ = atan2(y, x) = " + nf(deg, 0, 1) + "°", 0, 175);
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+
+</html>

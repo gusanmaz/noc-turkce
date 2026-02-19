@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vektörler - Nature of Code Türkçe</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <h1>➡️ Vektörler</h1>
+            <p class="subtitle">Nature of Code - Bölüm 1</p>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+            <span class="theme-icon">🌙</span>
+        </button>
+    </header>
+
+    <main class="container">
+        <!-- KAPAK GÖRSELİ -->
+        <section class="hero-section">
+            <div class="image-container hero-image">
+                <img src="images/01_vectors_1.jpg"
+                     alt="Marshall Adaları Çubuk Haritası - Berkeley Sanat Müzesi" class="content-image">
+                <figcaption>
+                    <strong>Marshall Adaları Çubuk Haritası</strong> - Berkeley Sanat Müzesi'nde sergileniyor (Fotoğraf: Jim Heaphy).
+                    Bu geleneksel Polinezya navigasyon aracı, dalga desenlerini ve okyanus akıntılarını temsil eden çubuklardan oluşur.
+                    Deniz kabuğu parçaları adaların konumlarını gösterir. <em>Vektörlerin en eski ve en zarif kullanımlarından biri!</em>
+                    Yüzlerce yıl önce Pasifik Okyanusu'nda yol bulmak için kullanılan bu haritalar,
+                    yön ve büyüklük kavramlarının insanlık tarihindeki önemini gösteriyor.
+                </figcaption>
+            </div>
+        </section>
+
+        <section class="intro-section">
+            <h2>Bu Bölümde Neler Öğreneceksiniz?</h2>
+            <p>
+                Bu bölümde <strong>vektörleri</strong> öğreneceksiniz - hareket, kuvvet ve
+                fizik simülasyonlarının temel yapı taşı. Vektörler olmadan gerçekçi
+                animasyonlar oluşturmak neredeyse imkansız!
+            </p>
+
+            <div class="concept-box">
+                <h3>🤔 Vektör Nedir?</h3>
+                <p>Vektör, hem <strong>büyüklüğü</strong> hem de <strong>yönü</strong> olan bir niceliktir.</p>
+                <ul>
+                    <li><strong>Skaler:</strong> Sadece büyüklük. Örnek: "50 km/s hızla gidiyorum"</li>
+                    <li><strong>Vektör:</strong> Büyüklük + Yön. Örnek: "Kuzeye doğru 50 km/s hızla gidiyorum"</li>
+                </ul>
+                <p>Vektörler genellikle <strong>ok</strong> olarak çizilir: okun uzunluğu büyüklüğü, yönü ise... yönü gösterir!</p>
+            </div>
+        </section>
+
+        <section class="topics-grid">
+            <a href="pages/vektor-nedir.html" class="topic-card">
+                <div class="topic-icon">📍</div>
+                <h3>Vektör Nedir?</h3>
+                <p>Vektör kavramı, skaler vs vektör, günlük hayat örnekleri</p>
+                <span class="topic-en">What is a Vector?</span>
+                <span class="topic-level">Başlangıç</span>
+            </a>
+
+            <a href="pages/vektor-sinifi.html" class="topic-card">
+                <div class="topic-icon">📦</div>
+                <h3>p5.Vector Sınıfı</h3>
+                <p>createVector(), x/y özellikleri, temel kullanım</p>
+                <span class="topic-en">The p5.Vector Class</span>
+                <span class="topic-level">Başlangıç</span>
+            </a>
+
+            <a href="pages/vektor-toplama.html" class="topic-card">
+                <div class="topic-icon">➕</div>
+                <h3>Vektör Toplama</h3>
+                <p>add() metodu, hız + konum, hareket temelleri</p>
+                <span class="topic-en">Vector Addition</span>
+                <span class="topic-level">Başlangıç</span>
+            </a>
+
+            <a href="pages/vektor-carpma.html" class="topic-card">
+                <div class="topic-icon">✖️</div>
+                <h3>Vektör Çarpma ve Bölme</h3>
+                <p>mult(), div(), hız kontrolü, ölçekleme</p>
+                <span class="topic-en">Vector Multiplication</span>
+                <span class="topic-level">Orta</span>
+            </a>
+
+            <a href="pages/vektor-buyukluk.html" class="topic-card">
+                <div class="topic-icon">📏</div>
+                <h3>Vektör Büyüklüğü</h3>
+                <p>mag(), normalize(), birim vektörler</p>
+                <span class="topic-en">Vector Magnitude</span>
+                <span class="topic-level">Orta</span>
+            </a>
+
+            <a href="pages/hareket-simulasyonu.html" class="topic-card">
+                <div class="topic-icon">🎮</div>
+                <h3>Hareket Simülasyonu</h3>
+                <p>Konum, hız, ivme - hepsini bir araya getirme</p>
+                <span class="topic-en">Motion Simulation</span>
+                <span class="topic-level">İleri</span>
+            </a>
+        </section>
+
+        <section class="resources-section">
+            <h2>📚 Kaynaklar</h2>
+            <div class="resources-grid">
+                <a href="https://natureofcode.com/vectors" target="_blank" class="resource-link">
+                    <span>📖</span> Nature of Code (Orijinal)
+                </a>
+                <a href="https://p5js.org/reference/#/p5.Vector" target="_blank" class="resource-link">
+                    <span>📝</span> p5.Vector Referans
+                </a>
+                <a href="https://github.com/nature-of-code/noc-book-2" target="_blank" class="resource-link">
+                    <span>💻</span> GitHub Repo
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+</html>
+

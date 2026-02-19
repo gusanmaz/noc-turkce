@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuvvetler - Nature of Code Türkçe</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <h1>🍎 Kuvvetler</h1>
+            <p class="subtitle">Nature of Code - Bölüm 2</p>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+            <span class="theme-icon">🌙</span>
+        </button>
+    </header>
+
+    <main class="container">
+        <section class="intro-section">
+            <h2>Bu Bölümde Neler Öğreneceksiniz?</h2>
+            <p>
+                Bu bölümde fizik dünyasının temel taşlarından biri olan <strong>kuvvetleri</strong> öğreneceksiniz.
+                Newton'un hareket yasalarından başlayarak, gerçekçi fizik simülasyonları oluşturmayı adım adım keşfedeceğiz.
+            </p>
+
+            <div class="concept-box">
+                <h3>📍 Vektör Nedir?</h3>
+                <p>Kuvvetlere başlamadan önce <strong>vektör</strong> kavramını anlayalım:</p>
+                <ul>
+                    <li><strong>Skaler:</strong> Sadece büyüklüğü olan değer. Örnek: "5 km yürüdüm"</li>
+                    <li><strong>Vektör:</strong> Hem büyüklüğü hem yönü olan değer. Örnek: "Kuzeye doğru 5 km yürüdüm"</li>
+                </ul>
+                <p>p5.js'te vektör oluşturmak için:</p>
+                <pre><code class="language-javascript">let v = createVector(3, 4);  // x=3, y=4 yönünde bir ok
+// Büyüklük: sqrt(3² + 4²) = 5
+// Yön: sağ-aşağı doğru</code></pre>
+            </div>
+        </section>
+
+        <section class="topics-grid">
+            <a href="pages/newton-yasalari.html" class="topic-card">
+                <div class="topic-icon">⚖️</div>
+                <h3>Newton Yasaları</h3>
+                <p>Hareketin temel yasaları ve F = ma formülü</p>
+                <span class="topic-en">Newton's Laws of Motion</span>
+                <span class="topic-level">Başlangıç</span>
+            </a>
+
+            <a href="pages/kuvvet-biriktirme.html" class="topic-card">
+                <div class="topic-icon">➕</div>
+                <h3>Kuvvet Biriktirme</h3>
+                <p>Birden fazla kuvveti bir araya getirmek</p>
+                <span class="topic-en">Force Accumulation</span>
+                <span class="topic-level">Başlangıç</span>
+            </a>
+
+            <a href="pages/kutle-ivme.html" class="topic-card">
+                <div class="topic-icon">🎱</div>
+                <h3>Kütle ve İvme</h3>
+                <p>Kütlenin harekete etkisi</p>
+                <span class="topic-en">Mass & Acceleration</span>
+                <span class="topic-level">Orta</span>
+            </a>
+
+            <a href="pages/surtunme.html" class="topic-card">
+                <div class="topic-icon">🛑</div>
+                <h3>Sürtünme</h3>
+                <p>Hareketi yavaşlatan kuvvet</p>
+                <span class="topic-en">Friction</span>
+                <span class="topic-level">Orta</span>
+            </a>
+
+            <a href="pages/suruklenme.html" class="topic-card">
+                <div class="topic-icon">🌊</div>
+                <h3>Sürüklenme</h3>
+                <p>Akışkan içinde hareket ve direnç</p>
+                <span class="topic-en">Drag Force</span>
+                <span class="topic-level">İleri</span>
+            </a>
+
+            <a href="pages/kutle-cekimi.html" class="topic-card">
+                <div class="topic-icon">🌍</div>
+                <h3>Kütlesel Çekim</h3>
+                <p>Gezegen ve yıldızların dansı</p>
+                <span class="topic-en">Gravitational Attraction</span>
+                <span class="topic-level">İleri</span>
+            </a>
+        </section>
+
+        <section class="resources-section">
+            <h2>📚 Kaynaklar</h2>
+            <div class="resources-grid">
+                <a href="https://natureofcode.com" target="_blank" class="resource-link">
+                    <span>📖</span> Nature of Code (Orijinal)
+                </a>
+                <a href="https://p5js.org/reference/" target="_blank" class="resource-link">
+                    <span>📝</span> p5.js Referans
+                </a>
+                <a href="https://github.com/nature-of-code/noc-book-2" target="_blank" class="resource-link">
+                    <span>💻</span> GitHub Repo
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+</html>
+

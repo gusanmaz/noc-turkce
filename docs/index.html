@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nature of Code Türkçe</title>
+    <meta name="description" content="Nature of Code kitabının Türkçe interaktif eğitim platformu. Rastgelelik, vektörler, kuvvetler ve salınım konularını p5.js ile öğrenin.">
+    <style>
+        /* CSS Variables - Tema Renkleri */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f6f8fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --text-muted: #888888;
+            --accent-primary: #4f46e5;
+            --accent-secondary: #6366f1;
+            --accent-light: #e0e7ff;
+            --border-color: #d1d5db;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f0f1a;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --text-muted: #808080;
+            --accent-primary: #6366f1;
+            --accent-secondary: #818cf8;
+            --accent-light: #312e81;
+            --border-color: #374151;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Header */
+        .main-header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header-content h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-content .subtitle {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            margin-bottom: 1rem;
+        }
+
+        .header-content .description {
+            font-size: 1rem;
+            opacity: 0.85;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, background 0.3s ease;
+            z-index: 10;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title p {
+            color: var(--text-secondary);
+        }
+
+        /* Chapters Grid */
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .chapter-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chapter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--card-color-start), var(--card-color-end));
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-primary);
+        }
+
+        .chapter-number {
+            font-size: 3rem;
+            font-weight: 700;
+            opacity: 0.15;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+        }
+
+        .chapter-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-card h3 {
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-card .chapter-en {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        .chapter-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .chapter-topic {
+            background: var(--accent-light);
+            color: var(--accent-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        /* Card Colors */
+        .chapter-card.randomness {
+            --card-color-start: #f59e0b;
+            --card-color-end: #fbbf24;
+        }
+
+        .chapter-card.vectors {
+            --card-color-start: #10b981;
+            --card-color-end: #34d399;
+        }
+
+        .chapter-card.forces {
+            --card-color-start: #6366f1;
+            --card-color-end: #818cf8;
+        }
+
+        .chapter-card.oscillation {
+            --card-color-start: #ec4899;
+            --card-color-end: #f472b6;
+        }
+
+        /* Resources Section */
+        .resources-section {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .resources-section h2 {
+            color: var(--accent-primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .resources-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .resource-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            transition: border-color 0.3s ease, background 0.3s ease, transform 0.2s ease;
+        }
+
+        .resource-link:hover {
+            border-color: var(--accent-primary);
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .main-footer {
+            background: var(--bg-secondary);
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            margin-top: 2rem;
+        }
+
+        .main-footer a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        .main-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2rem;
+            }
+
+            .header-content .subtitle {
+                font-size: 1rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .chapters-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+            <span class="theme-icon">🌙</span>
+        </button>
+        <div class="header-content">
+            <h1>🌿 Nature of Code</h1>
+            <p class="subtitle">Türkçe İnteraktif Eğitim Platformu</p>
+            <p class="description">
+                Daniel Shiffman'ın ünlü kitabından uyarlanmış, p5.js ile interaktif fizik ve simülasyon dersleri
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="section-title">
+            <h2>📚 Bölümler</h2>
+            <p>Aşağıdaki bölümlerden birini seçerek öğrenmeye başlayın</p>
+        </section>
+
+        <section class="chapters-grid">
+            <a href="randomness/index.html" class="chapter-card randomness">
+                <span class="chapter-number">0</span>
+                <div class="chapter-icon">🎲</div>
+                <h3>Rastgelelik</h3>
+                <span class="chapter-en">Randomness</span>
+                <p>
+                    Rastgele sayılar, olasılık dağılımları ve Perlin gürültüsü ile 
+                    organik ve doğal görünümlü hareketler oluşturmayı öğrenin.
+                </p>
+                <div class="chapter-topics">
+                    <span class="chapter-topic">Random Walker</span>
+                    <span class="chapter-topic">Gaussian</span>
+                    <span class="chapter-topic">Perlin Noise</span>
+                </div>
+            </a>
+
+            <a href="vectors/index.html" class="chapter-card vectors">
+                <span class="chapter-number">1</span>
+                <div class="chapter-icon">➡️</div>
+                <h3>Vektörler</h3>
+                <span class="chapter-en">Vectors</span>
+                <p>
+                    Vektör matematiği, konum, hız ve ivme kavramlarını öğrenerek 
+                    hareket simülasyonlarının temellerini keşfedin.
+                </p>
+                <div class="chapter-topics">
+                    <span class="chapter-topic">Vektör İşlemleri</span>
+                    <span class="chapter-topic">Hız</span>
+                    <span class="chapter-topic">İvme</span>
+                </div>
+            </a>
+
+            <a href="forces/index.html" class="chapter-card forces">
+                <span class="chapter-number">2</span>
+                <div class="chapter-icon">🍎</div>
+                <h3>Kuvvetler</h3>
+                <span class="chapter-en">Forces</span>
+                <p>
+                    Newton'un hareket yasaları, yerçekimi, sürtünme ve sürüklenme 
+                    kuvvetleri ile gerçekçi fizik simülasyonları oluşturun.
+                </p>
+                <div class="chapter-topics">
+                    <span class="chapter-topic">Newton Yasaları</span>
+                    <span class="chapter-topic">Sürtünme</span>
+                    <span class="chapter-topic">Yerçekimi</span>
+                </div>
+            </a>
+
+            <a href="oscillation/index.html" class="chapter-card oscillation">
+                <span class="chapter-number">3</span>
+                <div class="chapter-icon">〰️</div>
+                <h3>Salınım</h3>
+                <span class="chapter-en">Oscillation</span>
+                <p>
+                    Açılar, trigonometri, kutupsal koordinatlar ve harmonik hareket 
+                    ile döngüsel ve dalga hareketleri yaratın.
+                </p>
+                <div class="chapter-topics">
+                    <span class="chapter-topic">Trigonometri</span>
+                    <span class="chapter-topic">Harmonik Hareket</span>
+                    <span class="chapter-topic">Sarkaç</span>
+                </div>
+            </a>
+        </section>
+
+        <section class="resources-section">
+            <h2>📖 Kaynaklar</h2>
+            <div class="resources-grid">
+                <a href="https://natureofcode.com" target="_blank" class="resource-link">
+                    <span>📚</span> Nature of Code (Orijinal)
+                </a>
+                <a href="https://p5js.org/reference/" target="_blank" class="resource-link">
+                    <span>📝</span> p5.js Referans
+                </a>
+                <a href="https://github.com/nature-of-code/noc-book-2" target="_blank" class="resource-link">
+                    <span>💻</span> GitHub Repo
+                </a>
+                <a href="https://www.youtube.com/c/TheCodingTrain" target="_blank" class="resource-link">
+                    <span>🎬</span> Coding Train
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>
+            <a href="https://natureofcode.com" target="_blank">Nature of Code</a> 
+            kitabından Daniel Shiffman'ın izniyle Türkçe'ye uyarlanmıştır.
+        </p>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('.theme-icon');
+        
+        // Check for saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+        
+        function updateThemeIcon(theme) {
+            themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+        }
+    </script>
+</body>
+</html>

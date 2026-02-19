@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rastgelelik - Nature of Code Türkçe</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <h1>🎲 Rastgelelik</h1>
+            <p class="subtitle">Nature of Code - Bölüm 0</p>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+            <span class="theme-icon">🌙</span>
+        </button>
+    </header>
+
+    <main class="container">
+        <section class="intro-section">
+            <h2>Bu Bölümde Neler Öğreneceksiniz?</h2>
+            <p>
+                Bu bölümde <strong>rastgelelik</strong> ve <strong>gürültü</strong> (noise) kavramlarını
+                öğreneceksiniz. Doğal görünümlü hareketler, organik desenler ve
+                öngörülemeyen davranışlar oluşturmanın temellerini atacağız.
+            </p>
+
+            <div class="concept-box">
+                <h3>🎯 Neden Rastgelelik?</h3>
+                <p>Doğa mükemmel düzen içinde değildir. Yapraklar tam simetrik düşmez,
+                böcekler düz çizgide yürümez. Simülasyonlarımıza <strong>rastgelelik</strong>
+                ekleyerek onları daha gerçekçi ve ilginç hale getirebiliriz.</p>
+                <ul>
+                    <li><strong>random():</strong> Tamamen rastgele değerler</li>
+                    <li><strong>noise():</strong> Yumuşak, organik rastgelelik (Perlin Noise)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="topics-grid">
+            <a href="pages/random-walker.html" class="topic-card">
+                <div class="topic-icon">🚶</div>
+                <h3>Random Walker</h3>
+                <p>Rastgele yürüyüş, temel hareket simülasyonu</p>
+                <span class="topic-en">Random Walker</span>
+                <span class="topic-level">Başlangıç</span>
+            </a>
+
+            <a href="pages/olasilik-dagilim.html" class="topic-card">
+                <div class="topic-icon">📊</div>
+                <h3>Olasılık ve Dağılım</h3>
+                <p>Uniform dağılım, ağırlıklı olasılıklar</p>
+                <span class="topic-en">Probability & Distribution</span>
+                <span class="topic-level">Başlangıç</span>
+            </a>
+
+            <a href="pages/gaussian-dagilim.html" class="topic-card">
+                <div class="topic-icon">🔔</div>
+                <h3>Gaussian Dağılım</h3>
+                <p>Normal dağılım, çan eğrisi, randomGaussian()</p>
+                <span class="topic-en">Gaussian Distribution</span>
+                <span class="topic-level">Orta</span>
+            </a>
+
+            <a href="pages/perlin-noise.html" class="topic-card">
+                <div class="topic-icon">🌊</div>
+                <h3>Perlin Noise</h3>
+                <p>Yumuşak rastgelelik, organik hareketler</p>
+                <span class="topic-en">Perlin Noise</span>
+                <span class="topic-level">Orta</span>
+            </a>
+
+            <a href="pages/noise-detay.html" class="topic-card">
+                <div class="topic-icon">🗻</div>
+                <h3>Noise Detayları</h3>
+                <p>1D, 2D noise, arazi ve doku oluşturma</p>
+                <span class="topic-en">Noise in Detail</span>
+                <span class="topic-level">İleri</span>
+            </a>
+        </section>
+
+        <section class="resources-section">
+            <h2>📚 Kaynaklar</h2>
+            <div class="resources-grid">
+                <a href="https://natureofcode.com/random" target="_blank" class="resource-link">
+                    <span>📖</span> Nature of Code (Orijinal)
+                </a>
+                <a href="https://p5js.org/reference/#/p5/random" target="_blank" class="resource-link">
+                    <span>📝</span> p5.js random() Referans
+                </a>
+                <a href="https://p5js.org/reference/#/p5/noise" target="_blank" class="resource-link">
+                    <span>🌊</span> p5.js noise() Referans
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+</html>
+

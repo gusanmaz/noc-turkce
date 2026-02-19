@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perlin Noise - Rastgelelik</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>🌊 Perlin Noise</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Perlin Noise Nedir? <span class="term-en">(Perlin Noise)</span></h2>
+
+            <p>
+                <strong>Perlin noise</strong>, 1983'te Ken Perlin tarafından film endüstrisi için
+                icat edildi (Tron filmindeki dokular için). <code>random()</code>'dan farklı olarak
+                <strong>yumuşak, organik</strong> değerler üretir.
+            </p>
+
+
+            <div class="info-box note">
+                <h4>💡 Ken Perlin</h4>
+                <p>
+                    Ken Perlin bu buluşuyla 1997'de Oscar (Academy Award) kazandı!
+                    Bugün neredeyse tüm video oyunları ve CGI filmlerinde kullanılıyor.
+                </p>
+            </div>
+        </section>
+
+        <!-- RANDOM VS NOISE -->
+        <section class="content-section">
+            <h2>random() vs noise() <span class="term-en">(Comparison)</span></h2>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Özellik</th>
+                        <th>random()</th>
+                        <th>noise()</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Çıktı aralığı</td>
+                        <td>0 - 1 (veya min - max)</td>
+                        <td>0 - 1</td>
+                    </tr>
+                    <tr>
+                        <td>Değerler arası ilişki</td>
+                        <td>❌ Bağımsız, sıçramalı</td>
+                        <td>✅ Bağlı, yumuşak geçiş</td>
+                    </tr>
+                    <tr>
+                        <td>Görünüm</td>
+                        <td>Statik, gürültülü</td>
+                        <td>Organik, dalgalı</td>
+                    </tr>
+                    <tr>
+                        <td>Kullanım</td>
+                        <td>Zar atma, rastgele seçim</td>
+                        <td>Arazi, bulut, hareket</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="editor1"></div>
+        </section>
+
+        <!-- NOISE KULLANIMI -->
+        <section class="content-section">
+            <h2>noise() Kullanımı <span class="term-en">(Using Noise)</span></h2>
+
+            <p>
+                <code>noise()</code> fonksiyonu bir "zaman" parametresi alır.
+                Aynı zaman değeri her zaman aynı sonucu verir!
+            </p>
+
+            <pre><code class="language-javascript">// noise() aynı girdiye aynı çıktı verir
+noise(0)     // → her zaman aynı değer (örn: 0.47)
+noise(0.01)  // → çok yakın bir değer (örn: 0.48)
+noise(100)   // → farklı bir değer
+
+// Zamanla değişen değer için
+let t = 0;
+function draw() {
+  let n = noise(t);  // 0-1 arası
+  t += 0.01;         // Zamanı ilerlet
+}</code></pre>
+
+            <div class="info-box warning">
+                <h4>⚠️ Önemli: Zaman Artışı</h4>
+                <p>
+                    <code>t</code>'yi çok hızlı artırırsanız (örn: +1), değerler sıçramalı olur.
+                    Yumuşak geçiş için küçük artışlar kullanın (0.01 - 0.05 arası).
+                </p>
+            </div>
+        </section>
+
+        <!-- NOISE İLE HAREKET -->
+        <section class="content-section">
+            <h2>Noise ile Hareket <span class="term-en">(Noise-Based Motion)</span></h2>
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>Satır Satır Açıklama:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">tx, ty</span>
+                    <div class="explanation-text">
+                        X ve Y için ayrı "zaman" değişkenleri. Farklı başlangıç değerleri ile
+                        bağımsız hareket sağlıyoruz.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">noise(tx) * width</span>
+                    <div class="explanation-text">
+                        noise() 0-1 verir, width ile çarpınca 0-width arası olur.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">t += 0.01</span>
+                    <div class="explanation-text">
+                        Küçük artış = yumuşak hareket. 0.1 yaparsanız daha hızlı/keskin olur.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 20-21:</strong> <code>0.02</code> yapın
+                        <span class="expectation">Beklenti: Daha hızlı, ama hala yumuşak hareket</span>
+                    </li>
+                    <li>
+                        <strong>Satır 20-21:</strong> <code>0.001</code> yapın
+                        <span class="expectation">Beklenti: Çok yavaş, daha sakin hareket</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- NOISE WALKER -->
+        <section class="content-section">
+            <h2>Noise Walker <span class="term-en">(Perlin Noise Walker)</span></h2>
+
+            <p>
+                Random walker'ı noise ile yapalım. Hareket çok daha organik görünecek:
+            </p>
+
+            <div id="editor3"></div>
+
+            <div class="info-box tip">
+                <h4>🎮 Noise Kullanım Alanları</h4>
+                <ul>
+                    <li><strong>Arazi oluşturma:</strong> Minecraft tarzı dünyalar</li>
+                    <li><strong>Bulut/duman:</strong> Gerçekçi atmosfer efektleri</li>
+                    <li><strong>Karakter hareketi:</strong> Doğal sallanma, nefes alma</li>
+                    <li><strong>Prosedürel dokular:</strong> Ahşap, mermer, su</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Perlin noise:</strong> Yumuşak, organik rastgelelik</li>
+                <li><strong>noise(t):</strong> 0-1 arası değer, aynı t = aynı sonuç</li>
+                <li><strong>Zaman artışı:</strong> Küçük tut (0.01) yumuşak geçiş için</li>
+                <li><strong>Farklı değerler:</strong> X ve Y için farklı t başlangıçları kullan</li>
+                <li><strong>Ken Perlin:</strong> Oscar kazanan algoritma!</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="gaussian-dagilim.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Gaussian Dağılım</span>
+                </div>
+            </a>
+            <a href="noise-detay.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Noise Detayları</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: random vs noise karşılaştırma
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let t = 0;
+let randomY = [];
+let noiseY = [];
+
+function setup() {
+  createCanvas(400, 300);
+
+  // Değerleri önceden hesapla
+  for (let x = 0; x < width; x++) {
+    // random() - sıçramalı
+    randomY[x] = random(height / 2);
+
+    // noise() - yumuşak
+    noiseY[x] = noise(t) * height / 2;
+    t += 0.02;
+  }
+}
+
+function draw() {
+  background(220);
+
+  // random() grafiği (üst - kırmızı)
+  stroke(255, 100, 100);
+  strokeWeight(2);
+  noFill();
+  beginShape();
+  for (let x = 0; x < width; x++) {
+    vertex(x, randomY[x] + 20);
+  }
+  endShape();
+
+  // noise() grafiği (alt - mavi)
+  stroke(100, 100, 255);
+  beginShape();
+  for (let x = 0; x < width; x++) {
+    vertex(x, noiseY[x] + height/2 + 20);
+  }
+  endShape();
+
+  // Etiketler
+  fill(255, 100, 100);
+  noStroke();
+  textSize(14);
+  text("random() - sıçramalı", 10, 15);
+
+  fill(100, 100, 255);
+  text("noise() - yumuşak", 10, height/2 + 15);
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Noise ile hareket
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let tx = 0;     // X için zaman
+let ty = 1000;  // Y için zaman (farklı başlangıç!)
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(220);
+
+  // Noise ile konum hesapla
+  let x = noise(tx) * width;
+  let y = noise(ty) * height;
+
+  // Daire çiz
+  fill(100, 150, 255);
+  stroke(0);
+  strokeWeight(2);
+  circle(x, y, 50);
+
+  // Zamanı ilerlet
+  tx += 0.01;
+  ty += 0.01;
+
+  // Bilgi
+  fill(0);
+  noStroke();
+  textSize(12);
+  text("tx: " + tx.toFixed(2), 10, 20);
+  text("ty: " + ty.toFixed(2), 10, 40);
+  text("x: " + floor(x) + ", y: " + floor(y), 10, 60);
+}`
+                }
+            ]
+        });
+
+        // Editor 3: Noise walker
+        new LiveEditor('#editor3', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let walker;
+
+function setup() {
+  createCanvas(400, 400);
+  background(220);
+  walker = new NoiseWalker();
+}
+
+function draw() {
+  walker.step();
+  walker.show();
+}`
+                },
+                {
+                    name: 'walker.js',
+                    content: `class NoiseWalker {
+  constructor() {
+    this.x = width / 2;
+    this.y = height / 2;
+
+    // Noise için zaman değişkenleri
+    this.tx = 0;
+    this.ty = 10000;  // Farklı başlangıç!
+  }
+
+  step() {
+    // Noise ile konum hesapla
+    this.x = noise(this.tx) * width;
+    this.y = noise(this.ty) * height;
+
+    // Zamanı ilerlet
+    this.tx += 0.005;
+    this.ty += 0.005;
+  }
+
+  show() {
+    stroke(0, 50);
+    strokeWeight(3);
+    point(this.x, this.y);
+  }
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

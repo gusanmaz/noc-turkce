@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaussian Dağılım - Rastgelelik</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>🔔 Gaussian Dağılım</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Normal Dağılım <span class="term-en">(Gaussian/Normal Distribution)</span></h2>
+
+            <p>
+                <strong>Gaussian dağılım</strong> (veya normal dağılım), doğada en sık
+                karşılaşılan dağılımdır: insan boyları, IQ skorları, ölçüm hataları...
+                Hep bir "ortalama" etrafında yoğunlaşır.
+            </p>
+
+
+            <div class="info-box note">
+                <h4>💡 Neden "Çan Eğrisi"?</h4>
+                <p>
+                    Grafiği bir çana benziyor! Ortalama değer en yüksek noktada,
+                    uç değerler çok nadir.
+                </p>
+            </div>
+        </section>
+
+        <!-- ORTALAMA VE STANDART SAPMA -->
+        <section class="content-section">
+            <h2>Ortalama ve Standart Sapma <span class="term-en">(Mean & Standard Deviation)</span></h2>
+
+            <p>
+                Gaussian dağılım iki parametre ile tanımlanır:
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">μ (mu) = Ortalama, σ (sigma) = Standart Sapma</div>
+            </div>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">μ (Ortalama) <span class="term-en">(Mean)</span></span>
+                    <div class="explanation-text">
+                        Dağılımın merkezi. Değerler bu noktada yoğunlaşır.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">σ (Standart Sapma) <span class="term-en">(Std Dev)</span></span>
+                    <div class="explanation-text">
+                        Dağılımın genişliği. Küçük σ = dar çan, büyük σ = geniş çan.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SVG Diyagram - Gerçekçi Çan Eğrisi -->
+            <div class="vector-diagram">
+                <svg viewBox="0 0 400 220" class="vector-svg">
+                    <!-- Eksen -->
+                    <line x1="30" y1="180" x2="370" y2="180" stroke="var(--border-color)" stroke-width="1"/>
+                    <line x1="200" y1="180" x2="200" y2="20" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="3,3"/>
+
+                    <!-- Gerçekçi Çan Eğrisi (Gaussian) -->
+                    <path d="M 30 180
+                             C 50 180, 70 179, 90 177
+                             C 110 174, 125 168, 140 155
+                             C 155 140, 165 115, 175 85
+                             C 185 55, 192 35, 200 30
+                             C 208 35, 215 55, 225 85
+                             C 235 115, 245 140, 260 155
+                             C 275 168, 290 174, 310 177
+                             C 330 179, 350 180, 370 180"
+                          fill="rgba(99, 102, 241, 0.2)" stroke="#6366f1" stroke-width="3"/>
+
+                    <!-- Ortalama çizgisi -->
+                    <line x1="200" y1="30" x2="200" y2="190" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="200" y="205" fill="#ef4444" font-size="12" text-anchor="middle">μ (ortalama)</text>
+
+                    <!-- Standart sapma alanları -->
+                    <!-- -1σ ile +1σ arası -->
+                    <line x1="140" y1="155" x2="260" y2="155" stroke="#22c55e" stroke-width="2"/>
+                    <text x="200" y="148" fill="#22c55e" font-size="11" text-anchor="middle">%68</text>
+
+                    <!-- İşaretler -->
+                    <line x1="140" y1="175" x2="140" y2="185" stroke="var(--text-muted)" stroke-width="1"/>
+                    <text x="140" y="197" fill="var(--text-muted)" font-size="10" text-anchor="middle">-1σ</text>
+
+                    <line x1="260" y1="175" x2="260" y2="185" stroke="var(--text-muted)" stroke-width="1"/>
+                    <text x="260" y="197" fill="var(--text-muted)" font-size="10" text-anchor="middle">+1σ</text>
+
+                    <!-- -2σ ve +2σ -->
+                    <line x1="90" y1="175" x2="90" y2="185" stroke="var(--text-muted)" stroke-width="1"/>
+                    <text x="90" y="197" fill="var(--text-muted)" font-size="10" text-anchor="middle">-2σ</text>
+
+                    <line x1="310" y1="175" x2="310" y2="185" stroke="var(--text-muted)" stroke-width="1"/>
+                    <text x="310" y="197" fill="var(--text-muted)" font-size="10" text-anchor="middle">+2σ</text>
+                </svg>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Aralık</th>
+                        <th>Olasılık</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>μ ± 1σ</td><td>%68 (değerlerin çoğu burada)</td></tr>
+                    <tr><td>μ ± 2σ</td><td>%95</td></tr>
+                    <tr><td>μ ± 3σ</td><td>%99.7</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- RANDOMGAUSSIAN -->
+        <section class="content-section">
+            <h2>randomGaussian() Fonksiyonu</h2>
+
+            <p>
+                p5.js'te Gaussian dağılımdan değer almak için <code>randomGaussian()</code> kullanırız:
+            </p>
+
+            <pre><code class="language-javascript">// Varsayılan: ortalama=0, std=1
+let value = randomGaussian();
+
+// Özel değerlerle
+let height = randomGaussian(170, 10);  // μ=170cm, σ=10cm
+// Çoğu değer 160-180 arası olacak</code></pre>
+
+            <div id="editor1"></div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 14:</strong> Standart sapmayı <code>50</code> yapın
+                        <span class="expectation">Beklenti: Daha geniş yayılım</span>
+                    </li>
+                    <li>
+                        <strong>Satır 14:</strong> Standart sapmayı <code>10</code> yapın
+                        <span class="expectation">Beklenti: Merkeze yakın yoğunlaşma</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ÖRNEK: GAUSSIAN WALKER -->
+        <section class="content-section">
+            <h2>Örnek: Gaussian Random Walker</h2>
+
+            <p>
+                Adım boyutunu Gaussian ile belirleyelim. Çoğu adım küçük, bazen büyük:
+            </p>
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>Gaussian Walker Özellikleri:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Küçük adımlar</span>
+                    <div class="explanation-text">
+                        Çoğu zaman (σ içinde) küçük adımlar atar
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Büyük adımlar</span>
+                    <div class="explanation-text">
+                        Nadiren (2-3σ dışında) büyük sıçramalar yapar
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAUSSIAN RENK -->
+        <section class="content-section">
+            <h2>Örnek: Gaussian Renk Dağılımı</h2>
+
+            <p>
+                Renk değerlerini de Gaussian ile seçebiliriz:
+            </p>
+
+            <div id="editor3"></div>
+
+            <div class="info-box tip">
+                <h4>🎮 Gaussian Dağılım Nerelerde Kullanılır?</h4>
+                <ul>
+                    <li><strong>İnsan boyları:</strong> Çoğu insan ortalama boyda, çok kısa/uzun nadir</li>
+                    <li><strong>IQ skorları:</strong> Ortalama 100, standart sapma 15</li>
+                    <li><strong>Sınav notları:</strong> Çoğu öğrenci ortalama civarında</li>
+                    <li><strong>Ölçüm hataları:</strong> Bilimsel deneylerdeki sapmalar</li>
+                    <li><strong>Doğum ağırlıkları:</strong> Bebek ağırlıkları normal dağılır</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Gaussian dağılım:</strong> Çan eğrisi, ortalama etrafında yoğunlaşma</li>
+                <li><strong>μ (ortalama):</strong> Dağılımın merkezi</li>
+                <li><strong>σ (standart sapma):</strong> Dağılımın genişliği</li>
+                <li><strong>randomGaussian(μ, σ):</strong> Gaussian değer üretir</li>
+                <li><strong>%68-95-99.7 kuralı:</strong> Değerlerin büyük çoğunluğu μ±3σ içinde</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="olasilik-dagilim.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Olasılık ve Dağılım</span>
+                </div>
+            </a>
+            <a href="perlin-noise.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Perlin Noise</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Gaussian histogram
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let values = [];
+
+function setup() {
+  createCanvas(400, 300);
+
+  // Başlangıçta dizi doldur
+  for (let i = 0; i < width; i++) {
+    values[i] = 0;
+  }
+}
+
+function draw() {
+  background(220);
+
+  // Gaussian değer al (ortalama=200, std=30)
+  let x = randomGaussian(width / 2, 30);
+
+  // Sınırlar içinde mi?
+  if (x >= 0 && x < width) {
+    let index = floor(x);
+    values[index]++;
+  }
+
+  // Histogram çiz
+  stroke(100, 100, 200);
+  strokeWeight(1);
+  for (let i = 0; i < width; i++) {
+    line(i, height, i, height - values[i]);
+  }
+
+  // Bilgi
+  fill(0);
+  noStroke();
+  textSize(12);
+  text("Gaussian Dağılım", 10, 20);
+  text("μ = " + (width/2) + ", σ = 30", 10, 40);
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Gaussian walker
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let x, y;
+
+function setup() {
+  createCanvas(400, 400);
+  background(220);
+  x = width / 2;
+  y = height / 2;
+}
+
+function draw() {
+  // Gaussian adım boyutu (ortalama=0, std=2)
+  let stepX = randomGaussian(0, 2);
+  let stepY = randomGaussian(0, 2);
+
+  x += stepX;
+  y += stepY;
+
+  // Sınırlarda tut
+  x = constrain(x, 0, width);
+  y = constrain(y, 0, height);
+
+  // Çiz
+  stroke(0, 50);
+  strokeWeight(2);
+  point(x, y);
+}`
+                }
+            ]
+        });
+
+        // Editor 3: Gaussian renkler
+        new LiveEditor('#editor3', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `function setup() {
+  createCanvas(400, 400);
+  noStroke();
+  frameRate(10);
+}
+
+function draw() {
+  // Rastgele konum
+  let x = random(width);
+  let y = random(height);
+
+  // Gaussian renk (mavi-mor arası)
+  // Ortalama: 200 (mavi), std: 30
+  let r = randomGaussian(100, 30);
+  let g = randomGaussian(100, 30);
+  let b = randomGaussian(200, 30);
+
+  // 0-255 arasında tut
+  r = constrain(r, 0, 255);
+  g = constrain(g, 0, 255);
+  b = constrain(b, 0, 255);
+
+  fill(r, g, b, 150);
+
+  // Gaussian boyut
+  let size = randomGaussian(30, 10);
+  size = abs(size);  // Negatif olmasın
+
+  circle(x, y, size);
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

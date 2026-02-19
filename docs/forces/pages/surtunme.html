@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sürtünme - Kuvvetler</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>🛑 Sürtünme</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Sürtünme Nedir? <span class="term-en">(Friction)</span></h2>
+
+            <p>
+                Bir topu yuvarladığınızda sonunda durur. Neden? <strong>Sürtünme <span class="term-en">(friction)</span></strong> yüzünden!
+                Sürtünme, hareket eden bir nesneyi yavaşlatan bir kuvvettir.
+            </p>
+
+            <p>
+                Sürtünme olmadan dünya çok farklı olurdu: yürüyemez, araba kullanamaz,
+                hiçbir şeyi tutamazdınız!
+            </p>
+
+            <div class="image-container">
+                <img src="https://raw.githubusercontent.com/nature-of-code/noc-book-2/main/content/images/02_forces/02_forces_4.png"
+                     alt="Sürtünme kuvveti" class="content-image">
+                <figcaption>Şekil 2.3: Sürtünme kuvveti, kızağın hareket yönünün tersinde etki eder</figcaption>
+            </div>
+
+            <div class="info-box note">
+                <h4>💡 Sürtünmenin Özellikleri</h4>
+                <ul>
+                    <li><strong>Yön:</strong> Her zaman hıza (harekete) karşı yönde</li>
+                    <li><strong>Büyüklük:</strong> Yüzeylerin pürüzlülüğüne bağlı</li>
+                    <li><strong>Etki:</strong> Hareketi yavaşlatır, durdurmaz (hızı azaltır)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- FORMÜL -->
+        <section class="content-section">
+            <h2>Sürtünme Formülü</h2>
+
+            <div class="formula-box">
+                <div class="formula">f⃗<sub>sürtünme</sub> = -μ × N × v̂</div>
+                <div class="formula-desc">Sürtünme (vektör) = -(sürtünme katsayısı) × (normal kuvvet) × (hız birim vektörü)</div>
+            </div>
+
+            <h3>Her Terimi Açıklayalım</h3>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">-1 (eksi)</span>
+                    <div class="explanation-text">
+                        Sürtünme harekete <strong>karşı</strong> yönde. Hızın tersi yönde etki eder.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">μ (mü)</span>
+                    <div class="explanation-text">
+                        <strong>Sürtünme katsayısı</strong>. Yüzeylerin ne kadar pürüzlü olduğunu gösterir.
+                        <br>• Buz üstünde: μ ≈ 0.01 (çok kaygan)
+                        <br>• Beton üstünde: μ ≈ 0.5 (normal)
+                        <br>• Kauçuk-asfalt: μ ≈ 0.9 (çok yapışkan)
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">N (Normal)</span>
+                    <div class="explanation-text">
+                        <strong>Normal kuvvet</strong>: Yüzeyin cisme uyguladığı dikey kuvvet.
+                        Düz zeminde N = m × g (ağırlık). Şimdilik N = 1 varsayabiliriz.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">v̂ (birim vektör)</span>
+                    <div class="explanation-text">
+                        Hız vektörünün <strong>yönü</strong> (büyüklüğü 1).
+                        <code>velocity.normalize()</code> ile elde edilir.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KOD UYGULAMASI -->
+        <section class="content-section">
+            <h2>Sürtünmeyi Kodla Uygulama</h2>
+
+            <p>
+                Sürtünme formülünü adım adım koda çevirelim:
+            </p>
+
+            <pre><code class="language-javascript">// Sürtünme kuvveti hesaplama
+
+// 1. Sürtünme katsayısı (yüzeye göre değişir)
+let mu = 0.1;
+
+// 2. Normal kuvvet (şimdilik 1 varsayıyoruz)
+let N = 1;
+
+// 3. Sürtünme büyüklüğü
+let frictionMag = mu * N;
+
+// 4. Hız yönünü al (birim vektör)
+let friction = this.velocity.copy();  // Hızın kopyasını al
+friction.normalize();                  // Birim vektör yap (uzunluk = 1)
+
+// 5. Ters yöne çevir (harekete karşı)
+friction.mult(-1);
+
+// 6. Büyüklük uygula
+friction.mult(frictionMag);
+
+// 7. Kuvveti uygula
+this.applyForce(friction);</code></pre>
+
+            <h3>normalize() Ne Yapar?</h3>
+
+            <div class="info-box note">
+                <h4>💡 Birim Vektör (Unit Vector)</h4>
+                <p>
+                    <code>normalize()</code> bir vektörü <strong>birim vektör</strong>e çevirir:
+                    yönü aynı kalır, uzunluğu 1 olur.
+                </p>
+                <pre><code class="language-javascript">let v = createVector(3, 4);  // uzunluk = 5
+v.normalize();                // uzunluk = 1, yön aynı
+// v artık (0.6, 0.8)</code></pre>
+                <p>
+                    Bunu yapıyoruz çünkü sadece <strong>yönü</strong> istiyoruz,
+                    hızın büyüklüğü sürtünmeyi etkilememeli.
+                </p>
+            </div>
+        </section>
+
+        <!-- İNTERAKTİF ÖRNEK 1 -->
+        <section class="content-section">
+            <h2>Örnek: Basit Sürtünme</h2>
+
+            <p>
+                Bir topu yatay düzlemde hareket ettirin. Sürtünme olmadan sonsuza kadar gider,
+                sürtünmeyle yavaşça durur.
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Kodun Açıklaması:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">velocity.copy()</span>
+                    <div class="explanation-text">
+                        Hız vektörünün <strong>kopyasını</strong> alıyoruz. Orijinal hızı bozmamak için!
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">mult(-1)</span>
+                    <div class="explanation-text">
+                        Vektörü <strong>tersine çevir</strong>. Hareket sağaysa, sürtünme sola.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">mu = 0.05</span>
+                    <div class="explanation-text">
+                        Düşük sürtünme katsayısı = kaygan yüzey. Değeri artırın, top daha hızlı durur.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        Canvas'a tıklayarak topu itin, sonra bırakın.
+                        <span class="expectation">Top yavaşça durur</span>
+                    </li>
+                    <li>
+                        <strong>mover.js Satır 22:</strong> <code>mu = 0.2</code> yapın.
+                        <span class="expectation">Top çok daha hızlı durur (pürüzlü zemin)</span>
+                    </li>
+                    <li>
+                        <strong>mover.js Satır 22:</strong> <code>mu = 0.01</code> yapın.
+                        <span class="expectation">Top uzun süre kayar (buz gibi)</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- FARKLI YÜZEYLER -->
+        <section class="content-section">
+            <h2>Örnek: Farklı Yüzeyler</h2>
+
+            <p>
+                Gerçek dünyada farklı yüzeyler farklı sürtünme katsayılarına sahiptir.
+                Bir topu buzdan kuma sürükleyelim!
+            </p>
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>Önemli Noktalar:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">İki bölge</span>
+                    <div class="explanation-text">
+                        Sol yarı: düşük sürtünme (μ=0.01, buz gibi).
+                        Sağ yarı: yüksek sürtünme (μ=0.3, kum gibi).
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">applyFriction(mu)</span>
+                    <div class="explanation-text">
+                        Sürtünme fonksiyonu artık parametre alıyor. Konuma göre farklı μ uyguluyoruz.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        Canvas'a tıklayarak topu sağa itin. Kuma geçtiğinde ne oluyor?
+                    </li>
+                    <li>
+                        Sağ bölgenin sürtünmesini artırın: <code>applyFriction(0.5)</code>
+                    </li>
+                    <li>
+                        Üç bölge yapın: buz, normal, kum.
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- STATIK vs KİNETİK -->
+        <section class="content-section">
+            <h2>Bonus: Statik vs Kinetik Sürtünme</h2>
+
+            <p>
+                Gerçekte iki tür sürtünme var:
+            </p>
+
+            <ul>
+                <li><strong>Statik sürtünme:</strong> Duran nesneyi hareket ettirmek için gereken kuvvet</li>
+                <li><strong>Kinetik sürtünme:</strong> Hareket eden nesneyi yavaşlatan kuvvet</li>
+            </ul>
+
+            <p>
+                Statik sürtünme genellikle daha büyüktür. Bu yüzden bir kutuyu itmeye başlamak,
+                ittikten sonra hareket ettirmekten daha zordur!
+            </p>
+
+            <div class="info-box tip">
+                <h4>🎮 Oyunlarda</h4>
+                <p>
+                    Basit oyunlarda genellikle sadece kinetik sürtünme kullanılır.
+                    İleri seviye simülasyonlarda statik sürtünme de eklenebilir.
+                </p>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Sürtünme:</strong> Harekete karşı yönde kuvvet</li>
+                <li><strong>Formül:</strong> F = -μ × N × v̂</li>
+                <li><strong>μ (mü):</strong> Sürtünme katsayısı, yüzeye göre değişir</li>
+                <li><strong>normalize():</strong> Vektörü birim vektöre çevirir</li>
+                <li><strong>copy():</strong> Orijinal vektörü bozmamak için kopya al</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="kutle-ivme.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Kütle ve İvme</span>
+                </div>
+            </a>
+            <a href="suruklenme.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Sürüklenme</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Basit sürtünme
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let mover;
+
+function setup() {
+  createCanvas(400, 400);
+  mover = new Mover(width / 2, height / 2);
+}
+
+function draw() {
+  background(220);
+
+  // Yerçekimi yok (yatay düzlem)
+
+  // Mouse basılıyken sağa it
+  if (mouseIsPressed) {
+    let push = createVector(0.5, 0);
+    mover.applyForce(push);
+    fill(100, 255, 100);
+    text("💪 İtiliyor!", 20, 30);
+  }
+
+  // Sürtünme her zaman var
+  mover.applyFriction();
+
+  mover.update();
+  mover.checkEdges();
+  mover.show();
+
+  // Hız göstergesi
+  fill(50);
+  textSize(12);
+  text("Hız: " + mover.velocity.mag().toFixed(2), 20, height - 20);
+  text("Mouse'a basılı tutarak itin", 20, height - 40);
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.mass = 1;
+    this.diameter = 40;
+  }
+
+  applyForce(force) {
+    let f = p5.Vector.div(force, this.mass);
+    this.acceleration.add(f);
+  }
+
+  applyFriction() {
+    // Sürtünme formülü: F = -μ × N × v̂
+
+    // 1. Sürtünme katsayısı
+    let mu = 0.05;
+
+    // 2. Normal kuvvet (şimdilik 1)
+    let N = 1;
+
+    // 3. Sürtünme büyüklüğü
+    let frictionMag = mu * N;
+
+    // 4. Hız yönünün kopyasını al
+    let friction = this.velocity.copy();
+
+    // 5. Birim vektör yap (sadece yön)
+    friction.normalize();
+
+    // 6. Tersine çevir (harekete karşı)
+    friction.mult(-1);
+
+    // 7. Büyüklük uygula
+    friction.mult(frictionMag);
+
+    // 8. Kuvvet olarak uygula
+    this.applyForce(friction);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    // Hıza göre renk (hızlıyken kırmızı)
+    let speed = this.velocity.mag();
+    let r = map(speed, 0, 5, 100, 255);
+    fill(r, 150, 150);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, this.diameter);
+
+    // Hız vektörü çiz
+    stroke(255, 0, 0);
+    strokeWeight(2);
+    line(
+      this.position.x,
+      this.position.y,
+      this.position.x + this.velocity.x * 10,
+      this.position.y + this.velocity.y * 10
+    );
+  }
+
+  checkEdges() {
+    let r = this.diameter / 2;
+    if (this.position.x > width - r) {
+      this.position.x = width - r;
+      this.velocity.x *= -0.9;
+    }
+    if (this.position.x < r) {
+      this.position.x = r;
+      this.velocity.x *= -0.9;
+    }
+    if (this.position.y > height - r) {
+      this.position.y = height - r;
+      this.velocity.y *= -0.9;
+    }
+    if (this.position.y < r) {
+      this.position.y = r;
+      this.velocity.y *= -0.9;
+    }
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Farklı yüzeyler
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let mover;
+
+function setup() {
+  createCanvas(400, 400);
+  mover = new Mover(100, height / 2);
+}
+
+function draw() {
+  // Arka plan: iki farklı yüzey
+  // Sol: buz (açık mavi)
+  fill(200, 230, 255);
+  noStroke();
+  rect(0, 0, width/2, height);
+
+  // Sağ: kum (bej)
+  fill(230, 210, 180);
+  rect(width/2, 0, width/2, height);
+
+  // Yüzey etiketleri
+  fill(50);
+  textSize(14);
+  text("🧊 Buz (μ=0.01)", 20, 30);
+  text("🏖️ Kum (μ=0.3)", width/2 + 20, 30);
+
+  // Yerçekimi
+  let gravity = createVector(0, 0.1);
+  mover.applyForce(gravity);
+
+  // Mouse ile itme
+  if (mouseIsPressed) {
+    let push = createVector(0.3, 0);
+    mover.applyForce(push);
+  }
+
+  // Konuma göre sürtünme
+  if (mover.position.x < width/2) {
+    // Buz: düşük sürtünme
+    mover.applyFriction(0.01);
+  } else {
+    // Kum: yüksek sürtünme
+    mover.applyFriction(0.3);
+  }
+
+  mover.update();
+  mover.checkEdges();
+  mover.show();
+
+  // Talimat
+  fill(50);
+  textSize(12);
+  text("Mouse'a basılı tutarak sağa itin", 20, height - 15);
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.mass = 1;
+    this.diameter = 40;
+  }
+
+  applyForce(force) {
+    let f = p5.Vector.div(force, this.mass);
+    this.acceleration.add(f);
+  }
+
+  // Sürtünme fonksiyonu - parametre alıyor!
+  applyFriction(mu) {
+    // Sürtünme hesapla
+    let friction = this.velocity.copy();
+    friction.normalize();
+    friction.mult(-1);
+    friction.mult(mu);
+
+    this.applyForce(friction);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    fill(255, 150, 100);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, this.diameter);
+  }
+
+  checkEdges() {
+    let r = this.diameter / 2;
+    if (this.position.x > width - r) {
+      this.position.x = width - r;
+      this.velocity.x *= -0.5;
+    }
+    if (this.position.x < r) {
+      this.position.x = r;
+      this.velocity.x *= -0.5;
+    }
+    if (this.position.y > height - r) {
+      this.position.y = height - r;
+      this.velocity.y *= -0.9;
+    }
+  }
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sürüklenme - Kuvvetler</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>🌊 Sürüklenme (Drag)</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Akışkan Direnci Nedir? <span class="term-en">(Drag / Fluid Resistance)</span></h2>
+
+            <p>
+                Havada veya suda hareket ettiğinizde bir <strong>direnç</strong> hissedersiniz.
+                Bu direnç, akışkanın (hava, su, vb.) harekete karşı uyguladığı kuvvettir.
+            </p>
+
+            <p>
+                Buna <strong>sürüklenme kuvveti <span class="term-en">(drag force)</span></strong> veya <strong>akışkan direnci <span class="term-en">(fluid resistance)</span></strong> denir.
+                Sürtünmeye benzer ama önemli bir farkı var: <strong>hızın karesiyle orantılı!</strong>
+            </p>
+
+            <div class="image-container">
+                <img src="https://raw.githubusercontent.com/nature-of-code/noc-book-2/main/content/images/02_forces/02_forces_5.png"
+                     alt="Sürüklenme kuvveti" class="content-image">
+                <figcaption>Şekil 2.4: Akışkan içinde hareket eden nesneye etki eden sürüklenme kuvveti</figcaption>
+            </div>
+
+            <div class="info-box note">
+                <h4>💡 Gerçek Hayat Örnekleri</h4>
+                <ul>
+                    <li><strong>Paraşüt:</strong> Büyük yüzey alanı = büyük direnç → yavaş iniş</li>
+                    <li><strong>Yüzücü:</strong> Suyun direnciyle mücadele eder</li>
+                    <li><strong>Araba:</strong> Hızlı giderken daha fazla yakıt harcar (hava direnci)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- FORMÜL -->
+        <section class="content-section">
+            <h2>Sürüklenme Formülü</h2>
+
+            <div class="formula-box">
+                <div class="formula">F⃗<sub>d</sub> = -½ × ρ × v² × A × C<sub>d</sub> × v̂</div>
+                <div class="formula-desc">Sürüklenme kuvveti (tam formül - vektör)</div>
+            </div>
+
+            <p>Bu formül gerçek fizik için. Simülasyonlarımız için basitleştirelim:</p>
+
+            <div class="formula-box">
+                <div class="formula">F⃗<sub>d</sub> = -c × v² × v̂</div>
+                <div class="formula-desc">Basitleştirilmiş: Sürüklenme (vektör) = -(katsayı) × (hız²) × (hız birim vektörü)</div>
+            </div>
+
+            <h3>Formülün Parçaları</h3>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">c (katsayı)</span>
+                    <div class="explanation-text">
+                        <strong>Sürüklenme katsayısı</strong>. Akışkanın yoğunluğu, nesnenin şekli ve
+                        yüzey alanını temsil eder. Su için büyük, hava için küçük.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">v² (hız karesi)</span>
+                    <div class="explanation-text">
+                        <strong>Kritik fark!</strong> Sürtünmede hız birinci dereceden,
+                        sürüklenmede hızın <strong>karesi</strong>. Hız 2 katına çıkarsa, direnç 4 kat artar!
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">-v̂ (ters yön)</span>
+                    <div class="explanation-text">
+                        Sürtünme gibi, harekete karşı yönde etki eder.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <h4>⚠️ v² Neden Önemli?</h4>
+                <p>
+                    Araba 60 km/s'den 120 km/s'ye çıktığında, hava direnci 4 KAT artar!
+                    Bu yüzden yüksek hızlarda yakıt tüketimi çok artar.
+                </p>
+            </div>
+        </section>
+
+        <!-- KOD UYGULAMASI -->
+        <section class="content-section">
+            <h2>Sürüklenmeyi Kodla Uygulama</h2>
+
+            <pre><code class="language-javascript">// Sürüklenme kuvveti hesaplama
+
+// 1. Sürüklenme katsayısı (akışkana göre değişir)
+let c = 0.1;
+
+// 2. Hızın büyüklüğü (magnitude)
+let speed = this.velocity.mag();
+
+// 3. Sürüklenme büyüklüğü = c × v²
+let dragMagnitude = c * speed * speed;
+
+// 4. Hız yönünün kopyasını al
+let drag = this.velocity.copy();
+
+// 5. Birim vektör yap
+drag.normalize();
+
+// 6. Ters yöne çevir
+drag.mult(-1);
+
+// 7. Büyüklük uygula
+drag.mult(dragMagnitude);
+
+// 8. Kuvveti uygula
+this.applyForce(drag);</code></pre>
+
+            <p>
+                Sürtünme koduna çok benziyor! Tek fark <code>speed * speed</code> (hızın karesi).
+            </p>
+        </section>
+
+        <!-- İNTERAKTİF ÖRNEK 1 -->
+        <section class="content-section">
+            <h2>Örnek: Su İçinde Top</h2>
+
+            <p>
+                Bir topu suyun içine bırakalım. Su yoğun bir akışkan olduğu için
+                güçlü sürüklenme kuvveti uygular.
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Kodun Açıklaması:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Liquid sınıfı</span>
+                    <div class="explanation-text">
+                        Sıvıyı temsil eden bir sınıf. Konumu, boyutu ve sürüklenme katsayısını tutar.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">contains()</span>
+                    <div class="explanation-text">
+                        Mover sıvının içinde mi kontrol eder. İçindeyse sürüklenme uygulanır.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">calculateDrag()</span>
+                    <div class="explanation-text">
+                        Sürüklenme kuvvetini hesaplar ve döndürür. Mover'ın hızına göre hesaplanır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        Topu suyun içinde gözlemleyin. Havada vs suda nasıl hareket ediyor?
+                    </li>
+                    <li>
+                        <strong>liquid.js Satır 5:</strong> <code>c = 0.5</code> yapın.
+                        <span class="expectation">Daha yoğun sıvı (bal gibi) - çok yavaşlar</span>
+                    </li>
+                    <li>
+                        <strong>liquid.js Satır 5:</strong> <code>c = 0.01</code> yapın.
+                        <span class="expectation">Çok seyrek sıvı (hava gibi) - az etki</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- BİRDEN FAZLA TOP -->
+        <section class="content-section">
+            <h2>Örnek: Birden Fazla Top</h2>
+
+            <p>
+                Farklı kütlelerde topları suya bırakalım. Sürüklenme küçük nesneleri
+                daha çok mu etkiler, büyük nesneleri mi?
+            </p>
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>Gözlemler:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Hız farkı</span>
+                    <div class="explanation-text">
+                        Ağır toplar suda daha az yavaşlar çünkü momentumları (kütle × hız) daha büyük.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Terminal hız</span>
+                    <div class="explanation-text">
+                        Bir süre sonra tüm toplar sabit hıza ulaşır (yerçekimi = sürüklenme).
+                        Buna "terminal velocity" denir.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        Mouse'a tıklayarak topları sıfırlayın ve tekrar izleyin.
+                    </li>
+                    <li>
+                        Hangi toplar daha hızlı düşüyor? Neden?
+                    </li>
+                    <li>
+                        Suyun yüksekliğini değiştirin: <code>new Liquid(0, height/4, ...)</code>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- TERMİNAL HIZ -->
+        <section class="content-section">
+            <h2>Terminal Hız</h2>
+
+            <p>
+                Serbest düşen bir nesne sonsuza kadar hızlanmaz. Bir noktada
+                <strong>sürüklenme kuvveti</strong> = <strong>yerçekimi kuvveti</strong> olur
+                ve hız sabitlenir.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">F<sub>yerçekimi</sub> = F<sub>sürüklenme</sub></div>
+                <div class="formula-desc">Bu noktada ivme = 0, hız sabit kalır</div>
+            </div>
+
+            <div class="info-box tip">
+                <h4>🪂 Paraşütçüler ve Terminal Hız</h4>
+                <p>
+                    Bir insanın terminal hızı yaklaşık 200 km/s. Paraşüt açılınca
+                    yüzey alanı artar, sürüklenme artar ve terminal hız ~20 km/s'ye düşer!
+                </p>
+            </div>
+        </section>
+
+        <!-- SÜRTÜNME VS SÜRÜKLENME -->
+        <section class="content-section">
+            <h2>Sürtünme vs Sürüklenme: Karşılaştırma</h2>
+
+            <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                <thead>
+                    <tr style="background: var(--bg-tertiary);">
+                        <th style="padding: 1rem; border: 1px solid var(--border-color);">Özellik</th>
+                        <th style="padding: 1rem; border: 1px solid var(--border-color);">Sürtünme</th>
+                        <th style="padding: 1rem; border: 1px solid var(--border-color);">Sürüklenme</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Ortam</td>
+                        <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Katı yüzey</td>
+                        <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Akışkan (hava, su)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Formül</td>
+                        <td style="padding: 0.75rem; border: 1px solid var(--border-color);">F ∝ μ (sabit)</td>
+                        <td style="padding: 0.75rem; border: 1px solid var(--border-color);">F ∝ v² (hız karesi)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Hız etkisi</td>
+                        <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Hızdan bağımsız</td>
+                        <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Hızla dramatik artar</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Örnek</td>
+                        <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Kutu yerde kayıyor</td>
+                        <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Top suda batıyor</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Sürüklenme:</strong> Akışkan içinde harekete karşı direnç</li>
+                <li><strong>Formül:</strong> F = -c × v² × v̂</li>
+                <li><strong>Hız karesi:</strong> Hız 2x → Direnç 4x</li>
+                <li><strong>Terminal hız:</strong> Yerçekimi = sürüklenme noktası</li>
+                <li><strong>Liquid sınıfı:</strong> Sıvı bölgesini temsil eder</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="surtunme.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Sürtünme</span>
+                </div>
+            </a>
+            <a href="kutle-cekimi.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Kütlesel Çekim</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Su içinde top
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let mover;
+let liquid;
+
+function setup() {
+  createCanvas(400, 400);
+  mover = new Mover(width / 2, 50, 2);
+  // Sıvı: x, y, genişlik, yükseklik, sürüklenme katsayısı
+  liquid = new Liquid(0, height / 2, width, height / 2, 0.1);
+}
+
+function draw() {
+  background(220);
+
+  // Sıvıyı çiz
+  liquid.show();
+
+  // Yerçekimi
+  let gravity = createVector(0, 0.2 * mover.mass);
+  mover.applyForce(gravity);
+
+  // Sıvı içindeyse sürüklenme uygula
+  if (liquid.contains(mover)) {
+    let drag = liquid.calculateDrag(mover);
+    mover.applyForce(drag);
+  }
+
+  mover.update();
+  mover.checkEdges();
+  mover.show();
+
+  // Bilgi
+  fill(50);
+  textSize(12);
+  text("🌫️ Hava", 20, 30);
+  text("🌊 Su", 20, height/2 + 30);
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor(x, y, mass) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.mass = mass;
+    this.diameter = mass * 20;
+  }
+
+  applyForce(force) {
+    let f = p5.Vector.div(force, this.mass);
+    this.acceleration.add(f);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    fill(127, 180, 220);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, this.diameter);
+  }
+
+  checkEdges() {
+    let r = this.diameter / 2;
+    if (this.position.y > height - r) {
+      this.position.y = height - r;
+      this.velocity.y *= -0.5;
+    }
+    if (this.position.x > width - r) {
+      this.position.x = width - r;
+      this.velocity.x *= -0.9;
+    }
+    if (this.position.x < r) {
+      this.position.x = r;
+      this.velocity.x *= -0.9;
+    }
+  }
+}`
+                },
+                {
+                    name: 'liquid.js',
+                    content: `class Liquid {
+  constructor(x, y, w, h, c) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.c = c;  // Sürüklenme katsayısı
+  }
+
+  // Mover sıvının içinde mi?
+  contains(mover) {
+    let pos = mover.position;
+    return pos.x > this.x &&
+           pos.x < this.x + this.w &&
+           pos.y > this.y &&
+           pos.y < this.y + this.h;
+  }
+
+  // Sürüklenme kuvvetini hesapla
+  calculateDrag(mover) {
+    // 1. Hızın büyüklüğü
+    let speed = mover.velocity.mag();
+
+    // 2. Sürüklenme büyüklüğü = c × v²
+    let dragMagnitude = this.c * speed * speed;
+
+    // 3. Hız yönünün kopyası
+    let drag = mover.velocity.copy();
+
+    // 4. Birim vektör
+    drag.normalize();
+
+    // 5. Ters yön
+    drag.mult(-1);
+
+    // 6. Büyüklük uygula
+    drag.mult(dragMagnitude);
+
+    return drag;
+  }
+
+  // Sıvıyı çiz
+  show() {
+    noStroke();
+    fill(50, 100, 200, 150);  // Yarı saydam mavi
+    rect(this.x, this.y, this.w, this.h);
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Birden fazla top
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let movers = [];
+let liquid;
+
+function setup() {
+  createCanvas(400, 400);
+
+  // Farklı kütlelerde 6 top
+  for (let i = 0; i < 6; i++) {
+    let mass = map(i, 0, 5, 0.5, 4);
+    let x = 40 + i * 60;
+    movers.push(new Mover(x, 50, mass));
+  }
+
+  // Sıvı bölgesi
+  liquid = new Liquid(0, height / 2, width, height / 2, 0.1);
+}
+
+function draw() {
+  background(220);
+
+  // Sıvıyı çiz
+  liquid.show();
+
+  for (let mover of movers) {
+    // Yerçekimi (kütleye bağlı)
+    let gravity = createVector(0, 0.1 * mover.mass);
+    mover.applyForce(gravity);
+
+    // Sıvı içinde sürüklenme
+    if (liquid.contains(mover)) {
+      let drag = liquid.calculateDrag(mover);
+      mover.applyForce(drag);
+    }
+
+    mover.update();
+    mover.checkEdges();
+    mover.show();
+  }
+
+  // Bilgi
+  fill(50);
+  textSize(11);
+  text("← Hafif         Ağır →", 120, 30);
+  text("Tıkla: Sıfırla", 10, height - 10);
+}
+
+function mousePressed() {
+  // Topları sıfırla
+  for (let i = 0; i < movers.length; i++) {
+    movers[i].position.y = 50;
+    movers[i].velocity.set(0, 0);
+  }
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor(x, y, mass) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.mass = mass;
+    this.diameter = mass * 16;
+  }
+
+  applyForce(force) {
+    let f = p5.Vector.div(force, this.mass);
+    this.acceleration.add(f);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    // Kütleye göre renk
+    let c = map(this.mass, 0.5, 4, 200, 80);
+    fill(c, 150, 255 - c);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, this.diameter);
+  }
+
+  checkEdges() {
+    let r = this.diameter / 2;
+    if (this.position.y > height - r) {
+      this.position.y = height - r;
+      this.velocity.y = 0;
+    }
+  }
+}`
+                },
+                {
+                    name: 'liquid.js',
+                    content: `class Liquid {
+  constructor(x, y, w, h, c) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.c = c;
+  }
+
+  contains(mover) {
+    let pos = mover.position;
+    return pos.x > this.x &&
+           pos.x < this.x + this.w &&
+           pos.y > this.y &&
+           pos.y < this.y + this.h;
+  }
+
+  calculateDrag(mover) {
+    let speed = mover.velocity.mag();
+    let dragMagnitude = this.c * speed * speed;
+
+    let drag = mover.velocity.copy();
+    drag.normalize();
+    drag.mult(-1);
+    drag.mult(dragMagnitude);
+
+    return drag;
+  }
+
+  show() {
+    noStroke();
+    fill(50, 120, 200, 150);
+    rect(this.x, this.y, this.w, this.h);
+
+    // Su yüzeyi çizgisi
+    stroke(100, 150, 255);
+    strokeWeight(3);
+    line(this.x, this.y, this.x + this.w, this.y);
+  }
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

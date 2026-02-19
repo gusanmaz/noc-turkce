@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vektör Toplama - Vektörler</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>➕ Vektör Toplama</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Vektör Toplama <span class="term-en">(Vector Addition)</span></h2>
+
+            <p>
+                Vektör toplama, hareketin temelidir. Bir nesnenin konumunu değiştirmek için
+                <strong>konum vektörüne hız vektörünü ekleriz</strong>.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">w⃗ = u⃗ + v⃗</div>
+                <div class="formula-desc">İki vektörün toplamı yeni bir vektör verir</div>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_6.png"
+                     alt="İki vektörün gösterimi" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.5:</strong> İki vektör u⃗ ve v⃗ üçgen olarak gösterilmiş. Her vektörün
+                    x ve y bileşenleri var. Bu gösterim, vektörleri görsel olarak anlamak için çok faydalı:
+                    yatay kenar x bileşeni, dikey kenar y bileşeni, hipotenüs ise vektörün kendisi.
+                </figcaption>
+            </div>
+        </section>
+
+        <!-- MATEMATİKSEL TOPLAMA -->
+        <section class="content-section">
+            <h2>Matematiksel Olarak Toplama</h2>
+
+            <p>
+                İki vektörü toplamak için bileşenleri ayrı ayrı toplarız:
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">
+                    <div>(a, b) + (c, d) = (a+c, b+d)</div>
+                </div>
+                <div class="formula-desc">x'leri topla, y'leri topla</div>
+            </div>
+
+            <!-- SVG Diyagram -->
+            <div class="vector-diagram">
+                <svg viewBox="0 0 400 200" class="vector-svg">
+                    <defs>
+                        <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#ef4444"/>
+                        </marker>
+                        <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#22c55e"/>
+                        </marker>
+                        <marker id="arrowPurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8b5cf6"/>
+                        </marker>
+                    </defs>
+
+                    <!-- u vektörü -->
+                    <line x1="50" y1="150" x2="170" y2="150" stroke="#ef4444" stroke-width="3" marker-end="url(#arrowRed)"/>
+                    <text x="110" y="170" fill="#ef4444" font-size="14" font-weight="bold">u⃗ = (3, 0)</text>
+
+                    <!-- v vektörü -->
+                    <line x1="170" y1="150" x2="170" y2="70" stroke="#22c55e" stroke-width="3" marker-end="url(#arrowGreen)"/>
+                    <text x="180" y="110" fill="#22c55e" font-size="14" font-weight="bold">v⃗ = (0, 2)</text>
+
+                    <!-- w vektörü (sonuç) -->
+                    <line x1="50" y1="150" x2="170" y2="70" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="8,4" marker-end="url(#arrowPurple)"/>
+                    <text x="80" y="100" fill="#8b5cf6" font-size="14" font-weight="bold">w⃗ = (3, 2)</text>
+
+                    <!-- Açıklama -->
+                    <rect x="220" y="60" width="170" height="100" rx="8" fill="var(--bg-tertiary)" opacity="0.9"/>
+                    <text x="230" y="85" fill="var(--text-primary)" font-size="13" font-weight="bold">Toplama:</text>
+                    <text x="230" y="110" fill="#ef4444" font-size="12">u⃗ = (3, 0)</text>
+                    <text x="230" y="130" fill="#22c55e" font-size="12">v⃗ = (0, 2)</text>
+                    <text x="230" y="150" fill="#8b5cf6" font-size="12">w⃗ = (3+0, 0+2) = (3, 2)</text>
+                </svg>
+            </div>
+
+            <pre><code class="language-javascript">// Matematiksel toplama
+let u = createVector(3, 0);
+let v = createVector(0, 2);
+
+// Yeni vektör: w = u + v
+let w = createVector(u.x + v.x, u.y + v.y);
+// w = (3, 2)
+
+// VEYA p5.js add() metodu ile:
+let w = u.copy();  // u'nun kopyası
+w.add(v);          // v'yi ekle</code></pre>
+        </section>
+
+        <!-- ADD() METODU -->
+        <section class="content-section">
+            <h2>add() Metodu <span class="term-en">(The add() Method)</span></h2>
+
+            <p>
+                p5.Vector'ın <code>add()</code> metodu, vektör toplamayı çok kolaylaştırır:
+            </p>
+
+            <pre><code class="language-javascript">let position = createVector(100, 50);
+let velocity = createVector(2, 3);
+
+// position += velocity
+position.add(velocity);
+
+// Şimdi position = (102, 53)</code></pre>
+
+            <div class="info-box warning">
+                <h4>⚠️ add() Orijinal Vektörü Değiştirir!</h4>
+                <p>
+                    <code>position.add(velocity)</code> dediğimizde, <strong>position değişir</strong>,
+                    velocity aynı kalır. Bu önemli - her frame'de position güncellenirken
+                    velocity sabit kalmalı!
+                </p>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_7.png"
+                     alt="Vektör bileşenlerinin toplanması" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.6:</strong> Vektörleri toplamak için x ve y bileşenleri ayrı ayrı toplanır.
+                    Bu diyagram adım adım gösteriyor: önce u⃗ vektörünün bileşenleri, sonra v⃗ vektörünün bileşenleri,
+                    ve son olarak sonuç w⃗ = u⃗ + v⃗. Formül: (a, b) + (c, d) = (a+c, b+d)
+                </figcaption>
+            </div>
+        </section>
+
+        <!-- HAREKET KODU -->
+        <section class="content-section">
+            <h2>Hareket Kodu: add() ile</h2>
+
+            <p>
+                Şimdi <code>position.x += velocity.x</code> yerine <code>position.add(velocity)</code> kullanabiliriz:
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Dikkat Edin:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 13</span>
+                    <div class="explanation-text">
+                        <strong>position.add(velocity)</strong> - İki satır yerine bir satır!
+                        x ve y ayrı ayrı yazmak yerine tek komut.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 8:</strong> velocity değerlerini değiştirin: <code>createVector(5, -2)</code>
+                        <span class="expectation">Beklenti: Farklı yönde, farklı hızda hareket</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ÇIKARMA -->
+        <section class="content-section">
+            <h2>Vektör Çıkarma <span class="term-en">(Vector Subtraction)</span></h2>
+
+            <p>
+                Toplama gibi, çıkarma da bileşen bileşen yapılır:
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">(a, b) - (c, d) = (a-c, b-d)</div>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_8.png"
+                     alt="Vektör ve negatifi" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.7:</strong> v⃗ ve -v⃗ arasındaki ilişki. Bir vektörün negatifi,
+                    aynı büyüklükte ama <em>tam ters yönde</em> bir vektördür. Bu kavram vektör çıkarmayı
+                    anlamak için kritik: u⃗ - v⃗ = u⃗ + (-v⃗)
+                </figcaption>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_9.png"
+                     alt="Vektör çıkarma" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.8:</strong> Vektör çıkarma, bir vektörü diğerinin ucuna <em>ters yönde</em> yerleştirir.
+                    Bu yöntem özellikle iki nokta arasındaki <em>yön vektörünü</em> bulmak için kullanılır:
+                    direction = target - position (hedeften konumu çıkar)
+                </figcaption>
+            </div>
+
+            <pre><code class="language-javascript">let a = createVector(5, 3);
+let b = createVector(2, 1);
+
+// a'dan b'yi çıkar
+a.sub(b);  // a = (3, 2)
+
+// İki nokta arasındaki vektör
+let mouse = createVector(mouseX, mouseY);
+let center = createVector(width/2, height/2);
+
+// Merkezden fareye vektör
+let direction = p5.Vector.sub(mouse, center);</code></pre>
+
+            <div class="info-box note">
+                <h4>💡 p5.Vector.sub() - Statik Metod</h4>
+                <p>
+                    <code>a.sub(b)</code> → a değişir<br>
+                    <code>p5.Vector.sub(a, b)</code> → yeni vektör döner, a ve b aynı kalır
+                </p>
+            </div>
+        </section>
+
+        <!-- FAREYE DOĞRU HAREKET -->
+        <section class="content-section">
+            <h2>Örnek: Fareye Doğru İşaret Etme</h2>
+
+            <p>
+                Çıkarmayı kullanarak bir noktadan diğerine "yön vektörü" bulabiliriz:
+            </p>
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>Satır Satır Açıklama:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 6-7</span>
+                    <div class="explanation-text">
+                        Fare ve merkez için vektörler oluşturuyoruz.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 10</span>
+                    <div class="explanation-text">
+                        <strong>p5.Vector.sub(mouse, center)</strong> - Merkezden fareye doğru vektör.
+                        Statik metod kullandık çünkü orijinal vektörleri değiştirmek istemiyoruz.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>v.add(u):</strong> v'ye u ekle, v değişir</li>
+                <li><strong>v.sub(u):</strong> v'den u çıkar, v değişir</li>
+                <li><strong>p5.Vector.add(v, u):</strong> Yeni vektör döner, v ve u aynı kalır</li>
+                <li><strong>p5.Vector.sub(v, u):</strong> Yeni vektör döner, v ve u aynı kalır</li>
+                <li><strong>Hareket:</strong> position.add(velocity)</li>
+                <li><strong>Yön bulma:</strong> p5.Vector.sub(hedef, kaynak)</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="vektor-sinifi.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">p5.Vector Sınıfı</span>
+                </div>
+            </a>
+            <a href="vektor-carpma.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Vektör Çarpma ve Bölme</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: add() ile hareket
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let position;
+let velocity;
+
+function setup() {
+  createCanvas(400, 400);
+
+  position = createVector(width / 2, height / 2);
+  velocity = createVector(2.5, 2);
+}
+
+function draw() {
+  background(220);
+
+  // TEK SATIR! position += velocity
+  position.add(velocity);
+
+  // Kenar kontrolü
+  if (position.x > width - 15 || position.x < 15) {
+    velocity.x *= -1;
+  }
+  if (position.y > height - 15 || position.y < 15) {
+    velocity.y *= -1;
+  }
+
+  // Topu çiz
+  fill(127, 127, 220);
+  stroke(0);
+  strokeWeight(2);
+  circle(position.x, position.y, 30);
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Fareye işaret etme
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(220);
+
+  // Fare ve merkez vektörleri
+  let mouse = createVector(mouseX, mouseY);
+  let center = createVector(width / 2, height / 2);
+
+  // Merkezden fareye vektör (ÇIKARMA!)
+  let direction = p5.Vector.sub(mouse, center);
+
+  // Merkezi çiz
+  fill(100);
+  circle(center.x, center.y, 20);
+
+  // Yön vektörünü çiz
+  stroke(255, 0, 0);
+  strokeWeight(3);
+  line(center.x, center.y,
+       center.x + direction.x,
+       center.y + direction.y);
+
+  // Fare noktası
+  fill(0, 150, 0);
+  noStroke();
+  circle(mouseX, mouseY, 15);
+
+  // Bilgi
+  fill(0);
+  noStroke();
+  textSize(12);
+  text("direction: (" +
+       round(direction.x) + ", " +
+       round(direction.y) + ")", 10, 20);
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

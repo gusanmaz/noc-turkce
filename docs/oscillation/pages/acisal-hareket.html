@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Açısal Hareket - Salınım</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>🔄 Açısal Hareket</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Dönen Nesneler <span class="term-en">(Angular Motion)</span></h2>
+
+            <p>
+                Önceki bölümlerde nesnelerin <strong>doğrusal hareketini</strong> (linear motion)
+                inceledik: konum, hız ve ivme. Şimdi aynı kavramları <strong>dönme hareketine</strong>
+                uygulayacağız.
+            </p>
+
+            <div class="info-box note">
+                <h4>💡 Doğrusal vs Açısal</h4>
+                <p>
+                    Doğrusal harekette <strong>piksel</strong> kullanırken,
+                    açısal harekette <strong>radyan</strong> kullanıyoruz.
+                    Kavramlar aynı, sadece birimler farklı!
+                </p>
+            </div>
+        </section>
+
+        <!-- KARŞILAŞTIRMA -->
+        <section class="content-section">
+            <h2>Doğrusal ve Açısal Hareket Karşılaştırması</h2>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Kavram</th>
+                        <th>Doğrusal <span class="term-en">(Linear)</span></th>
+                        <th>Açısal <span class="term-en">(Angular)</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Konum</strong></td>
+                        <td>position (x, y) piksel</td>
+                        <td>angle (θ) radyan</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hız</strong></td>
+                        <td>velocity (vx, vy) piksel/frame</td>
+                        <td>angularVelocity (ω) radyan/frame</td>
+                    </tr>
+                    <tr>
+                        <td><strong>İvme</strong></td>
+                        <td>acceleration (ax, ay) piksel/frame²</td>
+                        <td>angularAcceleration (α) radyan/frame²</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="formula-box">
+                <div class="formula">
+                    <div>Doğrusal: position += velocity, velocity += acceleration</div>
+                    <div style="margin-top: 0.5rem;">Açısal: angle += angularVelocity, angularVelocity +=
+                        angularAcceleration</div>
+                </div>
+                <div class="formula-desc">Formüller tamamen aynı, sadece değişkenler farklı!</div>
+            </div>
+        </section>
+
+        <!-- BASİT DÖNEN NESNE -->
+        <section class="content-section">
+            <h2>En Basit Örnek: Sabit Hızda Dönen Çizgi</h2>
+
+            <p>
+                Dönen bir nesne oluşturmanın en basit yolu: her frame'de açıyı biraz arttırmak.
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Satır Satır Açıklama:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 1-2</span>
+                    <div class="explanation-text">
+                        <code>angle</code> şu anki dönme açısı (radyan).
+                        <code>angularVelocity</code> her frame'de açının ne kadar artacağı.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 10</span>
+                    <div class="explanation-text">
+                        <code>translate()</code> koordinat sisteminin merkezini canvas ortasına taşır.
+                        Dönme bu yeni merkez etrafında olacak.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 13</span>
+                    <div class="explanation-text">
+                        <code>rotate(angle)</code> tüm çizimleri mevcut açı kadar döndürür.
+                        Bu satırdan sonra çizilen her şey döndürülmüş olacak.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 21</span>
+                    <div class="explanation-text">
+                        Her frame'de açıyı artırıyoruz. Bu basit satır dönme hareketini sağlıyor!
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 2:</strong> <code>angularVelocity = 0.1</code> yapın.
+                        <span class="expectation">Beklenti: Daha hızlı döner</span>
+                    </li>
+                    <li>
+                        <strong>Satır 2:</strong> <code>angularVelocity = -0.02</code> yapın.
+                        <span class="expectation">Beklenti: Ters yöne döner (saat yönünde)</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- AÇISAL İVME -->
+        <section class="content-section">
+            <h2>Açısal İvme <span class="term-en">(Angular Acceleration)</span></h2>
+
+            <p>
+                Sabit hızla dönmek sıkıcı! Gerçek dünyada nesneler <strong>hızlanır</strong> ve
+                <strong>yavaşlar</strong>. Bunu <strong>açısal ivme</strong> ile modelleyebiliriz.
+            </p>
+
+
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>Önemli Noktalar:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 3</span>
+                    <div class="explanation-text">
+                        <code>angularAcceleration</code> her frame'de açısal hızın ne kadar artacağı.
+                        Pozitif değer = hızlanma, negatif değer = yavaşlama.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 27</span>
+                    <div class="explanation-text">
+                        Fareye göre ivme hesaplıyoruz. Fare sağda ise pozitif, solda ise negatif ivme.
+                        <code>map()</code> fare x pozisyonunu -0.001 ile 0.001 arasına dönüştürür.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 30-31</span>
+                    <div class="explanation-text">
+                        Newton'un hareket yasaları! Önce ivme hızı değiştirir, sonra hız açıyı değiştirir.
+                        Doğrusal hareketteki gibi.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <h4>⚠️ Hız Sınırı</h4>
+                <p>
+                    Gerçek dünyada sürtünme olmadan hız sonsuza kadar artabilir.
+                    Simülasyonlarda genellikle <code>constrain()</code> ile hızı sınırlarız:
+                </p>
+                <pre><code class="language-javascript">angularVelocity = constrain(angularVelocity, -0.2, 0.2);</code></pre>
+            </div>
+        </section>
+
+        <!-- HAREKET YÖNÜNE BAKMA -->
+        <section class="content-section">
+            <h2>Hareket Yönüne Bakma <span class="term-en">(Pointing in Direction of Motion)</span></h2>
+
+            <p>
+                Bir araba veya ok gibi nesnelerin <strong>hareket ettikleri yöne bakmasını</strong>
+                istiyorsak, hız vektöründen açı hesaplayabiliriz.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">θ = atan2(velocity.y, velocity.x)</div>
+                <div class="formula-desc">Hız vektöründen hareket yönü açısını hesapla</div>
+            </div>
+
+            <div id="editor3"></div>
+
+            <div class="explanation-list">
+                <h4>Kilit Nokta:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 31</span>
+                    <div class="explanation-text">
+                        <code>velocity.heading()</code> p5.js'te vektörün yönünü radyan olarak verir.
+                        Bu, <code>atan2(velocity.y, velocity.x)</code> ile aynı sonucu verir.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>angle:</strong> Nesnenin dönme açısı (radyan)</li>
+                <li><strong>angularVelocity:</strong> Açının değişim hızı (radyan/frame)</li>
+                <li><strong>angularAcceleration:</strong> Açısal hızın değişim hızı</li>
+                <li><strong>rotate():</strong> Çizimleri döndürür</li>
+                <li><strong>velocity.heading():</strong> Hız vektörünün yönü</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="acilar-trigonometri.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Açılar ve Trigonometri</span>
+                </div>
+            </a>
+            <a href="kutupsal-koordinatlar.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Kutupsal Koordinatlar</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Sabit hızda dönen çizgi
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let angle = 0;
+let angularVelocity = 0.02;
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(220);
+
+  // Merkeze taşı
+  translate(width / 2, height / 2);
+
+  // Döndür
+  rotate(angle);
+
+  // Dikdörtgen çiz (merkezi orjinde)
+  stroke(0);
+  strokeWeight(2);
+  fill(127, 127, 220);
+  rectMode(CENTER);
+  rect(0, 0, 150, 20);
+
+  // Açıyı güncelle
+  angle += angularVelocity;
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Açısal ivme ile dönen nesne
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let angle = 0;
+let angularVelocity = 0;
+let angularAcceleration = 0;
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(220);
+
+  // Merkeze taşı
+  translate(width / 2, height / 2);
+
+  // Döndür
+  rotate(angle);
+
+  // Dikdörtgen çiz
+  stroke(0);
+  strokeWeight(2);
+  fill(127, 220, 127);
+  rectMode(CENTER);
+  rect(0, 0, 150, 20);
+
+  // Merkez noktası
+  fill(255, 0, 0);
+  noStroke();
+  circle(0, 0, 10);
+
+  // Fareye göre ivme hesapla
+  angularAcceleration = map(mouseX, 0, width, -0.001, 0.001);
+
+  // Fizik güncelleme
+  angularVelocity += angularAcceleration;
+  angle += angularVelocity;
+
+  // Hızı sınırla (isteğe bağlı)
+  angularVelocity = constrain(angularVelocity, -0.1, 0.1);
+}
+
+// Bilgi göster
+function mousePressed() {
+  // Tıklayınca hızı sıfırla
+  angularVelocity = 0;
+}`
+                }
+            ]
+        });
+
+        // Editor 3: Hareket yönüne bakan nesne
+        new LiveEditor('#editor3', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let position;
+let velocity;
+let acceleration;
+
+function setup() {
+  createCanvas(400, 400);
+  position = createVector(width / 2, height / 2);
+  velocity = createVector(0, 0);
+}
+
+function draw() {
+  background(220);
+
+  // Fareye doğru ivme
+  let mouse = createVector(mouseX, mouseY);
+  acceleration = p5.Vector.sub(mouse, position);
+  acceleration.setMag(0.5);
+
+  // Fizik güncelleme
+  velocity.add(acceleration);
+  velocity.limit(5);  // Hız sınırı
+  position.add(velocity);
+
+  // Kenarlardan sekme
+  if (position.x > width) { position.x = 0; }
+  if (position.x < 0) { position.x = width; }
+  if (position.y > height) { position.y = 0; }
+  if (position.y < 0) { position.y = height; }
+
+  // Hareket yönüne bak
+  let angle = velocity.heading();
+
+  // Çiz
+  push();
+  translate(position.x, position.y);
+  rotate(angle);
+
+  // Üçgen (ok şekli)
+  fill(127, 127, 220);
+  stroke(0);
+  strokeWeight(2);
+  triangle(20, 0, -10, -10, -10, 10);
+  pop();
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+
+</html>

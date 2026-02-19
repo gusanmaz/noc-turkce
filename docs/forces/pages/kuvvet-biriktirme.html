@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuvvet Biriktirme - Kuvvetler</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>➕ Kuvvet Biriktirme</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Birden Fazla Kuvvet Nasıl Çalışır? <span class="term-en">(Force Accumulation)</span></h2>
+
+            <p>
+                Gerçek dünyada bir nesneye aynı anda <strong>birden fazla kuvvet</strong> etki eder.
+                Bir yaprak düşerken hem yerçekimi aşağı çeker, hem rüzgar yana iter,
+                hem de hava direnci yavaşlatır.
+            </p>
+
+            <p>
+                Peki birden fazla kuvveti nasıl hesaplarız? Cevap basit: <strong>TOPLAMA!</strong>
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">F⃗<sub>net</sub> = F⃗₁ + F⃗₂ + F⃗₃ + ...</div>
+                <div class="formula-desc">Net Kuvvet = Tüm kuvvetlerin vektörel toplamı</div>
+            </div>
+        </section>
+
+        <!-- VEKTÖR TOPLAMA -->
+        <section class="content-section">
+            <h2>Vektör Toplama <span class="term-en">(Vector Addition)</span> Nasıl Çalışır?</h2>
+
+            <p>
+                Vektörler ok gibidir: yönleri ve uzunlukları (büyüklükleri) vardır.
+                İki vektörü toplamak için birinin ucuna diğerini koyarız:
+            </p>
+
+            <!-- SVG Vektör Toplama Görseli -->
+            <div class="vector-diagram">
+                <svg viewBox="0 0 320 220" class="vector-svg">
+                    <!-- Arka plan grid -->
+                    <defs>
+                        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="var(--border-color)" stroke-width="0.5" opacity="0.3"/>
+                        </pattern>
+                        <!-- Ok başı marker -->
+                        <marker id="arrowA" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#ef4444"/>
+                        </marker>
+                        <marker id="arrowB" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#22c55e"/>
+                        </marker>
+                        <marker id="arrowC" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#6366f1"/>
+                        </marker>
+                    </defs>
+                    <rect width="320" height="220" fill="url(#grid)"/>
+
+                    <!-- Başlangıç noktası -->
+                    <circle cx="40" cy="40" r="5" fill="var(--text-muted)"/>
+                    <text x="25" y="35" fill="var(--text-muted)" font-size="12">O</text>
+
+                    <!-- Vektör A (kırmızı - sağa) -->
+                    <line x1="40" y1="40" x2="160" y2="40" stroke="#ef4444" stroke-width="3" marker-end="url(#arrowA)"/>
+                    <text x="90" y="30" fill="#ef4444" font-size="14" font-weight="bold">A⃗ = (3, 0)</text>
+
+                    <!-- Vektör B (yeşil - aşağı) - A'nın ucundan başlar -->
+                    <line x1="160" y1="40" x2="160" y2="120" stroke="#22c55e" stroke-width="3" marker-end="url(#arrowB)"/>
+                    <text x="170" y="85" fill="#22c55e" font-size="14" font-weight="bold">B⃗ = (0, 2)</text>
+
+                    <!-- Sonuç vektörü C (mor - çapraz) -->
+                    <line x1="40" y1="40" x2="160" y2="120" stroke="#6366f1" stroke-width="3" stroke-dasharray="8,4" marker-end="url(#arrowC)"/>
+                    <text x="70" y="100" fill="#6366f1" font-size="14" font-weight="bold">A⃗ + B⃗ = (3, 2)</text>
+
+                    <!-- Bitiş noktası -->
+                    <circle cx="160" cy="120" r="5" fill="#6366f1"/>
+
+                    <!-- Açıklama kutusu -->
+                    <rect x="10" y="150" width="300" height="60" rx="8" fill="var(--bg-tertiary)" opacity="0.9"/>
+                    <text x="20" y="172" fill="var(--text-primary)" font-size="13">
+                        <tspan fill="#ef4444">■</tspan> A⃗ vektörünü çiz (sağa)
+                    </text>
+                    <text x="20" y="190" fill="var(--text-primary)" font-size="13">
+                        <tspan fill="#22c55e">■</tspan> A⃗'nın ucundan B⃗'yi çiz (aşağı)
+                    </text>
+                    <text x="20" y="208" fill="var(--text-primary)" font-size="13">
+                        <tspan fill="#6366f1">■</tspan> Başlangıçtan sona = Toplam vektör!
+                    </text>
+                </svg>
+            </div>
+
+            <h3>Sayısal Örnek</h3>
+            <pre><code class="language-javascript">// Yerçekimi: sadece aşağı (y pozitif = aşağı)
+let gravity = createVector(0, 0.1);
+
+// Rüzgar: sadece sağa (x pozitif = sağ)
+let wind = createVector(0.05, 0);
+
+// Net kuvvet = yerçekimi + rüzgar
+// x: 0 + 0.05 = 0.05
+// y: 0.1 + 0 = 0.1
+// Sonuç: (0.05, 0.1) → sağ-aşağı yönde</code></pre>
+
+            <div class="info-box note">
+                <h4>💡 Neden Toplama?</h4>
+                <p>
+                    Fizikteki <strong>süperpozisyon ilkesi</strong> der ki:
+                    Birden fazla kuvvet bir cisme etki ederse, sanki tek bir kuvvet
+                    (toplam kuvvet) etki ediyormuş gibi davranır.
+                </p>
+            </div>
+        </section>
+
+        <!-- APPLYFORCE DETAY -->
+        <section class="content-section">
+            <h2>applyForce() Fonksiyonu Detaylı</h2>
+
+            <p>
+                Önceki bölümde gördüğümüz <code>applyForce()</code> fonksiyonu
+                kuvvet biriktirmenin anahtarıdır:
+            </p>
+
+            <pre><code class="language-javascript">applyForce(force) {
+  // Kuvveti ivmeye EKLE (üzerine yazma!)
+  this.acceleration.add(force);
+}</code></pre>
+
+            <h3>Neden add() Kullanıyoruz?</h3>
+
+            <p>
+                Eğer <code>this.acceleration = force</code> yazsaydık, her yeni kuvvet
+                öncekinin üzerine yazardı. Ama <code>add()</code> kullanarak kuvvetleri
+                <strong>biriktiriyoruz</strong>.
+            </p>
+
+            <pre><code class="language-javascript">// Her frame'de:
+mover.applyForce(gravity);  // ivme = (0, 0.1)
+mover.applyForce(wind);     // ivme = (0, 0.1) + (0.05, 0) = (0.05, 0.1)
+mover.applyForce(friction); // ivme = (0.05, 0.1) + sürtünme
+
+// update() sonunda:
+this.acceleration.mult(0);  // ivme sıfırlanır, bir sonraki frame için hazır</code></pre>
+
+            <div class="info-box warning">
+                <h4>⚠️ Sıfırlama Çok Önemli!</h4>
+                <p>
+                    Her frame sonunda ivmeyi sıfırlamayı unutmayın! Aksi halde kuvvetler
+                    sürekli birikir ve nesne kontrolden çıkar.
+                </p>
+                <p>
+                    <strong>Mantık:</strong> İvme "şu anki kuvvetlerin etkisi"dir.
+                    Her frame'de kuvvetler yeniden hesaplanır, bu yüzden ivme de sıfırdan başlar.
+                </p>
+            </div>
+        </section>
+
+        <!-- İNTERAKTİF ÖRNEK 1 -->
+        <section class="content-section">
+            <h2>Örnek: Yerçekimi + Rüzgar</h2>
+
+            <p>
+                Şimdi iki kuvveti bir arada görelim. Top hem aşağı düşecek (yerçekimi)
+                hem de yatay hareket edecek (rüzgar).
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Önemli Noktalar:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 11-12</span>
+                    <div class="explanation-text">
+                        İki farklı kuvvet oluşturuyoruz: yerçekimi aşağı, rüzgar sağa.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 14-15</span>
+                    <div class="explanation-text">
+                        Her iki kuvveti de uyguluyoruz. <code>applyForce()</code> onları toplar.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 12:</strong> Rüzgarı <code>createVector(-0.1, 0)</code> yapın.
+                        <span class="expectation">Beklenti: Top sola doğru itilir</span>
+                    </li>
+                    <li>
+                        <strong>Satır 11:</strong> Yerçekimini <code>createVector(0, -0.1)</code> yapın.
+                        <span class="expectation">Beklenti: Top yukarı "düşer"! (ters yerçekimi)</span>
+                    </li>
+                    <li>
+                        <strong>Yeni kuvvet:</strong> <code>let push = createVector(0, -0.3);</code> ekleyin ve uygulayın.
+                        <span class="expectation">Beklenti: Top havada kalır veya yükselir (yukarı itme)</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- MOUSE İLE ETKİLEŞİM -->
+        <section class="content-section">
+            <h2>Örnek: Mouse ile Rüzgar Kontrolü</h2>
+
+            <p>
+                Etkileşimli bir örnek yapalım: mouse'a basıldığında rüzgar essin!
+            </p>
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>Yeni Kavramlar:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">mouseIsPressed</span>
+                    <div class="explanation-text">
+                        p5.js'in özel değişkeni. Mouse'a basılıysa <code>true</code>, değilse <code>false</code>.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">if koşulu</span>
+                    <div class="explanation-text">
+                        Rüzgar sadece mouse'a basıldığında uygulanır. Bu sayede interaktif kontrol elde ederiz.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        Canvas'a tıklayıp basılı tutun. Rüzgar etkisini görün.
+                    </li>
+                    <li>
+                        Rüzgar yönünü mouse konumuna göre değiştirin:
+                        <pre><code class="language-javascript">let wind = createVector((mouseX - width/2) * 0.001, 0);</code></pre>
+                        <span class="expectation">Beklenti: Mouse sağdaysa sağa, soldaysa sola rüzgar</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- BİRDEN FAZLA NESNE -->
+        <section class="content-section">
+            <h2>Birden Fazla Nesne</h2>
+
+            <p>
+                Mover sınıfımızın güzelliği burada ortaya çıkıyor: <strong>dizi (array)</strong>
+                kullanarak istediğimiz kadar nesne oluşturabiliriz!
+            </p>
+
+            <div id="editor3"></div>
+
+            <div class="explanation-list">
+                <h4>Dizi Kullanımı:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">movers = []</span>
+                    <div class="explanation-text">
+                        Boş bir dizi oluşturuyoruz. Tüm Mover'ları burada tutacağız.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">for döngüsü (setup)</span>
+                    <div class="explanation-text">
+                        5 tane Mover oluşturuyoruz. Her biri rastgele konumda başlıyor.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">for...of döngüsü (draw)</span>
+                    <div class="explanation-text">
+                        Her Mover için aynı kuvvetleri uyguluyoruz. Her biri bağımsız hareket eder.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 6:</strong> <code>i < 20</code> yaparak 20 top oluşturun.
+                    </li>
+                    <li>
+                        Her topa farklı kütle verin (sonraki konumuzun habercisi!):
+                        <pre><code class="language-javascript">new Mover(random(width), random(height/2), random(0.5, 3))</code></pre>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Kuvvet Biriktirme:</strong> Birden fazla kuvvet vektörel olarak toplanır</li>
+                <li><strong>applyForce():</strong> add() ile ivmeye kuvvet ekler</li>
+                <li><strong>Sıfırlama:</strong> Her frame sonunda ivme sıfırlanmalı</li>
+                <li><strong>İnteraktivite:</strong> mouseIsPressed ile dinamik kuvvetler</li>
+                <li><strong>Diziler:</strong> Birden fazla nesneyi yönetmek için array kullan</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="newton-yasalari.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Newton Yasaları</span>
+                </div>
+            </a>
+            <a href="kutle-ivme.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Kütle ve İvme</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Yerçekimi + Rüzgar
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let mover;
+
+function setup() {
+  createCanvas(400, 400);
+  mover = new Mover(width / 2, 50);
+}
+
+function draw() {
+  background(220);
+
+  // İki farklı kuvvet
+  let gravity = createVector(0, 0.2);
+  let wind = createVector(0.05, 0);
+
+  // Her ikisini de uygula - birikiyor!
+  mover.applyForce(gravity);
+  mover.applyForce(wind);
+
+  mover.update();
+  mover.checkEdges();
+  mover.show();
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+  }
+
+  applyForce(force) {
+    this.acceleration.add(force);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    fill(127, 127, 220);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, 40);
+  }
+
+  checkEdges() {
+    if (this.position.y > height - 20) {
+      this.position.y = height - 20;
+      this.velocity.y *= -0.9;
+    }
+    if (this.position.x > width - 20) {
+      this.position.x = width - 20;
+      this.velocity.x *= -0.9;
+    }
+    if (this.position.x < 20) {
+      this.position.x = 20;
+      this.velocity.x *= -0.9;
+    }
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Mouse ile rüzgar
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let mover;
+
+function setup() {
+  createCanvas(400, 400);
+  mover = new Mover(width / 2, height / 2);
+}
+
+function draw() {
+  background(220);
+
+  // Yerçekimi her zaman var
+  let gravity = createVector(0, 0.1);
+  mover.applyForce(gravity);
+
+  // Rüzgar sadece mouse basılıyken
+  if (mouseIsPressed) {
+    let wind = createVector(0.2, 0);
+    mover.applyForce(wind);
+
+    // Rüzgar göstergesi
+    fill(100, 100, 255);
+    noStroke();
+    text("💨 Rüzgar!", 20, 30);
+  }
+
+  mover.update();
+  mover.checkEdges();
+  mover.show();
+
+  // Talimat
+  fill(100);
+  noStroke();
+  textSize(12);
+  text("Mouse'a basılı tutun", 20, height - 20);
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+  }
+
+  applyForce(force) {
+    this.acceleration.add(force);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    fill(127, 200, 127);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, 40);
+  }
+
+  checkEdges() {
+    if (this.position.y > height - 20) {
+      this.position.y = height - 20;
+      this.velocity.y *= -0.9;
+    }
+    if (this.position.x > width - 20) {
+      this.position.x = width - 20;
+      this.velocity.x *= -0.9;
+    }
+    if (this.position.x < 20) {
+      this.position.x = 20;
+      this.velocity.x *= -0.9;
+    }
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 3: Birden fazla nesne
+        new LiveEditor('#editor3', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let movers = [];
+
+function setup() {
+  createCanvas(400, 400);
+  // 5 tane Mover oluştur
+  for (let i = 0; i < 5; i++) {
+    let x = random(50, width - 50);
+    let y = random(50, height / 2);
+    movers.push(new Mover(x, y));
+  }
+}
+
+function draw() {
+  background(220);
+
+  // Kuvvetler
+  let gravity = createVector(0, 0.1);
+  let wind = createVector(0, 0);
+
+  if (mouseIsPressed) {
+    wind = createVector(0.1, 0);
+  }
+
+  // Her Mover için
+  for (let mover of movers) {
+    mover.applyForce(gravity);
+    mover.applyForce(wind);
+    mover.update();
+    mover.checkEdges();
+    mover.show();
+  }
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    // Rastgele renk
+    this.color = color(random(100, 255), random(100, 255), random(100, 255));
+  }
+
+  applyForce(force) {
+    this.acceleration.add(force);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    fill(this.color);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, 30);
+  }
+
+  checkEdges() {
+    if (this.position.y > height - 15) {
+      this.position.y = height - 15;
+      this.velocity.y *= -0.9;
+    }
+    if (this.position.x > width - 15) {
+      this.position.x = width - 15;
+      this.velocity.x *= -0.9;
+    }
+    if (this.position.x < 15) {
+      this.position.x = 15;
+      this.velocity.x *= -0.9;
+    }
+  }
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

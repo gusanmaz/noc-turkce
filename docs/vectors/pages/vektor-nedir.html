@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vektör Nedir? - Vektörler</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>📍 Vektör Nedir?</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Vektör Kavramı <span class="term-en">(Vector)</span></h2>
+
+            <p>
+                Programlamada hareket oluşturmak istediğinizde, "bir nesne nasıl hareket eder?"
+                sorusunu cevaplamamız gerekir. Cevap: <strong>konum değişir</strong>.
+                Peki konum nasıl değişir? İşte burada <strong>vektörler</strong> devreye girer.
+            </p>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_2.png"
+                     alt="Vektör gösterimi - A noktasından B noktasına çizilmiş ok" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.1:</strong> A noktasından B noktasına çizilmiş bir ok olarak vektör gösterimi.
+                    Okun <em>uzunluğu</em> vektörün büyüklüğünü (magnitude), okun <em>yönü</em> ise
+                    vektörün yönünü gösterir. Matematikte vektörler genellikle v⃗ veya <strong>v</strong> şeklinde gösterilir.
+                </figcaption>
+            </div>
+
+            <div class="info-box note">
+                <h4>💡 Euclidean Vector</h4>
+                <p>
+                    Matematikçiler buna "Euclidean vector" veya "geometric vector" der.
+                    Programlamada genellikle sadece "vector" diyoruz.
+                </p>
+            </div>
+        </section>
+
+        <!-- SKALER VS VEKTÖR -->
+        <section class="content-section">
+            <h2>Skaler vs Vektör <span class="term-en">(Scalar vs Vector)</span></h2>
+
+            <p>
+                İki tür değer vardır: <strong>skaler</strong> ve <strong>vektör</strong>.
+            </p>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">Skaler</span>
+                    <div class="explanation-text">
+                        <strong>Sadece büyüklük.</strong> Tek bir sayı ile ifade edilir.
+                        <br>Örnekler: sıcaklık (25°C), kütle (70 kg), hız değeri (100 km/s)
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Vektör</span>
+                    <div class="explanation-text">
+                        <strong>Büyüklük + Yön.</strong> Birden fazla bileşenle ifade edilir (x, y, z...).
+                        <br>Örnekler: hız (kuzeye 100 km/s), kuvvet (sağa 50 N), konum (3, 4)
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_3.png"
+                     alt="Yürüme talimatları olarak vektörler" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.2:</strong> Üç örnek vektör, yürüme talimatları olarak gösterilmiş.
+                    Her ok, belirli bir yönde (kuzey, güney, doğu, batı) ve belirli bir mesafede yürümeyi temsil eder.
+                    Örneğin: "3 adım kuzeye, sonra 4 adım doğuya" - bu bir vektörel talimat!
+                </figcaption>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Özellik</th>
+                        <th>Skaler</th>
+                        <th>Vektör</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Büyüklük</td><td>✅ Var</td><td>✅ Var</td></tr>
+                    <tr><td>Yön</td><td>❌ Yok</td><td>✅ Var</td></tr>
+                    <tr><td>Gösterim</td><td>Tek sayı: 5</td><td>Çoklu sayı: (3, 4)</td></tr>
+                    <tr><td>Örnek</td><td>Sıcaklık, kütle</td><td>Konum, hız, kuvvet</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- NEDEN VEKTÖR -->
+        <section class="content-section">
+            <h2>Neden Vektör Kullanmalıyız? <span class="term-en">(Why Vectors?)</span></h2>
+
+            <p>
+                Vektör kullanmadan da hareket programlayabilirsiniz. Ama kod çabucak karmaşıklaşır:
+            </p>
+
+            <pre><code class="language-javascript">// ❌ VEKTÖRSÜZ (eski yöntem)
+let x = 100;
+let y = 100;
+let xSpeed = 2;
+let ySpeed = 3;
+
+function draw() {
+  x += xSpeed;  // x konumunu güncelle
+  y += ySpeed;  // y konumunu güncelle
+  circle(x, y, 20);
+}
+
+// Birden fazla nesne için? 😱
+let x1, y1, xSpeed1, ySpeed1;
+let x2, y2, xSpeed2, ySpeed2;
+let x3, y3, xSpeed3, ySpeed3;
+// ... korkunç!</code></pre>
+
+            <pre><code class="language-javascript">// ✅ VEKTÖRLE (modern yöntem)
+let position;
+let velocity;
+
+function setup() {
+  position = createVector(100, 100);
+  velocity = createVector(2, 3);
+}
+
+function draw() {
+  position.add(velocity);  // Tek satır!
+  circle(position.x, position.y, 20);
+}
+
+// Birden fazla nesne için? 😊
+let mover1 = { pos: createVector(...), vel: createVector(...) };
+let mover2 = { pos: createVector(...), vel: createVector(...) };
+// ... temiz!</code></pre>
+
+            <div class="info-box tip">
+                <h4>🎮 Avantajlar</h4>
+                <ul>
+                    <li><strong>Daha az değişken:</strong> x ve y yerine tek position vektörü</li>
+                    <li><strong>Daha okunur:</strong> position.add(velocity) ne yaptığı açık</li>
+                    <li><strong>Daha güçlü:</strong> Vektör matematiği (toplama, çıkarma, döndürme...)</li>
+                    <li><strong>3D'ye geçiş kolay:</strong> (x, y) → (x, y, z)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- VEKTÖRLERİN KULLANIM ALANLARI -->
+        <section class="content-section">
+            <h2>Vektörler Nerelerde Kullanılır?</h2>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">Konum <span class="term-en">(Position)</span></span>
+                    <div class="explanation-text">
+                        Bir nesnenin ekrandaki yeri: (x, y)
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Hız <span class="term-en">(Velocity)</span></span>
+                    <div class="explanation-text">
+                        Konumun her frame'de ne kadar değişeceği: (vx, vy)
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">İvme <span class="term-en">(Acceleration)</span></span>
+                    <div class="explanation-text">
+                        Hızın her frame'de ne kadar değişeceği: (ax, ay)
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Kuvvet <span class="term-en">(Force)</span></span>
+                    <div class="explanation-text">
+                        Nesneye uygulanan itme/çekme: (fx, fy)
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_4.png"
+                     alt="Vektör bileşenleri - yatay ve dikey adımlar" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.3:</strong> Bir pozisyondan yeni pozisyona gitmek için gereken yatay ve dikey adım sayısını
+                    gösteren vektör. Vektörün <em>x bileşeni</em> yatay hareketi, <em>y bileşeni</em> dikey hareketi gösterir.
+                    Bu şekilde (3, 4) vektörü "3 birim sağa, 4 birim aşağı" anlamına gelir.
+                </figcaption>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_5.png"
+                     alt="Bilgisayar grafiği koordinat sistemi" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.4:</strong> Bilgisayar grafiği penceresinde (0, 0) <em>sol üst köşededir</em> - matematiğin aksine!
+                    Görselde konum vektörü (position) orijinden nesneye, hız vektörü (velocity) ise nesnenin hareket yönünü gösterir.
+                    Y ekseni aşağı doğru artar, bu önemli bir fark!
+                </figcaption>
+            </div>
+        </section>
+
+        <!-- İLK ÖRNEK -->
+        <section class="content-section">
+            <h2>İlk Örnek: Zıplayan Top</h2>
+
+            <p>
+                Henüz p5.Vector kullanmadan, klasik x/y değişkenleriyle bir top zıplatalım.
+                Sonraki bölümde bunu vektörlerle yeniden yazacağız.
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Satır Satır Açıklama:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 1-4</span>
+                    <div class="explanation-text">
+                        Konum (x, y) ve hız (xSpeed, ySpeed) için ayrı ayrı değişkenler.
+                        İki boyut = dört değişken. Vektörle sadece iki olacak!
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 13-14</span>
+                    <div class="explanation-text">
+                        Her frame'de konumu hız kadar değiştiriyoruz.
+                        Bu iki satır vektörle tek satır olacak: <code>position.add(velocity)</code>
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 17-24</span>
+                    <div class="explanation-text">
+                        Kenar kontrolü - top duvara çarpınca hızı tersine çevir.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Vektör:</strong> Büyüklük + Yön içeren bir değer</li>
+                <li><strong>Skaler:</strong> Sadece büyüklük içeren bir değer</li>
+                <li><strong>Konum, hız, ivme, kuvvet:</strong> Hepsi vektördür</li>
+                <li><strong>Neden vektör:</strong> Daha az değişken, daha temiz kod</li>
+                <li><strong>2D'de:</strong> Vektör = (x, y)</li>
+                <li><strong>3D'de:</strong> Vektör = (x, y, z)</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="../index.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Geri</span>
+                    <span class="nav-link-title">Ana Sayfa</span>
+                </div>
+            </a>
+            <a href="vektor-sinifi.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">p5.Vector Sınıfı</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Vektörsüz zıplayan top
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `// Konum ve hız için ayrı değişkenler (eski yöntem)
+let x, y;
+let xSpeed, ySpeed;
+
+function setup() {
+  createCanvas(400, 400);
+  x = width / 2;
+  y = height / 2;
+  xSpeed = 3;
+  ySpeed = 2;
+}
+
+function draw() {
+  background(220);
+
+  // Konumu güncelle
+  x += xSpeed;
+  y += ySpeed;
+
+  // Kenar kontrolü
+  if (x > width - 15 || x < 15) {
+    xSpeed *= -1;
+  }
+  if (y > height - 15 || y < 15) {
+    ySpeed *= -1;
+  }
+
+  // Topu çiz
+  fill(127, 127, 220);
+  stroke(0);
+  strokeWeight(2);
+  circle(x, y, 30);
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

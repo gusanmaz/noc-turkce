@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noise Detayları - Rastgelelik</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>🗻 Noise Detayları</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>1D, 2D ve 3D Noise <span class="term-en">(Noise Dimensions)</span></h2>
+
+            <p>
+                Perlin noise farklı boyutlarda kullanılabilir. Her boyut farklı kullanım
+                alanlarına sahip:
+            </p>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">1D Noise: noise(t)</span>
+                    <div class="explanation-text">
+                        Tek boyutlu - zaman içinde değişen değerler. Hareket, salınım için.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">2D Noise: noise(x, y)</span>
+                    <div class="explanation-text">
+                        İki boyutlu - yüzey dokuları, arazi yükseklikleri için.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">3D Noise: noise(x, y, z)</span>
+                    <div class="explanation-text">
+                        Üç boyutlu - animasyonlu dokular, hacimsel veriler için.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NOISE STEP/INCREMENT -->
+        <section class="content-section">
+            <h2>Noise Artış Değeri <span class="term-en">(Noise Step / Increment)</span></h2>
+
+            <p>
+                Noise fonksiyonuna verdiğimiz değeri ne kadar hızlı artırdığımız,
+                çıktının yumuşaklığını belirler:
+            </p>
+
+            <div class="image-container">
+                <img src="https://raw.githubusercontent.com/nature-of-code/noc-book-2/main/content/images/00_randomness/00_randomness_5.png"
+                     alt="Noise artış değeri karşılaştırması" class="content-image">
+                <figcaption>Şekil 0.5: Noise artış değeri küçükken (sol) yumuşak, büyükken (sağ) daha keskin değerler üretir</figcaption>
+            </div>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">Küçük artış (0.01)</span>
+                    <div class="explanation-text">
+                        Çok yumuşak, yavaş değişen değerler. Sakin hareketler için.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Orta artış (0.05)</span>
+                    <div class="explanation-text">
+                        Dengeli yumuşaklık. Çoğu uygulama için ideal.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Büyük artış (0.1+)</span>
+                    <div class="explanation-text">
+                        Daha hızlı değişim, random()'a yaklaşır. Detaylı dokular için.
+                    </div>
+                </div>
+            </div>
+
+            <div id="editor0"></div>
+
+            <div class="info-box note">
+                <h4>💡 Altın Kural</h4>
+                <p>
+                    Artış değerini çok büyük yaparsanız (1.0 gibi), noise neredeyse
+                    random() gibi davranır. Yumuşak geçişler için <strong>0.01-0.05</strong>
+                    arası değerler kullanın.
+                </p>
+            </div>
+        </section>
+
+        <!-- 2D NOISE -->
+        <section class="content-section">
+            <h2>2D Noise: Arazi ve Doku <span class="term-en">(2D Noise Landscape)</span></h2>
+
+            <p>
+                <code>noise(x, y)</code> ile 2 boyutlu deseni oluşturabiliriz.
+                Her piksel için (x, y) konumuna göre gri değeri hesaplıyoruz:
+            </p>
+
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>2D Noise Nasıl Çalışır:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Her piksel için</span>
+                    <div class="explanation-text">
+                        (x, y) koordinatını noise'a ver, 0-255 arası gri değer al
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Ölçekleme (0.01)</span>
+                    <div class="explanation-text">
+                        Piksel koordinatları çok büyük, küçük faktörle çarpıyoruz
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 11:</strong> Ölçeği <code>0.05</code> yapın
+                        <span class="expectation">Beklenti: Daha büyük, daha az detaylı desenler</span>
+                    </li>
+                    <li>
+                        <strong>Satır 11:</strong> Ölçeği <code>0.005</code> yapın
+                        <span class="expectation">Beklenti: Daha küçük, daha detaylı desenler</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ANİMASYONLU NOISE -->
+        <section class="content-section">
+            <h2>Animasyonlu 2D Noise <span class="term-en">(Animated Noise)</span></h2>
+
+            <p>
+                3. parametre olarak zamanı ekleyerek animasyonlu doku oluşturabiliriz:
+                <code>noise(x, y, t)</code>
+            </p>
+
+            <div id="editor2"></div>
+
+            <div class="info-box note">
+                <h4>💡 Performans İpucu</h4>
+                <p>
+                    Her pikseli her frame hesaplamak yavaş olabilir. Daha düşük çözünürlük
+                    (<code>pixelDensity(1)</code>) veya daha büyük bloklar kullanabilirsiniz.
+                </p>
+            </div>
+        </section>
+
+        <!-- ARAZİ OLUŞTURMA -->
+        <section class="content-section">
+            <h2>Arazi Oluşturma <span class="term-en">(Terrain Generation)</span></h2>
+
+            <p>
+                2D noise ile yükseklik haritası oluşturup, 3D arazi çizebiliriz:
+            </p>
+
+
+            <div id="editor3"></div>
+        </section>
+
+        <!-- NOISEDETAIL -->
+        <section class="content-section">
+            <h2>noiseDetail() - Detay Seviyesi <span class="term-en">(Noise Detail)</span></h2>
+
+            <p>
+                <code>noiseDetail(octaves, falloff)</code> ile noise'un karmaşıklığını ayarlayabiliriz:
+            </p>
+
+            <pre><code class="language-javascript">// Varsayılan
+noiseDetail(4, 0.5);
+
+// Daha detaylı (daha fazla oktav)
+noiseDetail(8, 0.5);
+
+// Daha yumuşak (düşük falloff)
+noiseDetail(4, 0.3);</code></pre>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">octaves (oktav)</span>
+                    <div class="explanation-text">
+                        Kaç katman noise üst üste bindirilsin. Fazla = daha detaylı, ama daha yavaş.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">falloff (düşüş)</span>
+                    <div class="explanation-text">
+                        Her katmanın etkisi ne kadar azalsın. 0-1 arası. 0.5 = her katman yarı etkili.
+                    </div>
+                </div>
+            </div>
+
+            <div id="editor4"></div>
+        </section>
+
+        <!-- KULLANIM ALANLARI -->
+        <section class="content-section">
+            <h2>Noise Kullanım Alanları</h2>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">🗺️ Prosedürel Dünya</span>
+                    <div class="explanation-text">
+                        Minecraft, No Man's Sky gibi oyunlarda sonsuz dünya oluşturma
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">☁️ Atmosfer Efektleri</span>
+                    <div class="explanation-text">
+                        Bulut, sis, duman simülasyonu
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">🌊 Su Yüzeyi</span>
+                    <div class="explanation-text">
+                        Dalga hareketi, yansımalar
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">🎨 Prosedürel Dokular</span>
+                    <div class="explanation-text">
+                        Ahşap, mermer, taş dokuları
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">🦠 Organik Hareket</span>
+                    <div class="explanation-text">
+                        Sürü davranışı, parçacık sistemleri
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>noise(t):</strong> 1D noise - hareket, salınım</li>
+                <li><strong>noise(x, y):</strong> 2D noise - dokular, araziler</li>
+                <li><strong>noise(x, y, z):</strong> 3D noise - animasyonlu dokular</li>
+                <li><strong>noiseDetail(octaves, falloff):</strong> Detay seviyesi ayarı</li>
+                <li><strong>Ölçekleme:</strong> Koordinatları küçült (örn: × 0.01)</li>
+            </ul>
+        </section>
+
+        <!-- SONRAKİ BÖLÜM -->
+        <section class="content-section">
+            <h2>🚀 Sonraki Adım: Vektörler</h2>
+
+            <p>
+                Rastgelelik bölümünü tamamladınız! Sonraki bölümde (Vectors) hareketin
+                matematiksel temellerini öğreneceksiniz: konum, hız, ivme ve vektör matematiği.
+            </p>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="perlin-noise.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Perlin Noise</span>
+                </div>
+            </a>
+            <a href="../index.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Bitti!</span>
+                    <span class="nav-link-title">Ana Sayfa</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 0: Noise step karşılaştırma
+        new LiveEditor('#editor0', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let t1 = 0, t2 = 0, t3 = 0;
+
+function setup() {
+  createCanvas(400, 300);
+}
+
+function draw() {
+  background(220);
+
+  // 3 farklı artış değeri ile noise grafikleri
+  let increments = [0.01, 0.05, 0.2];
+  let colors = ['#ef4444', '#22c55e', '#6366f1'];
+  let labels = ['0.01 (yumuşak)', '0.05 (orta)', '0.2 (sert)'];
+
+  // Her grafik için
+  for (let g = 0; g < 3; g++) {
+    let yBase = 50 + g * 90;
+
+    // Etiket
+    fill(colors[g]);
+    noStroke();
+    textSize(12);
+    text(labels[g], 10, yBase - 10);
+
+    // Grafik çiz
+    stroke(colors[g]);
+    strokeWeight(2);
+    noFill();
+    beginShape();
+
+    let t = g === 0 ? t1 : (g === 1 ? t2 : t3);
+    for (let x = 0; x < width; x++) {
+      let y = noise(t + x * increments[g]) * 60;
+      vertex(x, yBase + y);
+    }
+    endShape();
+  }
+
+  // Zamanı ilerlet
+  t1 += 0.01;
+  t2 += 0.01;
+  t3 += 0.01;
+
+  // Başlık
+  fill(0);
+  noStroke();
+  textSize(14);
+  text("Noise Artış Değeri Karşılaştırması", 10, 20);
+}`
+                }
+            ]
+        });
+
+        // Editor 1: 2D Noise doku
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `function setup() {
+  createCanvas(300, 300);
+  pixelDensity(1);
+  noLoop();  // Tek frame yeterli
+}
+
+function draw() {
+  loadPixels();
+
+  let scale = 0.01;  // Noise ölçeği
+
+  for (let x = 0; x < width; x++) {
+    for (let y = 0; y < height; y++) {
+      // 2D noise değeri
+      let n = noise(x * scale, y * scale);
+
+      // 0-1'i 0-255'e çevir
+      let bright = n * 255;
+
+      // Piksel ayarla
+      let index = (x + y * width) * 4;
+      pixels[index] = bright;      // R
+      pixels[index + 1] = bright;  // G
+      pixels[index + 2] = bright;  // B
+      pixels[index + 3] = 255;     // A
+    }
+  }
+
+  updatePixels();
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Animasyonlu noise
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let zoff = 0;
+
+function setup() {
+  createCanvas(200, 200);
+  pixelDensity(1);
+}
+
+function draw() {
+  loadPixels();
+
+  let scale = 0.02;
+
+  for (let x = 0; x < width; x++) {
+    for (let y = 0; y < height; y++) {
+      // 3D noise: x, y, ve zaman
+      let n = noise(x * scale, y * scale, zoff);
+      let bright = n * 255;
+
+      let index = (x + y * width) * 4;
+      pixels[index] = bright;
+      pixels[index + 1] = bright;
+      pixels[index + 2] = bright;
+      pixels[index + 3] = 255;
+    }
+  }
+
+  updatePixels();
+
+  // Zamanı ilerlet
+  zoff += 0.01;
+}`
+                }
+            ]
+        });
+
+        // Editor 3: Basit arazi (wireframe)
+        new LiveEditor('#editor3', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let cols, rows;
+let scale = 20;
+let terrain = [];
+let flying = 0;
+
+function setup() {
+  createCanvas(400, 300, WEBGL);
+  cols = floor(width / scale);
+  rows = floor(height / scale);
+
+  // Arazi dizisi oluştur
+  for (let x = 0; x < cols; x++) {
+    terrain[x] = [];
+  }
+}
+
+function draw() {
+  flying -= 0.05;
+
+  // Yükseklikleri hesapla
+  let yoff = flying;
+  for (let y = 0; y < rows; y++) {
+    let xoff = 0;
+    for (let x = 0; x < cols; x++) {
+      terrain[x][y] = map(noise(xoff, yoff), 0, 1, -50, 50);
+      xoff += 0.1;
+    }
+    yoff += 0.1;
+  }
+
+  background(200);
+  stroke(0);
+  noFill();
+
+  // Kamerayı ayarla
+  rotateX(PI / 3);
+  translate(-width / 2, -height / 2);
+
+  // Mesh çiz
+  for (let y = 0; y < rows - 1; y++) {
+    beginShape(TRIANGLE_STRIP);
+    for (let x = 0; x < cols; x++) {
+      vertex(x * scale, y * scale, terrain[x][y]);
+      vertex(x * scale, (y + 1) * scale, terrain[x][y + 1]);
+    }
+    endShape();
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 4: noiseDetail karşılaştırma
+        new LiveEditor('#editor4', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `function setup() {
+  createCanvas(400, 150);
+  pixelDensity(1);
+  noLoop();
+}
+
+function draw() {
+  // Sol: Az detay (2 oktav)
+  noiseDetail(2, 0.5);
+  drawNoiseSection(0, "2 oktav");
+
+  // Orta: Normal (4 oktav)
+  noiseDetail(4, 0.5);
+  drawNoiseSection(width / 3, "4 oktav");
+
+  // Sağ: Çok detay (8 oktav)
+  noiseDetail(8, 0.5);
+  drawNoiseSection(2 * width / 3, "8 oktav");
+}
+
+function drawNoiseSection(startX, label) {
+  let w = width / 3;
+  let scale = 0.02;
+
+  loadPixels();
+
+  for (let x = 0; x < w; x++) {
+    for (let y = 20; y < height; y++) {
+      let n = noise((startX + x) * scale, y * scale);
+      let bright = n * 255;
+
+      let px = floor(startX + x);
+      let index = (px + y * width) * 4;
+      pixels[index] = bright;
+      pixels[index + 1] = bright;
+      pixels[index + 2] = bright;
+      pixels[index + 3] = 255;
+    }
+  }
+
+  updatePixels();
+
+  // Etiket
+  fill(0);
+  noStroke();
+  textSize(12);
+  textAlign(CENTER);
+  text(label, startX + w/2, 15);
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

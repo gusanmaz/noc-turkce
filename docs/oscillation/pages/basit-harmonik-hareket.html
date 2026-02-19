@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basit Harmonik Hareket - Salınım</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>〰️ Basit Harmonik Hareket</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Salınım Hareketi <span class="term-en">(Simple Harmonic Motion / SHM)</span></h2>
+
+            <p>
+                <strong>Basit harmonik hareket</strong>, doğada en sık karşılaşılan hareket
+                türlerinden biridir: salıncak, yay, ses dalgaları, kalp atışı...
+                Bu hareketin özü: <strong>sinüs dalgası</strong>!
+            </p>
+
+            <div class="info-box note">
+                <h4>💡 Neden "Harmonik"?</h4>
+                <p>
+                    "Harmonik" müzikte uyumlu sesler demek. Bu hareket de aynı şekilde
+                    düzenli, öngörülebilir ve "uyumlu" bir salınım üretiyor.
+                    Doğadaki birçok periyodik hareketin temelini oluşturur.
+                </p>
+            </div>
+        </section>
+
+        <!-- SİNÜS DALGASI -->
+        <section class="content-section">
+            <h2>Sinüs Dalgası <span class="term-en">(Sine Wave)</span></h2>
+
+            <p>
+                Önceki bölümde öğrendiğimiz <code>sin()</code> fonksiyonu,
+                basit harmonik hareketin anahtarıdır. Sin fonksiyonu <strong>-1 ile 1 arasında</strong>
+                sürekli salınım yapar.
+            </p>
+
+            <div class="image-container">
+                <img src="../images/sine-wave.png" alt="Sinüs dalgası grafiği" class="content-image">
+                <figcaption>Şekil 3.10: Sinüs dalgası grafiği (y = sin(x)). Açı 0'dan 2π'ye ilerlerken, değer -1 ile 1
+                    arasında salınır.</figcaption>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula">x = A × sin(ωt + φ)</div>
+                <div class="formula-desc">Basit harmonik hareket formülü</div>
+            </div>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">A (Amplitude)</span>
+                    <div class="explanation-text">
+                        <strong>Genlik</strong> - Salınımın maksimum uzaklığı.
+                        Sin -1 ile 1 arasında, A ile çarpınca -A ile A arasında olur.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">ω (Angular Frequency)</span>
+                    <div class="explanation-text">
+                        <strong>Açısal frekans</strong> - Salınımın hızı.
+                        Büyük ω = hızlı salınım, küçük ω = yavaş salınım.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">t (Time)</span>
+                    <div class="explanation-text">
+                        <strong>Zaman</strong> - p5.js'te <code>frameCount</code> veya artan bir sayaç.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">φ (Phase)</span>
+                    <div class="explanation-text">
+                        <strong>Faz</strong> - Başlangıç ofseti. Dalganın nereden başlayacağını belirler.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BASİT ÖRNEK -->
+        <section class="content-section">
+            <h2>En Basit Örnek: Yatay Salınım</h2>
+
+            <p>
+                Sin fonksiyonu -1 ile 1 arasında değer üretir. Bunu genlik (amplitude) ile
+                çarparak istediğimiz aralıkta salınım elde ederiz.
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Satır Satır Açıklama:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 1</span>
+                    <div class="explanation-text">
+                        <code>angle</code> sin fonksiyonuna vereceğimiz açı.
+                        Sürekli artarak salınımı sağlar.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 2</span>
+                    <div class="explanation-text">
+                        <code>angularVelocity</code> açının ne kadar hızlı artacağı.
+                        Büyük değer = hızlı salınım.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 3</span>
+                    <div class="explanation-text">
+                        <code>amplitude</code> salınımın genliği.
+                        sin() -1 ile 1 arasında, amplitude ile çarpınca -100 ile 100 arası olur.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 12</span>
+                    <div class="explanation-text">
+                        <strong>Sihir burada!</strong> <code>sin(angle)</code> -1 ile 1 arasında,
+                        amplitude ile çarpınca x pozisyonu -100 ile 100 arasında salınır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 2:</strong> <code>angularVelocity = 0.1</code> yapın.
+                        <span class="expectation">Beklenti: Daha hızlı salınım</span>
+                    </li>
+                    <li>
+                        <strong>Satır 3:</strong> <code>amplitude = 150</code> yapın.
+                        <span class="expectation">Beklenti: Daha geniş salınım</span>
+                    </li>
+                    <li>
+                        <strong>Satır 12:</strong> <code>cos(angle)</code> yapın.
+                        <span class="expectation">Beklenti: Aynı salınım, farklı başlangıç noktası (faz farkı)</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- PERIOD VE FREQUENCY -->
+        <section class="content-section">
+            <h2>Periyot ve Frekans <span class="term-en">(Period & Frequency)</span></h2>
+
+            <p>
+                Salınımı tanımlamanın başka bir yolu: ne kadar sürede bir tam salınım yapıyor?
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">
+                    <div>Periyot (T) = Bir tam salınım süresi (frame)</div>
+                    <div style="margin-top: 0.5rem;">Frekans (f) = 1/T = Saniyede kaç salınım</div>
+                </div>
+            </div>
+
+
+
+            <pre><code class="language-javascript">// Periyot ile çalışma
+let period = 120;  // 120 frame'de bir tam salınım
+let amplitude = 100;
+
+function draw() {
+  // TWO_PI = tam bir sinüs dalgası
+  // frameCount / period → 0'dan 1'e gider (period frame'de)
+  // TWO_PI ile çarpınca → 0'dan 2π'ye gider
+  let x = amplitude * sin(TWO_PI * frameCount / period);
+}</code></pre>
+
+            <div class="info-box note">
+                <h4>💡 TWO_PI Neden?</h4>
+                <p>
+                    Sin fonksiyonu 0'dan 2π'ye giderken tam bir dalga çizer.
+                    <code>TWO_PI * frameCount / period</code> ifadesi,
+                    period kadar frame'de tam bir dalga oluşturur.
+                </p>
+            </div>
+        </section>
+
+        <!-- DALGA ÇİZİMİ -->
+        <section class="content-section">
+            <h2>Dalga Çizimi <span class="term-en">(Drawing Waves)</span></h2>
+
+            <p>
+                Sinüs dalgasını görselleştirmenin en iyi yolu: birçok noktayı yan yana çizmek.
+            </p>
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>Önemli Noktalar:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 10</span>
+                    <div class="explanation-text">
+                        <code>startAngle</code> dalganın başlangıç açısı.
+                        Bunu değiştirerek dalga "kayar".
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 14</span>
+                    <div class="explanation-text">
+                        Her x pozisyonu için farklı bir açı hesaplıyoruz.
+                        x arttıkça açı da artıyor → dalga şekli oluşuyor.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 21</span>
+                    <div class="explanation-text">
+                        <code>startAngle</code>'ı artırarak dalganın hareket etmesini sağlıyoruz.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OSCILLATOR CLASS -->
+        <section class="content-section">
+            <h2>Oscillator Sınıfı <span class="term-en">(Oscillator Class)</span></h2>
+
+            <p>
+                Birden fazla salınım yapan nesne istiyorsak, bir <code>Oscillator</code> sınıfı
+                oluşturmak mantıklı:
+            </p>
+
+            <div id="editor3"></div>
+
+            <div class="explanation-list">
+                <h4>Sınıf Yapısı:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">angle</span>
+                    <div class="explanation-text">
+                        Şu anki açı vektörü. x ve y için ayrı açılar tutuyoruz.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">velocity</span>
+                    <div class="explanation-text">
+                        Açının değişim hızı. Random değerler ile farklı salınım hızları.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">amplitude</span>
+                    <div class="explanation-text">
+                        Salınım genliği. x ve y için canvas boyutunun yarısı kadar.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Basit Harmonik Hareket:</strong> Sinüs dalgası ile salınım</li>
+                <li><strong>Amplitude (Genlik):</strong> Salınımın maksimum uzaklığı</li>
+                <li><strong>Period (Periyot):</strong> Bir tam salınım süresi</li>
+                <li><strong>Frequency (Frekans):</strong> Birim zamandaki salınım sayısı</li>
+                <li><strong>x = A × sin(angle):</strong> Temel salınım formülü</li>
+                <li><strong>TWO_PI:</strong> Tam bir sinüs dalgası için gereken açı</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="kutupsal-koordinatlar.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Kutupsal Koordinatlar</span>
+                </div>
+            </a>
+            <a href="sarkac.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Sarkaç</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Basit yatay salınım
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let angle = 0;
+let angularVelocity = 0.05;
+let amplitude = 100;
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(220);
+
+  // Basit harmonik hareket!
+  let x = amplitude * sin(angle);
+
+  // Merkeze taşı ve çiz
+  translate(width / 2, height / 2);
+
+  // Yatay çizgi (hareket yolu)
+  stroke(200);
+  line(-amplitude, 0, amplitude, 0);
+
+  // Top
+  fill(127, 200, 127);
+  stroke(0);
+  strokeWeight(2);
+  circle(x, 0, 40);
+
+  // Açıyı güncelle
+  angle += angularVelocity;
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Dalga çizimi
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let startAngle = 0;
+let angularVelocity = 0.02;
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(220);
+
+  let angle = startAngle;
+  let amplitude = 100;
+
+  // Dalga çiz
+  stroke(50, 100, 200);
+  strokeWeight(2);
+  noFill();
+
+  beginShape();
+  for (let x = 0; x <= width; x += 5) {
+    // Her x için y hesapla
+    let y = height/2 + amplitude * sin(angle);
+    vertex(x, y);
+    angle += 0.05;
+  }
+  endShape();
+
+  // Dalgayı hareket ettir
+  startAngle += angularVelocity;
+}`
+                }
+            ]
+        });
+
+        // Editor 3: Oscillator sınıfı
+        new LiveEditor('#editor3', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let oscillators = [];
+
+function setup() {
+  createCanvas(400, 400);
+
+  // 5 tane oscillator oluştur
+  for (let i = 0; i < 5; i++) {
+    oscillators.push(new Oscillator());
+  }
+}
+
+function draw() {
+  background(220);
+
+  for (let osc of oscillators) {
+    osc.update();
+    osc.show();
+  }
+}`
+                },
+                {
+                    name: 'oscillator.js',
+                    content: `class Oscillator {
+  constructor() {
+    // Açı (x ve y için ayrı)
+    this.angle = createVector(0, 0);
+
+    // Açısal hız (random)
+    this.velocity = createVector(
+      random(-0.05, 0.05),
+      random(-0.05, 0.05)
+    );
+
+    // Genlik (canvas boyutuna göre)
+    this.amplitude = createVector(
+      random(20, width / 2),
+      random(20, height / 2)
+    );
+  }
+
+  update() {
+    // Açıları güncelle
+    this.angle.add(this.velocity);
+  }
+
+  show() {
+    // Pozisyonu hesapla (SHM!)
+    let x = this.amplitude.x * sin(this.angle.x);
+    let y = this.amplitude.y * sin(this.angle.y);
+
+    // Çiz
+    push();
+    translate(width / 2, height / 2);
+    stroke(0);
+    strokeWeight(2);
+    fill(127, 127, 220, 200);
+    line(0, 0, x, y);
+    circle(x, y, 20);
+    pop();
+  }
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+
+</html>

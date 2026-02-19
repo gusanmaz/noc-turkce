@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Açılar ve Trigonometri - Salınım</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>📐 Açılar ve Trigonometri</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Salınımın Temeli: Açılar <span class="term-en">(Angles)</span></h2>
+
+            <p>
+                Salınım hareketlerini anlamak için önce <strong>açıları</strong> ve
+                <strong>trigonometriyi</strong> anlamamız gerekiyor. Bu kavramlar, dönen
+                nesnelerden dalgalara kadar her yerde karşımıza çıkacak.
+            </p>
+
+            <div class="image-pair">
+                <div class="image-container">
+                    <img src="../images/angles-degrees.png" alt="Derece cinsinden açılar" class="content-image">
+                    <figcaption>Şekil 3.1: Derece cinsinden ölçülen açılar.</figcaption>
+                </div>
+                <div class="image-container">
+                    <img src="../images/rotation-square.png" alt="45 derece dönmüş kare" class="content-image">
+                    <figcaption>Şekil 3.2: Merkezi etrafında 45 derece dönmüş bir kare.</figcaption>
+                </div>
+            </div>
+
+            <div class="info-box note">
+                <h4>💡 Neden Trigonometri?</h4>
+                <p>
+                    Doğada birçok hareket <strong>dairesel</strong> veya <strong>periyodik</strong>tir:
+                    gezegenlerin yörüngeleri, kalp atışları, ses dalgaları, sarkaç hareketi...
+                    Trigonometri bu hareketleri matematiksel olarak tanımlamamızı sağlar.
+                </p>
+            </div>
+        </section>
+
+        <!-- TRİGONOMETRİNİN ÖNEMİ -->
+        <section class="content-section">
+            <h2>🎮 Oyun ve Fizik Programlamada Trigonometri</h2>
+
+            <p>
+                Trigonometri olmadan modern oyunlar ve simülasyonlar yapmak <strong>neredeyse imkansız</strong>!
+                İşte bazı kullanım alanları:
+            </p>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">Karakterin Baktığı Yön</span>
+                    <div class="explanation-text">
+                        Düşmana veya fareye doğru bakan bir karakter? <code>atan2()</code> ile açı hesapla,
+                        <code>rotate()</code> ile döndür.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Mermi Hareketi</span>
+                    <div class="explanation-text">
+                        Belirli bir açıda ateşlenen mermi: <code>vx = speed × cos(angle)</code>,
+                        <code>vy = speed × sin(angle)</code>
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Dairesel Hareket</span>
+                    <div class="explanation-text">
+                        Yörüngedeki gezegenler, dönen tekerlek, radar taraması... Hepsi sin/cos ile!
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Dalga Efektleri</span>
+                    <div class="explanation-text">
+                        Su dalgaları, ses dalgaları, bayrak dalgalanması: periyodik sin fonksiyonu.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Mesafe ve Çarpışma</span>
+                    <div class="explanation-text">
+                        İki nokta arası mesafe: Pisagor teoremi. Açılı çarpışma: vektör döndürme.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <h4>🎯 Somut Örnekler</h4>
+                <ul>
+                    <li><strong>Angry Birds:</strong> Mermi fiziği (parabolik yörünge)</li>
+                    <li><strong>Asteroids:</strong> Uzay gemisi rotasyonu ve hareket yönü</li>
+                    <li><strong>Mario:</strong> Platform kenarlarından düşme açısı</li>
+                    <li><strong>Flappy Bird:</strong> Kuşun eğimi (velocity.y'den açı)</li>
+                    <li><strong>Racing Games:</strong> Araç dönüşleri ve drift açıları</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- RADYAN VE DERECE -->
+        <section class="content-section">
+            <h2>Radyan vs Derece <span class="term-en">(Radians vs Degrees)</span></h2>
+
+            <p>
+                Açıları ölçmek için iki farklı birim kullanabiliriz:
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">360° = 2π radyan ≈ 6.28 radyan</div>
+                <div class="formula-desc">Tam bir daire dönüşü</div>
+            </div>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">Derece (°)</span>
+                    <div class="explanation-text">
+                        Günlük hayatta kullandığımız ölçü. Tam daire = 360°.
+                        90° = çeyrek dönüş (dik açı).
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Radyan (rad)</span>
+                    <div class="explanation-text">
+                        Matematik ve programlamada tercih edilen ölçü. Tam daire = 2π ≈ 6.28.
+                        π/2 ≈ 1.57 = çeyrek dönüş (dik açı).
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/radians.png" alt="Radyan tanımı" class="content-image">
+                <figcaption>Şekil 3.3: 1 radyanlık açı, yay uzunluğunun yarıçapa eşit olduğu açıdır.</figcaption>
+            </div>
+
+            <!-- SVG Diyagram: Radyan ve Derece -->
+            <div class="vector-diagram">
+                <svg viewBox="0 0 400 250" class="vector-svg">
+                    <defs>
+                        <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#6366f1" />
+                        </marker>
+                    </defs>
+
+                    <!-- Sol: Derece dairesi -->
+                    <circle cx="100" cy="125" r="70" fill="none" stroke="var(--border-color)" stroke-width="2" />
+                    <line x1="100" y1="125" x2="170" y2="125" stroke="#ef4444" stroke-width="2"
+                        marker-end="url(#arrowBlue)" />
+                    <text x="100" y="20" fill="var(--text-primary)" font-size="14" text-anchor="middle"
+                        font-weight="bold">DERECE</text>
+                    <text x="175" y="120" fill="#ef4444" font-size="12">0°</text>
+                    <text x="100" y="45" fill="var(--text-muted)" font-size="11">90°</text>
+                    <text x="20" y="130" fill="var(--text-muted)" font-size="11">180°</text>
+                    <text x="100" y="210" fill="var(--text-muted)" font-size="11">270°</text>
+
+                    <!-- Sağ: Radyan dairesi -->
+                    <circle cx="300" cy="125" r="70" fill="none" stroke="var(--border-color)" stroke-width="2" />
+                    <line x1="300" y1="125" x2="370" y2="125" stroke="#22c55e" stroke-width="2"
+                        marker-end="url(#arrowBlue)" />
+                    <text x="300" y="20" fill="var(--text-primary)" font-size="14" text-anchor="middle"
+                        font-weight="bold">RADYAN</text>
+                    <text x="375" y="120" fill="#22c55e" font-size="12">0</text>
+                    <text x="300" y="45" fill="var(--text-muted)" font-size="11">π/2</text>
+                    <text x="220" y="130" fill="var(--text-muted)" font-size="11">π</text>
+                    <text x="295" y="210" fill="var(--text-muted)" font-size="11">3π/2</text>
+                </svg>
+            </div>
+
+            <h3>p5.js'te Dönüşüm</h3>
+
+            <pre><code class="language-javascript">// Derece → Radyan
+let radyan = radians(90);    // 90° → π/2 ≈ 1.5708
+
+// Radyan → Derece
+let derece = degrees(PI);    // π → 180°
+
+// p5.js sabitleri
+PI          // ≈ 3.14159 (yarım daire)
+TWO_PI      // ≈ 6.28318 (tam daire)
+HALF_PI     // ≈ 1.5708  (çeyrek daire)
+QUARTER_PI  // ≈ 0.7854  (sekizde bir)</code></pre>
+
+            <div class="info-box warning">
+                <h4>⚠️ Dikkat: p5.js Varsayılanı</h4>
+                <p>
+                    p5.js'te <code>rotate()</code>, <code>sin()</code>, <code>cos()</code> gibi
+                    fonksiyonlar <strong>varsayılan olarak RADYAN</strong> kullanır!
+                </p>
+                <pre><code class="language-javascript">// ❌ YANLIŞ - 45 radyan döndürür (çok fazla!)
+rotate(45);
+
+// ✅ DOĞRU - 45 derece döndürür
+rotate(radians(45));
+
+// ✅ VEYA angleMode değiştir
+angleMode(DEGREES);
+rotate(45);  // Artık derece olarak çalışır</code></pre>
+            </div>
+
+            <h3>🎮 İnteraktif: Radyan ve Derece Karşılaştırma</h3>
+            <p>
+                Fareyi hareket ettirerek açının hem derece hem radyan değerini görün:
+            </p>
+            <div id="editorRadianDegree"></div>
+        </section>
+
+        <!-- BİRİM ÇEMBER -->
+        <section class="content-section">
+            <h2>Birim Çember <span class="term-en">(Unit Circle)</span></h2>
+
+            <p>
+                <strong>Birim çember</strong>, yarıçapı tam olarak <strong>1</strong> olan ve merkezi orijinde (0, 0)
+                bulunan bir çemberdir. Trigonometriyi anlamanın anahtarı bu çemberdir!
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">x² + y² = 1</div>
+                <div class="formula-desc">Birim çember denklemi (yarıçap = 1)</div>
+            </div>
+
+            <h3>Birim Çemberde Koordinatlar</h3>
+            <p>
+                Birim çember üzerinde herhangi bir nokta seçtiğinizde, o noktanın koordinatları
+                doğrudan <strong>cos</strong> ve <strong>sin</strong> değerlerini verir:
+            </p>
+
+            <ul>
+                <li><strong>x koordinatı = cos(θ)</strong> → Yatay uzaklık</li>
+                <li><strong>y koordinatı = sin(θ)</strong> → Dikey uzaklık</li>
+            </ul>
+
+            <div class="info-box note">
+                <h4>💡 Neden "Birim"?</h4>
+                <p>
+                    Yarıçap 1 olduğu için hesaplamalar çok basitleşir. Başka yarıçaplar için
+                    sadece çarpmak yeterli: <code>x = r × cos(θ)</code>, <code>y = r × sin(θ)</code>
+                </p>
+            </div>
+
+            <h3>🎮 İnteraktif: Birim Çember Keşfi</h3>
+            <p>
+                Fareyi çemberin etrafında hareket ettirin ve sin/cos değerlerinin nasıl değiştiğini gözlemleyin:
+            </p>
+            <div id="editorUnitCircle"></div>
+
+            <div class="explanation-list">
+                <h4>Birim Çemberde Önemli Noktalar:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">0° (sağ)</span>
+                    <div class="explanation-text">
+                        cos(0) = 1, sin(0) = 0 → Nokta (1, 0)'da
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">90° (yukarı)</span>
+                    <div class="explanation-text">
+                        cos(90°) = 0, sin(90°) = 1 → Nokta (0, 1)'de
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">180° (sol)</span>
+                    <div class="explanation-text">
+                        cos(180°) = -1, sin(180°) = 0 → Nokta (-1, 0)'da
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">270° (aşağı)</span>
+                    <div class="explanation-text">
+                        cos(270°) = 0, sin(270°) = -1 → Nokta (0, -1)'de
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SİN VE COS -->
+        <section class="content-section">
+            <h2>Sinüs ve Kosinüs <span class="term-en">(Sine & Cosine)</span></h2>
+
+            <p>
+                Trigonometrinin en önemli iki fonksiyonu: <strong>sin()</strong> ve <strong>cos()</strong>.
+                Bu fonksiyonlar bir açıyı alır ve <strong>-1 ile 1 arasında</strong> bir değer döndürür.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">sin(θ) ve cos(θ) → [-1, 1]</div>
+                <div class="formula-desc">Her ikisi de -1 ile 1 arasında değer üretir</div>
+            </div>
+
+            <h3>Birim Çemberde Sin ve Cos</h3>
+
+            <p>
+                Yarıçapı 1 olan bir çember düşünün (birim çember). Merkezi (0,0) noktasında.
+                Çember üzerinde bir nokta seçin ve merkeze bir çizgi çekin. Bu çizginin
+                x ekseniyle yaptığı açı θ (teta) olsun:
+            </p>
+
+            <ul>
+                <li><strong>cos(θ)</strong> = noktanın <strong>x koordinatı</strong></li>
+                <li><strong>sin(θ)</strong> = noktanın <strong>y koordinatı</strong></li>
+            </ul>
+
+            <div class="info-box note">
+                <h4>💡 Hatırlatma Yöntemi</h4>
+                <p>
+                    <strong>"cos = x, sin = y"</strong> - Alfabetik sıra!
+                    c(os) harfi s(in)'den önce gelir, x de y'den önce gelir.
+                </p>
+            </div>
+
+            <h3>Değerler Nasıl Değişir?</h3>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Açı (°)</th>
+                        <th>Açı (rad)</th>
+                        <th>cos(θ)</th>
+                        <th>sin(θ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0°</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>90°</td>
+                        <td>π/2</td>
+                        <td>0</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>180°</td>
+                        <td>π</td>
+                        <td>-1</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>270°</td>
+                        <td>3π/2</td>
+                        <td>0</td>
+                        <td>-1</td>
+                    </tr>
+                    <tr>
+                        <td>360°</td>
+                        <td>2π</td>
+                        <td>1</td>
+                        <td>0</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>🎮 İnteraktif: Sinüs Dalgası</h3>
+            <p>
+                Birim çember dönüşü ile sinüs dalgasının nasıl oluştuğunu görün:
+            </p>
+            <div id="editorSinWave"></div>
+
+            <h3>🎮 İnteraktif: Kosinüs Dalgası</h3>
+            <p>
+                Kosinüs, sinüsten 90° (π/2) faz kayması ile başlar:
+            </p>
+            <div id="editorCosWave"></div>
+
+            <h3>🎮 İnteraktif: Tanjant Fonksiyonu</h3>
+            <p>
+                tan(θ) = sin(θ) / cos(θ). 90° ve 270°'de sonsuza gider:
+            </p>
+            <div id="editorTanGraph"></div>
+
+            <h3>Dik Üçgende Trigonometri</h3>
+            <p>
+                Orijinal tanım aslında dik üçgenden gelir. Bir dik üçgende:
+            </p>
+
+            <div class="image-container">
+                <img src="../images/sohcahtoa.png" alt="Dik üçgende trigonometrik fonksiyonlar" class="content-image">
+                <figcaption>Şekil 3.4: Dik üçgende sin, cos ve tan fonksiyonları. Karşı kenar (opposite), komşu kenar
+                    (adjacent) ve hipotenüs (hypotenuse) arasındaki ilişkiler.</figcaption>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula">
+                    sin(θ) = karşı kenar / hipotenüs<br>
+                    cos(θ) = komşu kenar / hipotenüs<br>
+                    tan(θ) = karşı kenar / komşu kenar
+                </div>
+                <div class="formula-desc">SOH-CAH-TOA kuralı</div>
+            </div>
+
+            <div class="info-box note">
+                <h4>💡 SOH-CAH-TOA</h4>
+                <p>
+                    <strong>S</strong>in = <strong>O</strong>pposite / <strong>H</strong>ypotenuse (Karşı/Hipotenüs)<br>
+                    <strong>C</strong>os = <strong>A</strong>djacent / <strong>H</strong>ypotenuse (Komşu/Hipotenüs)<br>
+                    <strong>T</strong>an = <strong>O</strong>pposite / <strong>A</strong>djacent (Karşı/Komşu)
+                </p>
+            </div>
+
+            <h3>Tanjant (tan) ve Diğer Fonksiyonlar</h3>
+            <p>
+                <code>tan(θ)</code> = sin(θ) / cos(θ) formülüyle hesaplanır. Birim çemberde,
+                tanjant değeri noktadan x eksenine çizilen <strong>teğet çizginin</strong> uzunluğunu verir.
+            </p>
+
+            <div id="editorTangent"></div>
+        </section>
+
+        <!-- İLK KOD ÖRNEĞİ -->
+        <section class="content-section">
+            <h2>Örnek: Fareyi Takip Eden Ok <span class="term-en">(Pointing Towards Mouse)</span></h2>
+
+            <p>
+                Trigonometrinin en yaygın kullanımlarından biri: bir nesnenin başka bir
+                noktaya <strong>bakmasını</strong> sağlamak. Bunun için <code>atan2()</code>
+                fonksiyonunu kullanacağız.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">θ = atan2(y₂ - y₁, x₂ - x₁)</div>
+                <div class="formula-desc">İki nokta arasındaki açıyı hesaplar</div>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/atan2.png" alt="atan2 fonksiyonu ve vektör yönü" class="content-image">
+                <figcaption>Şekil 3.8: v1 ve v2 vektörleri zıt yönlere bakıyor. atan2() fonksiyonu doğru yönü
+                    hesaplamamızı sağlar.</figcaption>
+            </div>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Satır Satır Açıklama:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 6-7</span>
+                    <div class="explanation-text">
+                        <code>translate()</code> koordinat sisteminin merkezini canvas ortasına taşır.
+                        Artık (0,0) noktası canvas'ın ortasında!
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 10-11</span>
+                    <div class="explanation-text">
+                        Fare pozisyonunu yeni koordinat sistemine göre hesaplıyoruz.
+                        Fare canvas ortasının sağında ise dx pozitif, solunda ise negatif.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 14</span>
+                    <div class="explanation-text">
+                        <strong>atan2(dy, dx)</strong> - En önemli satır!
+                        dy ve dx değerlerinden açıyı hesaplar. Sonuç radyan cinsindendir.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 17</span>
+                    <div class="explanation-text">
+                        <code>rotate(angle)</code> tüm çizimleri bu açı kadar döndürür.
+                        Okumuz artık fareye doğru bakıyor!
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 14:</strong> <code>atan2(dy, dx)</code> yerine <code>atan2(dx, dy)</code> yapın.
+                        <span class="expectation">Beklenti: Ok yanlış yöne bakar (90° kayık)</span>
+                    </li>
+                    <li>
+                        <strong>Satır 17:</strong> <code>rotate(angle + PI)</code> yapın.
+                        <span class="expectation">Beklenti: Ok ters yöne bakar (180° döner)</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Radyan:</strong> Matematiksel açı birimi, 2π = tam daire</li>
+                <li><strong>Derece:</strong> Günlük kullanım, 360° = tam daire</li>
+                <li><strong>sin(θ):</strong> Açının y bileşeni (-1 ile 1 arası)</li>
+                <li><strong>cos(θ):</strong> Açının x bileşeni (-1 ile 1 arası)</li>
+                <li><strong>atan2(y, x):</strong> İki noktadan açı hesaplar</li>
+                <li><strong>radians():</strong> Derece → radyan dönüşümü</li>
+                <li><strong>degrees():</strong> Radyan → derece dönüşümü</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="../index.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Geri</span>
+                    <span class="nav-link-title">Ana Sayfa</span>
+                </div>
+            </a>
+            <a href="acisal-hareket.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Açısal Hareket</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // =============================================
+        // DEMO 1: Radyan ve Derece Karşılaştırma
+        // =============================================
+        new LiveEditor('#editorRadianDegree', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `// Fareyi hareket ettirerek açıyı değiştirin
+// Hem derece hem radyan değerini görün!
+
+function setup() {
+  createCanvas(400, 400);
+  textAlign(CENTER, CENTER);
+  textSize(14);
+}
+
+function draw() {
+  background(240);
+  translate(width / 2, height / 2);
+  
+  let r = 120; // Çember yarıçapı
+  
+  // Fare açısını hesapla
+  let dx = mouseX - width / 2;
+  let dy = mouseY - height / 2;
+  let angle = atan2(dy, dx);
+  
+  // Negatif açıları pozitife çevir (0 - 2π)
+  if (angle < 0) angle += TWO_PI;
+  
+  // Çemberi çiz
+  noFill();
+  stroke(150);
+  strokeWeight(2);
+  circle(0, 0, r * 2);
+  
+  // Eksenler
+  stroke(200);
+  strokeWeight(1);
+  line(-r - 30, 0, r + 30, 0);
+  line(0, -r - 30, 0, r + 30);
+  
+  // Açı yayını çiz
+  noFill();
+  stroke(255, 100, 100);
+  strokeWeight(4);
+  arc(0, 0, 80, 80, 0, angle);
+  
+  // Yarıçap çizgisini çiz
+  stroke(100, 100, 255);
+  strokeWeight(3);
+  let px = r * cos(angle);
+  let py = r * sin(angle);
+  line(0, 0, px, py);
+  
+  // Nokta
+  fill(100, 100, 255);
+  noStroke();
+  circle(px, py, 16);
+  
+  // Değerleri hesapla
+  let degreesVal = degrees(angle);
+  let radiansVal = angle;
+  
+  // Bilgi kutusu
+  fill(0);
+  noStroke();
+  textSize(16);
+  
+  // Derece gösterimi
+  fill(255, 100, 100);
+  text("DERECE: " + nf(degreesVal, 0, 1) + "°", 0, -r - 50);
+  
+  // Radyan gösterimi
+  fill(100, 100, 255);
+  text("RADYAN: " + nf(radiansVal, 0, 3) + " rad", 0, -r - 30);
+  
+  // Pi cinsinden
+  fill(100, 180, 100);
+  let piMultiple = radiansVal / PI;
+  text("= " + nf(piMultiple, 0, 2) + "π", 0, -r - 10);
+  
+  // Dönüşüm formülü
+  fill(80);
+  textSize(12);
+  text("radyan = derece × π / 180", 0, r + 40);
+  
+  // Önemli açıları işaretle
+  fill(150);
+  textSize(10);
+  text("0°", r + 15, 0);
+  text("90°", 0, -r - 70);
+  text("180°", -r - 20, 0);
+  text("270°", 0, r + 60);
+}`
+                }
+            ]
+        });
+
+        // =============================================
+        // DEMO 2: Birim Çember İnteraktif Keşfi
+        // =============================================
+        new LiveEditor('#editorUnitCircle', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `// Birim çember: yarıçap = 1
+// Fareyi çember üzerinde hareket ettirin
+// x = cos(θ), y = sin(θ)
+
+function setup() {
+  createCanvas(500, 380);
+  textAlign(CENTER, CENTER);
+}
+
+function draw() {
+  background(240);
+  
+  // Merkezi biraz sola kaydır (sağda bilgi için yer)
+  let centerX = 180;
+  let centerY = height / 2;
+  translate(centerX, centerY);
+  
+  let scale = 100; // Görsel ölçek
+  
+  // Fare açısını hesapla
+  let dx = mouseX - centerX;
+  let dy = mouseY - centerY;
+  let angle = atan2(dy, dx);
+  
+  // Birim çember üzerindeki nokta
+  let px = cos(angle);
+  let py = sin(angle);
+  
+  // Eksenler
+  stroke(180);
+  strokeWeight(1);
+  line(-scale - 30, 0, scale + 30, 0);
+  line(0, -scale - 30, 0, scale + 30);
+  
+  // Eksen etiketleri
+  fill(100);
+  textSize(11);
+  text("x", scale + 40, 0);
+  text("y", 0, -scale - 40);
+  text("1", scale + 5, 12);
+  text("-1", -scale - 12, 12);
+  text("1", 12, -scale);
+  text("-1", 12, scale);
+  
+  // Birim çemberi çiz
+  noFill();
+  stroke(100, 100, 200);
+  strokeWeight(2);
+  circle(0, 0, scale * 2);
+  
+  // Projeksiyon çizgileri
+  stroke(34, 197, 94); // Yeşil - cos (x)
+  strokeWeight(2);
+  line(px * scale, py * scale, px * scale, 0);
+  
+  stroke(239, 68, 68); // Kırmızı - sin (y)
+  line(px * scale, py * scale, 0, py * scale);
+  
+  // cos (x ekseni üzerinde)
+  fill(34, 197, 94);
+  noStroke();
+  circle(px * scale, 0, 10);
+  
+  // sin (y ekseni üzerinde)
+  fill(239, 68, 68);
+  circle(0, py * scale, 10);
+  
+  // Açı yayını çiz
+  noFill();
+  stroke(255, 180, 50);
+  strokeWeight(3);
+  arc(0, 0, 40, 40, 0, angle);
+  
+  // Yarıçap çizgisi (r = 1)
+  stroke(100, 100, 255);
+  strokeWeight(2);
+  line(0, 0, px * scale, py * scale);
+  
+  // Çember üzerindeki nokta
+  fill(100, 100, 255);
+  noStroke();
+  circle(px * scale, py * scale, 14);
+  
+  // Bilgi paneli (sağ tarafta)
+  let infoX = scale + 60;
+  fill(0);
+  textSize(13);
+  textAlign(LEFT, CENTER);
+  
+  // Başlık
+  fill(60);
+  text("BİRİM ÇEMBER", infoX, -scale - 20);
+  
+  // Açı
+  let deg = degrees(angle);
+  if (deg < 0) deg += 360;
+  fill(255, 180, 50);
+  text("θ = " + nf(deg, 0, 1) + "°", infoX, -scale + 10);
+  
+  // cos değeri
+  fill(34, 197, 94);
+  text("cos(θ) = " + nf(px, 0, 3), infoX, -30);
+  textSize(11);
+  text("(x koordinatı)", infoX, -15);
+  
+  // sin değeri
+  textSize(13);
+  fill(239, 68, 68);
+  text("sin(θ) = " + nf(py, 0, 3), infoX, 30);
+  textSize(11);
+  text("(y koordinatı)", infoX, 45);
+  
+  // Merkez noktası
+  fill(0);
+  noStroke();
+  circle(0, 0, 6);
+}`
+                }
+            ]
+        });
+
+        // =============================================
+        // DEMO 3: Sinüs Dalgası
+        // =============================================
+        new LiveEditor('#editorSinWave', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `// Birim çember ile sinüs dalga ilişkisi
+let angle = 0;
+let history = [];
+
+function setup() {
+  createCanvas(500, 280);
+}
+
+function draw() {
+  background(240);
+  
+  let circleX = 90;
+  let circleY = 140;
+  let r = 55;
+  
+  // Birim çemberi çiz
+  stroke(150);
+  strokeWeight(1);
+  line(circleX - r - 10, circleY, circleX + r + 10, circleY);
+  line(circleX, circleY - r - 10, circleX, circleY + r + 10);
+  
+  noFill();
+  stroke(100, 100, 200);
+  strokeWeight(2);
+  circle(circleX, circleY, r * 2);
+  
+  // Çember üzerindeki nokta
+  let px = circleX + r * cos(angle);
+  let py = circleY + r * sin(angle);
+  
+  // Yarıçap çizgisi
+  stroke(100, 100, 255);
+  strokeWeight(2);
+  line(circleX, circleY, px, py);
+  
+  // sin projeksiyonu
+  stroke(239, 68, 68, 150);
+  strokeWeight(1);
+  line(px, py, 170, py);
+  
+  // Noktayı çiz
+  fill(100, 100, 255);
+  noStroke();
+  circle(px, py, 12);
+  
+  // Dalga alanı
+  let graphX = 170;
+  let graphWidth = 310;
+  
+  history.unshift(sin(angle));
+  if (history.length > graphWidth) history.pop();
+  
+  // Sinüs dalgası
+  stroke(239, 68, 68);
+  strokeWeight(2);
+  noFill();
+  beginShape();
+  for (let i = 0; i < history.length; i++) {
+    vertex(graphX + i, circleY + history[i] * r);
+  }
+  endShape();
+  
+  // Mevcut değer noktası
+  fill(239, 68, 68);
+  noStroke();
+  circle(graphX, circleY + sin(angle) * r, 8);
+  
+  // Eksenler
+  stroke(180);
+  strokeWeight(1);
+  line(graphX, circleY - r - 15, graphX, circleY + r + 15);
+  line(graphX, circleY, graphX + graphWidth, circleY);
+  
+  // Etiketler
+  fill(100);
+  textSize(10);
+  textAlign(LEFT);
+  text("1", graphX - 12, circleY - r);
+  text("0", graphX - 12, circleY);
+  text("-1", graphX - 15, circleY + r);
+  
+  // Başlıklar
+  fill(0);
+  textSize(12);
+  textAlign(CENTER);
+  text("BİRİM ÇEMBER", circleX, 25);
+  
+  fill(239, 68, 68);
+  text("SİNÜS DALGASI", graphX + graphWidth / 2, 25);
+  
+  // Değer
+  textAlign(LEFT);
+  textSize(11);
+  text("sin(θ) = " + nf(sin(angle), 0, 2), graphX + 10, circleY + r + 40);
+  
+  fill(100, 100, 255);
+  let deg = (degrees(angle) % 360 + 360) % 360;
+  text("θ = " + nf(deg, 0, 0) + "°", circleX - 25, circleY + r + 40);
+  
+  angle += 0.03;
+}`
+                }
+            ]
+        });
+
+        // =============================================
+        // DEMO 4: Kosinüs Dalgası
+        // =============================================
+        new LiveEditor('#editorCosWave', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `// Kosinüs = 90° (π/2) faz kayması ile sinüs
+let angle = 0;
+let history = [];
+
+function setup() {
+  createCanvas(500, 280);
+}
+
+function draw() {
+  background(240);
+  
+  let circleX = 90;
+  let circleY = 140;
+  let r = 55;
+  
+  // Birim çemberi çiz
+  stroke(150);
+  strokeWeight(1);
+  line(circleX - r - 10, circleY, circleX + r + 10, circleY);
+  line(circleX, circleY - r - 10, circleX, circleY + r + 10);
+  
+  noFill();
+  stroke(100, 100, 200);
+  strokeWeight(2);
+  circle(circleX, circleY, r * 2);
+  
+  // Çember üzerindeki nokta
+  let px = circleX + r * cos(angle);
+  let py = circleY + r * sin(angle);
+  
+  // Yarıçap çizgisi
+  stroke(100, 100, 255);
+  strokeWeight(2);
+  line(circleX, circleY, px, py);
+  
+  // cos projeksiyonu (x eksenine)
+  stroke(34, 197, 94, 150);
+  strokeWeight(1);
+  line(px, py, 170, circleY - (px - circleX));
+  
+  // Noktayı çiz
+  fill(100, 100, 255);
+  noStroke();
+  circle(px, py, 12);
+  
+  // Dalga alanı
+  let graphX = 170;
+  let graphWidth = 310;
+  
+  history.unshift(cos(angle));
+  if (history.length > graphWidth) history.pop();
+  
+  // Kosinüs dalgası
+  stroke(34, 197, 94);
+  strokeWeight(2);
+  noFill();
+  beginShape();
+  for (let i = 0; i < history.length; i++) {
+    vertex(graphX + i, circleY + history[i] * r);
+  }
+  endShape();
+  
+  // Mevcut değer noktası
+  fill(34, 197, 94);
+  noStroke();
+  circle(graphX, circleY + cos(angle) * r, 8);
+  
+  // Eksenler
+  stroke(180);
+  strokeWeight(1);
+  line(graphX, circleY - r - 15, graphX, circleY + r + 15);
+  line(graphX, circleY, graphX + graphWidth, circleY);
+  
+  // Etiketler
+  fill(100);
+  textSize(10);
+  textAlign(LEFT);
+  text("1", graphX - 12, circleY - r);
+  text("0", graphX - 12, circleY);
+  text("-1", graphX - 15, circleY + r);
+  
+  // Başlıklar
+  fill(0);
+  textSize(12);
+  textAlign(CENTER);
+  text("BİRİM ÇEMBER", circleX, 25);
+  
+  fill(34, 197, 94);
+  text("KOSİNÜS DALGASI", graphX + graphWidth / 2, 25);
+  
+  // Değer
+  textAlign(LEFT);
+  textSize(11);
+  text("cos(θ) = " + nf(cos(angle), 0, 2), graphX + 10, circleY + r + 40);
+  
+  fill(100, 100, 255);
+  let deg = (degrees(angle) % 360 + 360) % 360;
+  text("θ = " + nf(deg, 0, 0) + "°", circleX - 25, circleY + r + 40);
+  
+  angle += 0.03;
+}`
+                }
+            ]
+        });
+
+        // =============================================
+        // DEMO 5: Tanjant Grafiği
+        // =============================================
+        new LiveEditor('#editorTanGraph', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `// tan(θ) = sin(θ) / cos(θ)
+// 90° ve 270°'de sonsuza gider!
+
+let angle = 0;
+let history = [];
+
+function setup() {
+  createCanvas(500, 320);
+}
+
+function draw() {
+  background(240);
+  
+  let circleX = 90;
+  let circleY = 160;
+  let r = 50;
+  let graphScale = 30; // tan için ölçek
+  
+  // Birim çemberi çiz
+  stroke(150);
+  strokeWeight(1);
+  line(circleX - r - 10, circleY, circleX + r + 10, circleY);
+  line(circleX, circleY - r - 10, circleX, circleY + r + 10);
+  
+  noFill();
+  stroke(100, 100, 200);
+  strokeWeight(2);
+  circle(circleX, circleY, r * 2);
+  
+  // Çember üzerindeki nokta
+  let px = circleX + r * cos(angle);
+  let py = circleY + r * sin(angle);
+  
+  // Yarıçap çizgisi
+  stroke(100, 100, 255);
+  strokeWeight(2);
+  line(circleX, circleY, px, py);
+  
+  // Noktayı çiz
+  fill(100, 100, 255);
+  noStroke();
+  circle(px, py, 10);
+  
+  // Dalga alanı
+  let graphX = 170;
+  let graphWidth = 310;
+  
+  // tan değerini sınırla (ekran dışı gitmesin)
+  let tanVal = tan(angle);
+  let clampedTan = constrain(tanVal, -3, 3);
+  history.unshift(clampedTan);
+  if (history.length > graphWidth) history.pop();
+  
+  // Tanjant eğrisi
+  stroke(255, 100, 50);
+  strokeWeight(2);
+  noFill();
+  beginShape();
+  let prevY = null;
+  for (let i = 0; i < history.length; i++) {
+    let y = circleY - history[i] * graphScale;
+    // Asimptot geçişlerinde çizgiyi kes
+    if (prevY !== null && abs(y - prevY) > 100) {
+      endShape();
+      beginShape();
+    }
+    vertex(graphX + i, y);
+    prevY = y;
+  }
+  endShape();
+  
+  // Eksenler
+  stroke(180);
+  strokeWeight(1);
+  line(graphX, circleY - 100, graphX, circleY + 100);
+  line(graphX, circleY, graphX + graphWidth, circleY);
+  
+  // Asimptot çizgileri (kesikli)
+  stroke(255, 100, 50, 100);
+  strokeWeight(1);
+  drawingContext.setLineDash([5, 5]);
+  line(graphX, circleY - 90, graphX + graphWidth, circleY - 90);
+  line(graphX, circleY + 90, graphX + graphWidth, circleY + 90);
+  drawingContext.setLineDash([]);
+  
+  // Etiketler
+  fill(100);
+  textSize(10);
+  textAlign(LEFT);
+  text("3", graphX - 12, circleY - 90);
+  text("0", graphX - 12, circleY);
+  text("-3", graphX - 15, circleY + 90);
+  
+  // Başlıklar
+  fill(0);
+  textSize(12);
+  textAlign(CENTER);
+  text("BİRİM ÇEMBER", circleX, 25);
+  
+  fill(255, 100, 50);
+  text("TANJANT EĞRİSİ", graphX + graphWidth / 2, 25);
+  
+  // Değer
+  textAlign(LEFT);
+  textSize(11);
+  if (abs(cos(angle)) < 0.05) {
+    text("tan(θ) = ∞ (tanımsız)", graphX + 10, circleY + 115);
+  } else {
+    text("tan(θ) = " + nf(tan(angle), 0, 2), graphX + 10, circleY + 115);
+  }
+  
+  fill(80);
+  textSize(10);
+  text("tan = sin/cos", graphX + 150, circleY + 115);
+  
+  fill(100, 100, 255);
+  let deg = (degrees(angle) % 360 + 360) % 360;
+  text("θ = " + nf(deg, 0, 0) + "°", circleX - 20, circleY + 80);
+  
+  angle += 0.02;
+}`
+                }
+            ]
+        });
+
+        // =============================================
+        // DEMO 4: Tanjant Görselleştirmesi
+        // =============================================
+        new LiveEditor('#editorTangent', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `// Tanjant: tan(θ) = sin(θ) / cos(θ)
+// Birim çemberde teğet çizgisi
+
+function setup() {
+  createCanvas(400, 400);
+  textAlign(CENTER, CENTER);
+}
+
+function draw() {
+  background(240);
+  translate(width / 2, height / 2);
+  
+  let r = 100;
+  
+  // Fare açısını hesapla
+  let dx = mouseX - width / 2;
+  let dy = mouseY - height / 2;
+  let angle = atan2(dy, dx);
+  
+  // 90° ve 270° yakınlarında sınırla (tan tanımsız)
+  let safeAngle = angle;
+  let nearPole = abs(cos(angle)) < 0.05;
+  
+  // Değerler
+  let sinVal = sin(angle);
+  let cosVal = cos(angle);
+  let tanVal = nearPole ? NaN : tan(angle);
+  
+  // Eksenler
+  stroke(180);
+  strokeWeight(1);
+  line(-r - 60, 0, r + 60, 0);
+  line(0, -r - 60, 0, r + 60);
+  
+  // Birim çemberi
+  noFill();
+  stroke(150);
+  strokeWeight(2);
+  circle(0, 0, r * 2);
+  
+  // Teğet çizgisi (x = 1 doğrusu)
+  stroke(200);
+  strokeWeight(1);
+  line(r, -200, r, 200);
+  
+  // x = 1 etiketi
+  fill(150);
+  textSize(10);
+  text("x = 1", r + 15, -180);
+  
+  // Yarıçap çizgisi
+  stroke(100, 100, 255);
+  strokeWeight(2);
+  let px = r * cos(angle);
+  let py = r * sin(angle);
+  line(0, 0, px, py);
+  
+  // Teğet noktası (açı çizgisinin x=1 ile kesişimi)
+  if (!nearPole && cos(angle) > 0) {
+    let tanY = r * tanVal;
+    
+    // Açı çizgisini x=1'e uzat
+    stroke(255, 150, 50);
+    strokeWeight(2);
+    line(0, 0, r, tanY);
+    
+    // Tanjant uzunluğu (dikey çizgi)
+    stroke(239, 68, 68);
+    strokeWeight(3);
+    line(r, 0, r, tanY);
+    
+    // Tanjant noktası
+    fill(239, 68, 68);
+    noStroke();
+    circle(r, tanY, 12);
+    
+    // Tanjant değeri etiketi
+    fill(239, 68, 68);
+    textSize(12);
+    let labelY = tanY + (tanY > 0 ? 20 : -20);
+    labelY = constrain(labelY, -150, 150);
+    text("tan = " + nf(tanVal, 0, 2), r + 35, labelY);
+  }
+  
+  // Çember üzerindeki nokta
+  fill(100, 100, 255);
+  noStroke();
+  circle(px, py, 14);
+  
+  // Açı yayı
+  noFill();
+  stroke(255, 180, 50);
+  strokeWeight(2);
+  arc(0, 0, 40, 40, 0, angle);
+  
+  // Bilgi paneli
+  fill(0);
+  textSize(12);
+  textAlign(LEFT);
+  
+  let infoX = -r - 50;
+  let infoY = -r - 40;
+  
+  fill(100, 100, 255);
+  text("sin(θ) = " + nf(sinVal, 0, 3), infoX, infoY);
+  
+  fill(34, 197, 94);
+  text("cos(θ) = " + nf(cosVal, 0, 3), infoX, infoY + 18);
+  
+  fill(239, 68, 68);
+  if (nearPole) {
+    text("tan(θ) = ∞ (tanımsız)", infoX, infoY + 36);
+  } else {
+    text("tan(θ) = " + nf(tanVal, 0, 3), infoX, infoY + 36);
+  }
+  
+  // Formül
+  fill(80);
+  textSize(11);
+  text("tan = sin / cos", infoX, infoY + 56);
+  
+  // Açı
+  let deg = degrees(angle);
+  if (deg < 0) deg += 360;
+  fill(255, 180, 50);
+  text("θ = " + nf(deg, 0, 1) + "°", infoX, infoY + 76);
+  
+  // Uyarı
+  if (nearPole) {
+    fill(239, 68, 68);
+    textAlign(CENTER);
+    textSize(14);
+    text("⚠️ 90° ve 270°'de tan → ∞", 0, r + 40);
+    textSize(11);
+    text("(cos = 0 olduğu için bölme tanımsız)", 0, r + 58);
+  }
+  
+  // Merkez
+  fill(0);
+  noStroke();
+  circle(0, 0, 6);
+}`
+                }
+            ]
+        });
+
+        // =============================================
+        // DEMO 5: Fareyi Takip Eden Ok (Mevcut)
+        // =============================================
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(220);
+
+  // Koordinat sistemini canvas ortasına taşı
+  translate(width / 2, height / 2);
+
+  // Fare pozisyonunu hesapla (yeni merkeze göre)
+  let dx = mouseX - width / 2;
+  let dy = mouseY - height / 2;
+
+  // Fareye doğru açıyı hesapla
+  let angle = atan2(dy, dx);
+
+  // Bu açı kadar döndür
+  rotate(angle);
+
+  // Ok çiz (sağa bakan)
+  stroke(0);
+  strokeWeight(3);
+  fill(127);
+
+  // Ok gövdesi
+  line(0, 0, 60, 0);
+
+  // Ok başı (üçgen)
+  triangle(60, -10, 60, 10, 80, 0);
+
+  // Merkez noktası
+  fill(255, 0, 0);
+  noStroke();
+  circle(0, 0, 10);
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+
+</html>

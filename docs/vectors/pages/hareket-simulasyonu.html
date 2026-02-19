@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hareket Simülasyonu - Vektörler</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>🎮 Hareket Simülasyonu</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Hepsini Bir Araya Getirme <span class="term-en">(Bringing It All Together)</span></h2>
+
+            <p>
+                Şimdiye kadar öğrendiklerimizi kullanarak gerçekçi bir hareket simülasyonu
+                oluşturacağız. Üç temel kavram:
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">
+                    <div>velocity += acceleration</div>
+                    <div>position += velocity</div>
+                </div>
+                <div class="formula-desc">Hareketin temel algoritması</div>
+            </div>
+        </section>
+
+        <!-- KONUM-HIZ-İVME -->
+        <section class="content-section">
+            <h2>Konum, Hız, İvme <span class="term-en">(Position, Velocity, Acceleration)</span></h2>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">Konum <span class="term-en">(Position)</span></span>
+                    <div class="explanation-text">
+                        Nesnenin şu anki yeri. Her frame'de hız kadar değişir.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Hız <span class="term-en">(Velocity)</span></span>
+                    <div class="explanation-text">
+                        Konumun değişim hızı. Her frame'de ivme kadar değişir.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">İvme <span class="term-en">(Acceleration)</span></span>
+                    <div class="explanation-text">
+                        Hızın değişim hızı. Dış etkenler (kuvvetler) tarafından belirlenir.
+                    </div>
+                </div>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Kavram</th>
+                        <th>Ne Değiştirir</th>
+                        <th>Neyin Etkisi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>İvme</td>
+                        <td>Hızı</td>
+                        <td>Kuvvetler (yerçekimi, rüzgar...)</td>
+                    </tr>
+                    <tr>
+                        <td>Hız</td>
+                        <td>Konumu</td>
+                        <td>İvme</td>
+                    </tr>
+                    <tr>
+                        <td>Konum</td>
+                        <td>Çizim yerini</td>
+                        <td>Hız</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- MOVER SINIFI GELİŞMİŞ -->
+        <section class="content-section">
+            <h2>Gelişmiş Mover Sınıfı</h2>
+
+            <p>
+                İvme ekleyerek Mover sınıfını geliştirelim:
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Mover Sınıfı Detayları:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">constructor()</span>
+                    <div class="explanation-text">
+                        Konum, hız ve ivme vektörlerini başlatır. İvme başlangıçta (0, 0).
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">update()</span>
+                    <div class="explanation-text">
+                        <strong>Kritik!</strong> Önce ivme hızı değiştirir, sonra hız konumu değiştirir.
+                        Son olarak ivme sıfırlanır (bir sonraki frame için).
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">applyForce()</span>
+                    <div class="explanation-text">
+                        Kuvvet uygulama - şimdilik ivmeye doğrudan ekliyor.
+                        Forces bölümünde kütle ile böleceğiz.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- İVME STRATEJİLERİ -->
+        <section class="content-section">
+            <h2>İvme Stratejileri <span class="term-en">(Acceleration Strategies)</span></h2>
+
+            <p>
+                İvmeyi farklı şekillerde hesaplayabiliriz:
+            </p>
+
+            <h3>1. Sabit İvme</h3>
+            <pre><code class="language-javascript">acceleration = createVector(0, 0.1);  // Yerçekimi gibi</code></pre>
+
+            <h3>2. Rastgele İvme</h3>
+            <pre><code class="language-javascript">acceleration = p5.Vector.random2D();  // Rastgele yön
+acceleration.mult(0.5);  // Büyüklük ayarla</code></pre>
+
+            <h3>3. Hedefe Doğru İvme</h3>
+            <pre><code class="language-javascript">let direction = p5.Vector.sub(target, position);
+direction.normalize();
+direction.mult(0.5);
+acceleration = direction;</code></pre>
+
+            <div id="editor2"></div>
+        </section>
+
+        <!-- RASTGELE HAREKET -->
+        <section class="content-section">
+            <h2>Örnek: Rastgele Walker <span class="term-en">(Random Walker)</span></h2>
+
+            <p>
+                Her frame'de rastgele ivme uygulayarak organik bir hareket oluşturabiliriz:
+            </p>
+
+            <div id="editor3"></div>
+
+            <div class="info-box tip">
+                <h4>🎮 Perlin Noise ile Daha Organik</h4>
+                <p>
+                    <code>random()</code> yerine <code>noise()</code> kullanarak daha yumuşak,
+                    doğal görünümlü hareket elde edebiliriz. Noise değerleri birbirine bağlıdır.
+                </p>
+            </div>
+        </section>
+
+        <!-- FAREYE DOĞRU HAREKET -->
+        <section class="content-section">
+            <h2>Örnek: Fareyi Takip Eden Nesne</h2>
+
+            <p>
+                Hedefe (fareye) doğru ivme uygulayarak takip hareketi:
+            </p>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_16.png"
+                     alt="Nesneden fareye yön vektörü" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.15:</strong> Bir nesneden (mover) fare pozisyonuna uzanan yön vektörü.
+                    Bu vektör, nesnenin fareye doğru gitmesi gereken <em>yönü</em> gösterir.
+                    Vektörün uzunluğu nesne ile fare arasındaki mesafeye eşittir.
+                </figcaption>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_17.png"
+                     alt="İvme vektörü hesaplama adımları" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.16:</strong> Fare ve konum vektörlerinin farkını alarak ivme vektörünü hesaplama.
+                    <em>direction = mouse - position</em> formülü ile yön bulunur, ardından
+                    <em>normalize</em> edilerek birim vektöre dönüştürülür ve istenen ivme büyüklüğü ile çarpılır.
+                </figcaption>
+            </div>
+
+            <div id="editor4"></div>
+
+            <div class="explanation-list">
+                <h4>Fareye Yönelme Algoritması:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">1. Yön bul</span>
+                    <div class="explanation-text">
+                        <code>p5.Vector.sub(mouse, position)</code> - Fareye doğru vektör
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">2. Normalize et</span>
+                    <div class="explanation-text">
+                        <code>direction.normalize()</code> - Sadece yön, uzunluk 1
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">3. Ölçekle</span>
+                    <div class="explanation-text">
+                        <code>direction.mult(0.5)</code> - İstediğin ivme büyüklüğü
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">4. İvme olarak ata</span>
+                    <div class="explanation-text">
+                        <code>acceleration = direction</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Hareket algoritması:</strong> velocity += acceleration, position += velocity</li>
+                <li><strong>İvme sıfırlama:</strong> Her frame'de ivmeyi sıfırla</li>
+                <li><strong>applyForce():</strong> Kuvvet = ivme (şimdilik)</li>
+                <li><strong>limit():</strong> Hızı sınırla</li>
+                <li><strong>Hedefe yönelme:</strong> sub → normalize → mult → ivme</li>
+                <li><strong>random2D():</strong> Rastgele yön vektörü</li>
+            </ul>
+        </section>
+
+        <!-- SONRAKİ ADIM -->
+        <section class="content-section">
+            <h2>🚀 Sonraki Adım: Kuvvetler</h2>
+
+            <p>
+                Bu bölümde vektörlerin temellerini öğrendik. Sonraki bölümde (Forces - Kuvvetler)
+                Newton'un hareket yasalarını uygulayacağız:
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">F⃗ = m × a⃗ → a⃗ = F⃗ / m</div>
+                <div class="formula-desc">Kuvvet kütle ile bölününce ivme olur</div>
+            </div>
+
+            <p>
+                Yerçekimi, sürtünme, rüzgar gibi kuvvetleri simüle edeceğiz!
+            </p>
+        </section>
+
+        <!-- EKOSİSTEM PROJESİ -->
+        <section class="content-section">
+            <h2>🌿 Ekosistem Projesi <span class="term-en">(The Ecosystem Project)</span></h2>
+
+            <p>
+                Bu bölümde öğrendiklerinizi kullanarak kendi <strong>ekosisteminizi</strong> oluşturabilirsiniz!
+                Her bölümün sonunda bu projeye yeni özellikler ekleyeceğiz.
+            </p>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_18.png"
+                     alt="Ekosistem projesi örneği" class="content-image">
+                <figcaption>
+                    <strong>Ekosistem Projesi:</strong> Farklı hareket davranışlarına sahip canlılardan oluşan bir simülasyon.
+                    Bazıları <em>rastgele</em> hareket eder (random walker), bazıları belirli <em>hedeflere yönelir</em>,
+                    bazıları ise <em>diğerlerini takip</em> eder veya onlardan <em>kaçar</em>. Bu projeyi her bölümün
+                    sonunda geliştireceğiz - yerçekimi, sürtünme, parçacık sistemleri ve daha fazlası!
+                </figcaption>
+            </div>
+
+            <div class="info-box tip">
+                <h4>🎯 Proje Fikirleri</h4>
+                <ul>
+                    <li><strong>Balık Sürüsü:</strong> Rastgele hareket eden, birbirlerini takip eden balıklar</li>
+                    <li><strong>Yıldız Sistemi:</strong> Merkezdeki bir güneşe doğru çekilen gezegenler</li>
+                    <li><strong>Böcek Kolonisi:</strong> Yiyeceğe doğru hareket eden, engelleri aşan böcekler</li>
+                    <li><strong>Hava Durumu:</strong> Rüzgarla sürüklenen parçacıklar ve yağmur damlaları</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="vektor-buyukluk.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Vektör Büyüklüğü</span>
+                </div>
+            </a>
+            <a href="../index.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Bitti!</span>
+                    <span class="nav-link-title">Ana Sayfa</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Gelişmiş Mover sınıfı
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let mover;
+
+function setup() {
+  createCanvas(400, 400);
+  mover = new Mover();
+}
+
+function draw() {
+  background(220);
+
+  // Yerçekimi uygula
+  let gravity = createVector(0, 0.2);
+  mover.applyForce(gravity);
+
+  mover.update();
+  mover.checkEdges();
+  mover.show();
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor() {
+    this.position = createVector(width / 2, 50);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+  }
+
+  applyForce(force) {
+    // Şimdilik: ivme = kuvvet
+    // Forces bölümünde: ivme = kuvvet / kütle
+    this.acceleration.add(force);
+  }
+
+  update() {
+    // Hızı güncelle
+    this.velocity.add(this.acceleration);
+    // Konumu güncelle
+    this.position.add(this.velocity);
+    // İvmeyi sıfırla (önemli!)
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    fill(127, 127, 220);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, 40);
+  }
+
+  checkEdges() {
+    // Yerden sekme
+    if (this.position.y > height - 20) {
+      this.position.y = height - 20;
+      this.velocity.y *= -0.9;  // Enerji kaybı
+    }
+    // Yan duvarlar
+    if (this.position.x > width - 20) {
+      this.position.x = width - 20;
+      this.velocity.x *= -1;
+    } else if (this.position.x < 20) {
+      this.position.x = 20;
+      this.velocity.x *= -1;
+    }
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 2: İvme stratejileri
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let mover;
+let mode = 0;  // 0: sabit, 1: rastgele, 2: fareye
+
+function setup() {
+  createCanvas(400, 400);
+  mover = new Mover();
+}
+
+function draw() {
+  background(220);
+
+  let acceleration;
+
+  if (mode === 0) {
+    // SABİT İVME
+    acceleration = createVector(0.01, 0);
+  }
+  else if (mode === 1) {
+    // RASTGELE İVME
+    acceleration = p5.Vector.random2D();
+    acceleration.mult(0.3);
+  }
+  else {
+    // FAREYE DOĞRU İVME
+    let mouse = createVector(mouseX, mouseY);
+    acceleration = p5.Vector.sub(mouse, mover.position);
+    acceleration.setMag(0.2);
+  }
+
+  mover.applyForce(acceleration);
+  mover.update();
+  mover.edges();
+  mover.show();
+
+  // Mod bilgisi
+  fill(0);
+  noStroke();
+  textSize(14);
+  let modeNames = ["Sabit", "Rastgele", "Fareye Doğru"];
+  text("Mod: " + modeNames[mode], 10, 25);
+  text("Tıkla: mod değiştir", 10, 45);
+}
+
+function mousePressed() {
+  mode = (mode + 1) % 3;
+  // Mover'ı sıfırla
+  mover.position.set(width/2, height/2);
+  mover.velocity.set(0, 0);
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor() {
+    this.position = createVector(width/2, height/2);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.maxSpeed = 5;
+  }
+
+  applyForce(force) {
+    this.acceleration.add(force);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(this.maxSpeed);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    fill(127, 200, 127);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, 30);
+  }
+
+  edges() {
+    if (this.position.x > width) this.position.x = 0;
+    if (this.position.x < 0) this.position.x = width;
+    if (this.position.y > height) this.position.y = 0;
+    if (this.position.y < 0) this.position.y = height;
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 3: Rastgele walker
+        new LiveEditor('#editor3', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let walker;
+let trail = [];
+
+function setup() {
+  createCanvas(400, 400);
+  walker = new Walker();
+}
+
+function draw() {
+  background(220, 220, 220, 20);  // Hafif solma efekti
+
+  // Rastgele ivme
+  let randomAcc = p5.Vector.random2D();
+  randomAcc.mult(0.5);
+  walker.applyForce(randomAcc);
+
+  walker.update();
+  walker.edges();
+
+  // İzi kaydet
+  trail.push(walker.position.copy());
+  if (trail.length > 100) trail.shift();
+
+  // İzi çiz
+  noFill();
+  stroke(100, 150, 255, 150);
+  strokeWeight(2);
+  beginShape();
+  for (let p of trail) {
+    vertex(p.x, p.y);
+  }
+  endShape();
+
+  walker.show();
+}`
+                },
+                {
+                    name: 'walker.js',
+                    content: `class Walker {
+  constructor() {
+    this.position = createVector(width/2, height/2);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+  }
+
+  applyForce(force) {
+    this.acceleration.add(force);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(4);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    fill(50, 100, 200);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, 20);
+  }
+
+  edges() {
+    if (this.position.x > width) this.position.x = 0;
+    if (this.position.x < 0) this.position.x = width;
+    if (this.position.y > height) this.position.y = 0;
+    if (this.position.y < 0) this.position.y = height;
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 4: Fareyi takip
+        new LiveEditor('#editor4', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let chaser;
+
+function setup() {
+  createCanvas(400, 400);
+  chaser = new Chaser();
+}
+
+function draw() {
+  background(220);
+
+  // Fareye doğru ivme hesapla
+  let mouse = createVector(mouseX, mouseY);
+  let direction = p5.Vector.sub(mouse, chaser.position);
+  direction.setMag(0.5);  // İvme büyüklüğü
+
+  chaser.applyForce(direction);
+  chaser.update();
+  chaser.show();
+
+  // Hedef (fare)
+  fill(255, 100, 100);
+  noStroke();
+  circle(mouseX, mouseY, 15);
+
+  // Bilgi
+  fill(0);
+  textSize(12);
+  text("Hız: " + chaser.velocity.mag().toFixed(1), 10, 20);
+}`
+                },
+                {
+                    name: 'chaser.js',
+                    content: `class Chaser {
+  constructor() {
+    this.position = createVector(width/2, height/2);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.maxSpeed = 6;
+  }
+
+  applyForce(force) {
+    this.acceleration.add(force);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(this.maxSpeed);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    // Hareket yönüne bak
+    let angle = this.velocity.heading();
+
+    push();
+    translate(this.position.x, this.position.y);
+    rotate(angle);
+
+    fill(100, 200, 100);
+    stroke(0);
+    strokeWeight(2);
+
+    // Üçgen (ok şekli)
+    triangle(15, 0, -10, -8, -10, 8);
+    pop();
+  }
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+
