@@ -298,6 +298,10 @@ body {
     color: var(--text-muted);
 }
 
+.contribution-notice {
+    margin-top: 0.75rem;
+}
+
 /* ========================================
    PAGE HEADER (Konu Sayfaları)
    ======================================== */
