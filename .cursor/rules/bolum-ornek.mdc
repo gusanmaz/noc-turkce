@@ -1,0 +1,37 @@
+---
+description: Bölüm metni ve canlı p5 örneği nasıl yazılır
+globs: content/**/*.js
+alwaysApply: false
+---
+
+# Bölüm ve sketch
+
+Hazırlık sıfırdan (`#/js`, `#/p5`, `#/mat`). Asıl bölüm Shiffman sırası + öğrenci iskelesi. `N.orig` spam etme; bölüm başında `original` / `originalCode`. Editörde Kitap/Kod. `N.extra` normal not. `N.resources` sayfa sonunda, yerinde.
+
+## Sketch testi (çıktıya bak)
+
+- Tuvale bakınca fikir okunur. `text()` dökümü veya 60 fps `random()` ile değişen etiket **değil**.
+- Rastgele süreç: sayaç, çubuk, iz, veya fareyle dondurulmuş `r` — öğrenci oranı/dalı görsün.
+- Karşılaştırma varsa iki durum bir karede (constrain’li/siz, iki `this`, ham/kilitli).
+- `point` 1 px yetmez: `strokeWeight(3)` veya küçük `circle`.
+- Değeri tuvale yaz (`x = …`, `r = 0.55 → sol`). Konsol varsayma.
+- Kısa kod iç kaydırma istemez; uzun sınıfta `fitHeight` yeter.
+
+```javascript
+// ❌ BAD — her kare zar, okunmaz
+yazi = random(1) < 0.4 ? "sağ" : "sol";
+
+// ✅ GOOD — r fare veya çubuk/sayaç
+let r = constrain(mouseX / width, 0, 0.999);
+if (r < 0.4) { /* daire sağa */ }
+```
+
+## p5.js fonksiyonu sketch’i taşıyorsa
+
+Hazırlıkta geçmiş olması yetmez. Öğrenci bu kareyi anlamak için `translate`, `push`/`pop`, `rotate`, `copy` gibi bir çağrıya muhtaçsa **o bölümde, o örneğin cümlesiyle** anlat: günlük resim, tuzak (yorumlayınca ne bozulur), sonra sözdizimi. “translate ile merkeze taşınmış” tek sıfat yasak. Karşılaştırma: fonksiyonlu ve functionsuz aynı tuvalde, veya `tryit` ile satırı kapatınca.
+
+Yeni bölümü bitirmeden kodda geçen p5.js çağrılarını tara. Anlatılmamış yük taşıyıcı varsa metin + sketch ekle; “hazırlıkta var” diye atlama.
+
+## Anlatım
+
+Paragraf `anlatim` kuralına uyar: tam cümle, **p5.js** adı, formülde `N.sqrt` / `<sup>`, alt yazıda telgraf yok.

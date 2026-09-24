@@ -1,0 +1,15 @@
+---
+description: Orijinal NoC sadakati, ekstra malzeme, p5.play
+globs: content/**/*.js
+alwaysApply: false
+---
+
+# Sadakat ve ekstra
+
+Orijinal örnek id/sıra/görsel (noc-book-2 `content/images`, `content/examples`). Canvas çoğu zaman 400×240; fikir aynı, 640 değil diye “yanlış” deme.
+
+Kitap alıştırması: orijinal başlık + natureofcode.com hash. Çözümü uydurma; iskele kodu “ders için” durur, rozet yok.
+
+p5.play bölümü gelene kadar GitHub tutorial: https://github.com/gusanmaz/p5play-tutorial — motora atlama, önce vektör/kuvvet.
+
+Kaynak uydurma (sahte playlist id). Bilinmiyorsa arama URL veya resmi sayfa (p5 reference, Coding Train track, MDN TR).

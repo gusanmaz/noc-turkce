@@ -1,0 +1,16 @@
+---
+description: Nature of Code Türkçe — her turda geçerli kalite ve kitle barı
+alwaysApply: true
+---
+
+# Bu kitap
+
+Anadolu MYO Oyun Fiziği. Kitle neredeyse **sıfır** JS, p5.js, matematik. “Bir dönem p5 biliyorsun” diye yazma.
+
+Önce kullanıcı mesajındaki kalite şikâyetini ve önceki barı uygula. Çeviri yetmez; zor yerde matematik, p5, programlama, extra örnek/soru, işe yarayan kaynak (YT, kitap, tutorial, GitHub, Medium). Orijinal sıra/örnek/görsel durur. Orijinal metin-kod için kitap/GitHub linki yeter. Extra alıştırmayı “kitaba ek” diye bağırma.
+
+Bir fikri tek sıfatla geçiştirme. Sketch **ve** paragraf: bu kare/cümle o fikri anlatıyor mu? Anlatmıyorsa koyma.
+
+Sketch bir p5.js fonksiyonuna yaslanıyorsa (ör. `translate`) o fonksiyonu o bölümde anlat; hazırlık sayfasına havale etmek yetmez.
+
+Metin için `anlatim` kuralı: sesli okunur Türkçe; günlük resim → tuzak → sayı. Sıkıştırılmış formül yığını ve yarım analog yasak.

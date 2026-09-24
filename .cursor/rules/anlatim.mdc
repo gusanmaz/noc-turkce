@@ -1,0 +1,55 @@
+---
+description: Kitap Türkçesi — her paragraf sınıfta sesli okunur mu
+alwaysApply: true
+---
+
+# Anlatım (metin, sketch kadar kural)
+
+Sketch testi yetmez. Paragraf da “bu cümle o fikri anlatıyor mu?” sorusundan geçer.
+
+## Sesli okuma
+
+Sınıfta, tahtasız, bir kez söyle. Takılırsa, üç sayı üst üste binerse, analog yarım kalırsa **yeniden yaz**. Telgraf, slayt notu, Wikipedia özeti yasak.
+
+## Bir fikir, sıra
+
+1. Günlük resim (tur, pizza, duvar, kutu).
+2. Neden kod umursar (yanlış yazınca ne bozulur).
+3. Sayı / formül / tablo **en sonda**, kelimeye bağlı.
+4. Öğrencinin yazacağı tuzak (`rotate(90)` radyan okunur).
+
+```html
+<!-- ❌ BAD: sıkıştırılmış, analog kopuk, sayı yığını -->
+Siz 360° bilirsiniz: tam tur pizza. Radyan da birimdir; cm ile inç gibi.
+Tam tur = 2π ≈ 6.283. 90° = π/2 ≈ 1.57.
+
+<!-- ✅ GOOD: aynı tur, iki cetvel; tuzak; sonra tablo -->
+Tam turu 360 parçaya böleriz (derece). p5 rotate/sin/cos başka cetvel
+ister (radyan): aynı tur, başka rakam. rotate(90) ≈ 14 tur döner.
+Çeyrek tur = 90° = π/2 ≈ 1.57. angleMode(DEGREES) veya radians(90).
+```
+
+## Yasaklar
+
+- “X Y içindir” tek sıfat (`constrain kenardan düşmesin`).
+- “Siz bilirsiniz / aslında çok basit.”
+- π, 2π, HALF_PI’yi cümlede peş peşe dökmek; tablo veya `N.math` ayrı.
+- Analog: neyin aynı kaldığını söylemeden “metre–cm” demek.
+- İngilizce cümle kalıbını kelimesi kelimesine Türkçeleştirmek.
+- Telgraf alt yazı: “p5 bunu dist diye verir”, “sağa-sola”, “t’yi 0–1 tutun”.
+- Kütüphane/dil adını yutmak: öğrenci metninde **p5.js**, **JavaScript**. Kodda `p5` / `function` kalır.
+
+## Formül kutusu (`N.math`)
+
+Üst satır simge, alt satır **tam cümle** (ne, p5.js’te hangi fonksiyon, argümanlar). Unicode `√` / `²` yetmez: `N.sqrt("…")` ve `<sup>2</sup>`. `.formula` Source Serif; glyph yoksa tofu görünür, yayınlama.
+
+```javascript
+// ❌ BAD
+N.math("|v| = √(dx² + dy²)", "p5 bunu dist(ax, ay, bx, by) diye verir")
+
+// ✅ GOOD
+N.math(
+  "|v| = " + N.sqrt("(dx<sup>2</sup> + dy<sup>2</sup>)"),
+  "Aynı uzunluğu p5.js <code>dist(ax, ay, bx, by)</code> hesaplar: birinci noktanın x, y’si, ikinci noktanın x, y’si."
+)
+```
