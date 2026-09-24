@@ -2,7 +2,9 @@
 
 Daniel Shiffman’ın [The Nature of Code](https://natureofcode.com) kitabının (2024, p5.js) Anadolu MYO Bilişim Teknolojileri **Oyun Fiziği** dersi için Türkçe, interaktif web uyarlaması.
 
-Bu site resmi çeviri değildir. Orijinal kitap ücretsiz olarak [natureofcode.com](https://natureofcode.com) adresindedir; örnek kodlar [nature-of-code/noc-book-2](https://github.com/nature-of-code/noc-book-2) deposundadır. Kitap [Creative Commons Attribution-NonCommercial 4.0](https://creativecommons.org/licenses/by-nc/4.0/) ile lisanslıdır. Buradaki metin ve örnekler o kitaba dayanır: sıra ve örnekler durur, sınıf için açıklama, soru ve oyun fiziği ekleri eklenir. Ticari kullanım için Shiffman’ın lisansına uyun ve atıf verin.
+Bu site resmi çeviri değildir. No Starch Press çeviri haklarını saklı tutar; burası Anadolu MYO Oyun Fiziği için sınıf uyarlamasıdır. Orijinal sıra ve örnekler durur, üstüne Türkçe anlatım, soru ve oyun fiziği ekleri gelir.
+
+Orijinal kitap ücretsiz olarak [natureofcode.com](https://natureofcode.com) adresindedir; örnek kodlar [nature-of-code/noc-book-2](https://github.com/nature-of-code/noc-book-2) deposundadır. 2024 basımı [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) ile lisanslıdır ([kaynak](https://natureofcode.com/credits/)). Atıf: “Daniel Shiffman, published by No Starch Press® Inc.” Değişiklik yapılmıştır. Ticari kullanım yoktur. Türev de aynı lisansla paylaşılır.
 
 Canlı kitap: [gusanmaz.github.io/noc-turkce](https://gusanmaz.github.io/noc-turkce/)
 
