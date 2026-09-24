@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vektör Büyüklüğü - Vektörler</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>📏 Vektör Büyüklüğü</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Vektör Büyüklüğü <span class="term-en">(Magnitude)</span></h2>
+
+            <p>
+                Bir vektörün <strong>büyüklüğü</strong> (magnitude) onun <strong>uzunluğudur</strong>.
+                (3, 4) vektörünün uzunluğu ne kadar? Pisagor teoremi ile bulabiliriz!
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">|v⃗| = √(x² + y²)</div>
+                <div class="formula-desc">Büyüklük = karekök(x² + y²)</div>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_12.png"
+                     alt="Vektör büyüklüğü notasyonu" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.11:</strong> Bir vektörün uzunluğu (büyüklüğü) ||v⃗|| veya |v⃗| notasyonu ile gösterilir.
+                    Bu değer her zaman <em>pozitiftir</em> ve vektörün başlangıç noktasından bitiş noktasına olan
+                    <em>mesafeyi</em> temsil eder. p5.js'de <code>v.mag()</code> ile hesaplanır.
+                </figcaption>
+            </div>
+        </section>
+
+        <!-- PİSAGOR -->
+        <section class="content-section">
+            <h2>Pisagor Teoremi <span class="term-en">(Pythagorean Theorem)</span></h2>
+
+            <p>
+                Bir vektörü (x, y) çizdiğimizde aslında bir dik üçgen oluşur:
+            </p>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_13.png"
+                     alt="Pisagor teoremi ile vektör uzunluğu" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.12:</strong> Pisagor teoremi vektör bileşenlerini kullanarak uzunluğu hesaplar.
+                    Bir (x, y) vektörü çizildiğinde dik üçgen oluşur: x yatay kenar, y dikey kenar,
+                    vektör ise <em>hipotenüs</em>. Formül: |v⃗| = √(x² + y²). Örnek: (3, 4) → √(9+16) = √25 = 5
+                </figcaption>
+            </div>
+
+            <!-- SVG Diyagram -->
+            <div class="vector-diagram">
+                <svg viewBox="0 0 350 220" class="vector-svg">
+                    <defs>
+                        <marker id="arrowMag" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#8b5cf6"/>
+                        </marker>
+                    </defs>
+
+                    <!-- Eksenler -->
+                    <line x1="50" y1="170" x2="300" y2="170" stroke="var(--border-color)" stroke-width="1"/>
+                    <line x1="50" y1="170" x2="50" y2="30" stroke="var(--border-color)" stroke-width="1"/>
+
+                    <!-- x bileşeni -->
+                    <line x1="50" y1="170" x2="230" y2="170" stroke="#ef4444" stroke-width="3"/>
+                    <text x="140" y="195" fill="#ef4444" font-size="14" font-weight="bold">x = 3</text>
+
+                    <!-- y bileşeni -->
+                    <line x1="230" y1="170" x2="230" y2="50" stroke="#22c55e" stroke-width="3"/>
+                    <text x="240" y="115" fill="#22c55e" font-size="14" font-weight="bold">y = 4</text>
+
+                    <!-- Hipotenüs (vektör) -->
+                    <line x1="50" y1="170" x2="230" y2="50" stroke="#8b5cf6" stroke-width="4" marker-end="url(#arrowMag)"/>
+                    <text x="110" y="95" fill="#8b5cf6" font-size="14" font-weight="bold">|v⃗| = 5</text>
+
+                    <!-- Dik açı işareti -->
+                    <rect x="220" y="160" width="10" height="10" fill="none" stroke="var(--text-muted)" stroke-width="1"/>
+
+                    <!-- Formül -->
+                    <text x="50" y="25" fill="var(--text-primary)" font-size="12">√(3² + 4²) = √(9 + 16) = √25 = 5</text>
+                </svg>
+            </div>
+
+            <pre><code class="language-javascript">let v = createVector(3, 4);
+
+// Manuel hesaplama
+let magnitude = sqrt(v.x * v.x + v.y * v.y);  // 5
+
+// p5.js ile
+let magnitude = v.mag();  // 5</code></pre>
+        </section>
+
+        <!-- TRANSLATE VE ROTATE -->
+        <section class="content-section">
+            <h2>Koordinat Dönüşümleri <span class="term-en">(Transformations)</span></h2>
+
+            <p>
+                Vektörlerle çalışırken sıklıkla <code>translate()</code> ve <code>rotate()</code> fonksiyonlarını
+                kullanırız. Bu fonksiyonlar <strong>koordinat sistemini</strong> değiştirerek çizimi kolaylaştırır.
+            </p>
+
+            <h3>translate() - Orijini Kaydırma</h3>
+
+            <p>
+                <code>translate(x, y)</code> koordinat sisteminin <strong>orijinini (0, 0) noktasını</strong>
+                belirtilen konuma taşır. Bu, özellikle merkez etrafında çizim yaparken çok kullanışlıdır.
+            </p>
+
+            <pre><code class="language-javascript">// Normalde (0,0) sol üst köşedir
+line(0, 0, 100, 50);  // Sol üstten başlar
+
+// translate ile orijini merkeze taşı
+translate(width / 2, height / 2);
+
+// Artık (0,0) ekranın merkezinde!
+line(0, 0, 100, 50);  // Merkezden başlar</code></pre>
+
+            <div class="info-box note">
+                <h4>💡 Neden translate() Kullanırız?</h4>
+                <p>
+                    Vektörleri genellikle <strong>orijinden</strong> başlayarak çizeriz. Eğer vektörü ekranın
+                    ortasında göstermek istiyorsak, her çizimde <code>width/2</code> ve <code>height/2</code>
+                    eklemek yerine, bir kez <code>translate(width/2, height/2)</code> diyerek işimizi kolaylaştırırız.
+                </p>
+            </div>
+
+            <h3>rotate() - Koordinat Sistemini Döndürme</h3>
+
+            <p>
+                <code>rotate(angle)</code> koordinat sistemini belirtilen açı kadar döndürür.
+                Açı <strong>radyan</strong> cinsinden verilir (derece değil!).
+            </p>
+
+            <pre><code class="language-javascript">// Açıyı radyana çevir
+let angle = radians(45);  // 45 derece = 0.785 radyan
+
+translate(width / 2, height / 2);  // Orijini merkeze taşı
+rotate(angle);                      // 45 derece döndür
+
+// Artık tüm çizimler 45 derece döndürülmüş!
+line(0, 0, 100, 0);  // Yatay çizgi artık çapraz görünür</code></pre>
+
+            <div class="info-box warning">
+                <h4>⚠️ Dönüşüm Sırası Önemli!</h4>
+                <p>
+                    <code>translate()</code> ve <code>rotate()</code> çağrılarının sırası sonucu değiştirir.
+                    Genellikle önce <strong>translate</strong>, sonra <strong>rotate</strong> yapılır.
+                </p>
+                <pre><code class="language-javascript">// Doğru sıra: önce taşı, sonra döndür
+translate(200, 200);
+rotate(angle);
+
+// push/pop ile değişiklikleri izole et
+push();
+  translate(100, 100);
+  rotate(PI / 4);
+  rect(0, 0, 50, 50);  // Döndürülmüş kare
+pop();
+// Burada koordinat sistemi normale döndü</code></pre>
+            </div>
+
+            <div id="editorTransform"></div>
+        </section>
+
+        <!-- MAG() KULLANIMI -->
+        <section class="content-section">
+            <h2>mag() Kullanımı</h2>
+
+            <p>
+                <code>mag()</code> vektörün uzunluğunu döndürür. İşte kitaptan bir örnek:
+            </p>
+
+            <div id="editorMagRect"></div>
+
+            <div class="explanation-list">
+                <h4>Kodun Açıklaması:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 7-8</span>
+                    <div class="explanation-text">
+                        Fare pozisyonu ve ekran merkezi için vektörler oluşturuyoruz.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 9</span>
+                    <div class="explanation-text">
+                        <code>mouse.sub(center)</code> - Merkezden fareye olan vektörü hesaplıyoruz.
+                        Bu işlem mouse vektörünü değiştirir!
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 12</span>
+                    <div class="explanation-text">
+                        <code>mouse.mag()</code> - Vektörün uzunluğunu (büyüklüğünü) alıyoruz.
+                        Bu değer farenin merkeze olan mesafesidir.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 14</span>
+                    <div class="explanation-text">
+                        Büyüklüğü dikdörtgenin genişliği olarak kullanıyoruz.
+                        Fare uzaklaştıkça dikdörtgen büyür!
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 17</span>
+                    <div class="explanation-text">
+                        <code>translate(width/2, height/2)</code> - Orijini merkeze taşıyoruz,
+                        böylece vektörü (0,0)'dan çizebiliriz.
+                    </div>
+                </div>
+            </div>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>mag() Kullanım Alanları:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Hız kontrolü</span>
+                    <div class="explanation-text">
+                        Nesne ne kadar hızlı gidiyor? <code>velocity.mag()</code>
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Mesafe ölçme</span>
+                    <div class="explanation-text">
+                        İki nokta arasındaki mesafe: fark vektörünün büyüklüğü
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Eşik kontrolü</span>
+                    <div class="explanation-text">
+                        Hız çok mu yüksek? <code>if (v.mag() > maxSpeed)</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NORMALIZE -->
+        <section class="content-section">
+            <h2>Normalize: Birim Vektör <span class="term-en">(Unit Vector)</span></h2>
+
+            <p>
+                <strong>Birim vektör</strong>, uzunluğu 1 olan vektördür. Sadece <strong>yön</strong> bilgisi taşır.
+                Bir vektörü normalize etmek = birim vektöre dönüştürmek.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">v̂ = v⃗ / |v⃗|</div>
+                <div class="formula-desc">Birim vektör = vektör / büyüklük</div>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_14.png"
+                     alt="Normalize edilmiş birim vektör" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.13:</strong> Bir vektör normalize edildiğinde, aynı yönü göstermeye devam eder
+                    ancak uzunluğu 1'e indirilir. Bu <em>"birim vektör"</em> sadece yön bilgisi taşır ve
+                    genellikle v̂ (şapkalı v) olarak gösterilir.
+                </figcaption>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_15.png"
+                     alt="Normalize etme formülü" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.14:</strong> Bir vektörü normalize etmek için her bileşen büyüklüğe bölünür.
+                    Örnek: v⃗ = (3, 4) → |v⃗| = 5 → v̂ = (3/5, 4/5) = (0.6, 0.8).
+                    Doğrulama: √(0.6² + 0.8²) = √(0.36 + 0.64) = √1 = 1 ✓
+                </figcaption>
+            </div>
+
+            <pre><code class="language-javascript">let v = createVector(3, 4);
+console.log(v.mag());  // 5
+
+v.normalize();
+
+console.log(v.mag());  // 1
+console.log(v.x);      // 0.6 (3/5)
+console.log(v.y);      // 0.8 (4/5)</code></pre>
+
+            <div class="info-box note">
+                <h4>💡 Neden Normalize?</h4>
+                <p>
+                    Yönü bilip, büyüklüğü kendimiz belirlemek istediğimizde kullanırız.
+                    Örneğin: "Fareye doğru, her zaman aynı uzunlukta bir çizgi çiz"
+                </p>
+            </div>
+
+            <p>İşte kitaptan pratik bir örnek:</p>
+
+            <div id="editorNormalize"></div>
+
+            <div class="explanation-list">
+                <h4>Kodun Açıklaması:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 12 (gri çizgi)</span>
+                    <div class="explanation-text">
+                        Orijinal vektör - fareye olan gerçek mesafe. Fare uzaklaştıkça uzar.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 15-16</span>
+                    <div class="explanation-text">
+                        <code>normalize()</code> vektörü birim vektöre (uzunluk=1) dönüştürür,
+                        sonra <code>mult(50)</code> ile tam 50 piksel uzunluğa ayarlarız.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 19 (siyah çizgi)</span>
+                    <div class="explanation-text">
+                        Normalize edilmiş vektör - <strong>fare nerede olursa olsun her zaman 50 piksel!</strong>
+                        Yön fareye doğru, ama uzunluk sabit.
+                    </div>
+                </div>
+            </div>
+
+            <pre><code class="language-javascript">let direction = p5.Vector.sub(mouse, position);
+direction.normalize();     // Sadece yön
+direction.mult(5);         // 5 piksel/frame hız</code></pre>
+            </div>
+        </section>
+
+        <!-- SETMAG -->
+        <section class="content-section">
+            <h2>setMag() - Büyüklük Ayarlama</h2>
+
+            <p>
+                <code>normalize()</code> + <code>mult()</code> yerine doğrudan <code>setMag()</code> kullanabiliriz:
+            </p>
+
+            <pre><code class="language-javascript">let v = createVector(3, 4);  // büyüklük: 5
+
+// Uzun yol
+v.normalize();  // büyüklük: 1
+v.mult(10);     // büyüklük: 10
+
+// Kısa yol
+v.setMag(10);   // doğrudan büyüklüğü 10 yap</code></pre>
+
+            <div id="editor2"></div>
+        </section>
+
+        <!-- LIMIT -->
+        <section class="content-section">
+            <h2>limit() - Maksimum Hız <span class="term-en">(Limiting Magnitude)</span></h2>
+
+            <p>
+                <code>limit()</code> vektörün büyüklüğünü belirli bir değerle sınırlar.
+                Hız kontrolü için çok kullanışlı!
+            </p>
+
+            <pre><code class="language-javascript">let velocity = createVector(10, 15);
+console.log(velocity.mag());  // ~18
+
+velocity.limit(5);  // Maksimum 5
+
+console.log(velocity.mag());  // 5 (sınırlandı)
+
+// Eğer zaten 5'ten küçükse, değişmez
+let slow = createVector(2, 1);
+slow.limit(5);  // slow aynı kalır (2.23 < 5)</code></pre>
+
+            <div id="editor3"></div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 23:</strong> <code>limit(3)</code> yapın
+                        <span class="expectation">Beklenti: Daha yavaş maksimum hız</span>
+                    </li>
+                    <li>
+                        <strong>Satır 23:</strong> <code>limit(15)</code> yapın
+                        <span class="expectation">Beklenti: Daha hızlı hareket</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>v.mag():</strong> Vektörün uzunluğunu döndürür</li>
+                <li><strong>v.normalize():</strong> Uzunluğu 1 yapar (birim vektör)</li>
+                <li><strong>v.setMag(n):</strong> Uzunluğu n yapar</li>
+                <li><strong>v.limit(max):</strong> Uzunluğu maksimum max ile sınırlar</li>
+                <li><strong>Pisagor:</strong> |v| = √(x² + y²)</li>
+                <li><strong>Birim vektör:</strong> Sadece yön, uzunluk 1</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="vektor-carpma.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Vektör Çarpma ve Bölme</span>
+                </div>
+            </a>
+            <a href="hareket-simulasyonu.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Hareket Simülasyonu</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+        <p class="contribution-notice">Bu projeye katkıda bulunmak ister misiniz? <a href="https://github.com/gusanmaz/noc-turkce" target="_blank">GitHub</a>'daki bu repoya pull request göndererek kitabın geliştirilmesine destek olabilirsiniz! 🤝</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor: translate/rotate demo
+        new LiveEditor('#editorTransform', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(220);
+
+  // Sol taraf: translate olmadan
+  push();
+  stroke(200);
+  line(0, 0, 100, 50);
+  fill(200, 100, 100);
+  text("translate yok", 10, 70);
+  pop();
+
+  // Sağ taraf: translate ile
+  push();
+  translate(width / 2, height / 2);
+
+  // Artık (0,0) ekranın ortasında!
+  stroke(0, 100, 200);
+  strokeWeight(3);
+  line(0, 0, 100, 50);
+
+  // Merkez noktası
+  fill(255, 0, 0);
+  noStroke();
+  circle(0, 0, 10);
+
+  fill(0);
+  text("(0,0) artık burada!", 10, -10);
+  pop();
+
+  // rotate örneği
+  push();
+  translate(width / 2, height - 80);
+
+  // 3 farklı açıda çizgi
+  stroke(255, 0, 0);
+  strokeWeight(2);
+  line(0, 0, 80, 0);  // 0 derece
+
+  rotate(radians(30));
+  stroke(0, 255, 0);
+  line(0, 0, 80, 0);  // 30 derece
+
+  rotate(radians(30));
+  stroke(0, 0, 255);
+  line(0, 0, 80, 0);  // 60 derece
+  pop();
+
+  fill(0);
+  noStroke();
+  textSize(12);
+  text("rotate() örneği", width/2 - 40, height - 20);
+}`
+                }
+            ]
+        });
+
+        // Editor: Kitaptan mag() örneği - dikdörtgen
+        new LiveEditor('#editorMagRect', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `function setup() {
+  createCanvas(400, 240);
+}
+
+function draw() {
+  background(255);
+
+  // Fare ve merkez vektörleri
+  let mouse = createVector(mouseX, mouseY);
+  let center = createVector(width / 2, height / 2);
+
+  // Merkezden fareye vektör
+  mouse.sub(center);
+
+  // Vektörün büyüklüğünü al
+  let m = mouse.mag();
+
+  // Büyüklüğü dikdörtgen genişliği olarak kullan
+  fill(0);
+  rect(0, 0, m, 10);
+
+  // Orijini merkeze taşı
+  translate(width / 2, height / 2);
+
+  // Vektörü çiz
+  stroke(0);
+  strokeWeight(2);
+  line(0, 0, mouse.x, mouse.y);
+
+  // Merkez noktası
+  fill(175);
+  noStroke();
+  circle(0, 0, 8);
+
+  // Bilgi
+  fill(0);
+  textSize(12);
+  text("Büyüklük: " + m.toFixed(1), -180, -100);
+}`
+                }
+            ]
+        });
+
+        // Editor: Kitaptan normalize örneği
+        new LiveEditor('#editorNormalize', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `function setup() {
+  createCanvas(400, 240);
+}
+
+function draw() {
+  background(255);
+
+  // Fare ve merkez vektörleri
+  let mouse = createVector(mouseX, mouseY);
+  let center = createVector(width / 2, height / 2);
+  mouse.sub(center);
+
+  // Orijini merkeze taşı
+  translate(width / 2, height / 2);
+
+  // 1) Orijinal vektör (gri, değişken uzunluk)
+  stroke(200);
+  strokeWeight(1);
+  line(0, 0, mouse.x, mouse.y);
+
+  // 2) Normalize et ve 50 ile çarp
+  mouse.normalize();
+  mouse.mult(50);
+
+  // Normalize edilmiş vektör (siyah, sabit 50 piksel)
+  stroke(0);
+  strokeWeight(8);
+  line(0, 0, mouse.x, mouse.y);
+
+  // Bilgi
+  fill(0);
+  noStroke();
+  textSize(11);
+  text("Gri: orijinal (değişken)", -180, -100);
+  text("Siyah: normalize × 50 (sabit)", -180, -85);
+}`
+                }
+            ]
+        });
+
+        // Editor 1: mag() kullanımı
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(220);
+
+  // Merkez noktası
+  let center = createVector(width / 2, height / 2);
+  let mouse = createVector(mouseX, mouseY);
+
+  // Merkezden fareye vektör
+  let direction = p5.Vector.sub(mouse, center);
+
+  // Büyüklük (uzunluk)
+  let magnitude = direction.mag();
+
+  // Vektörü çiz
+  stroke(0, 100, 255);
+  strokeWeight(3);
+  line(center.x, center.y, mouse.x, mouse.y);
+
+  // Büyüklüğü göster
+  fill(0);
+  noStroke();
+  textSize(16);
+  text("Büyüklük: " + magnitude.toFixed(1) + " piksel", 10, 30);
+
+  // Merkez noktası
+  fill(255, 0, 0);
+  circle(center.x, center.y, 15);
+
+  // Fare noktası
+  fill(0, 200, 0);
+  circle(mouse.x, mouse.y, 15);
+}`
+                }
+            ]
+        });
+
+        // Editor 2: setMag() örneği
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(220);
+  translate(width / 2, height / 2);
+
+  // Fareye doğru vektör
+  let direction = createVector(
+    mouseX - width/2,
+    mouseY - height/2
+  );
+
+  // Büyüklüğü 100'e ayarla (sabit uzunluk!)
+  direction.setMag(100);
+
+  // Çiz
+  stroke(0);
+  strokeWeight(2);
+  line(0, 0, direction.x, direction.y);
+
+  fill(255, 100, 100);
+  circle(direction.x, direction.y, 20);
+
+  fill(100);
+  circle(0, 0, 10);
+
+  // Açıklama
+  fill(0);
+  noStroke();
+  textSize(12);
+  text("Uzunluk her zaman 100", -60, -120);
+  text("(setMag ile sabitlendi)", -55, -105);
+}`
+                }
+            ]
+        });
+
+        // Editor 3: limit() örneği
+        new LiveEditor('#editor3', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let position;
+let velocity;
+let acceleration;
+
+function setup() {
+  createCanvas(400, 400);
+  position = createVector(width / 2, height / 2);
+  velocity = createVector(0, 0);
+}
+
+function draw() {
+  background(220);
+
+  // Fareye doğru ivme
+  let mouse = createVector(mouseX, mouseY);
+  acceleration = p5.Vector.sub(mouse, position);
+  acceleration.setMag(0.5);  // Sabit ivme
+
+  // Fizik
+  velocity.add(acceleration);
+  velocity.limit(8);  // MAKSİMUM HIZ!
+  position.add(velocity);
+
+  // Çiz
+  fill(127, 127, 220);
+  stroke(0);
+  strokeWeight(2);
+  circle(position.x, position.y, 30);
+
+  // Hız göstergesi
+  fill(0);
+  noStroke();
+  textSize(14);
+  text("Hız: " + velocity.mag().toFixed(1), 10, 25);
+  text("Limit: 8", 10, 45);
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

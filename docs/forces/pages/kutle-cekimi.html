@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kütlesel Çekim - Kuvvetler</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>🌍 Kütlesel Çekim</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Evrensel Çekim Yasası <span class="term-en">(Gravitational Attraction)</span></h2>
+
+            <p>
+                Newton, elmanın düşmesini izlerken (efsaneye göre) büyük bir şey keşfetti:
+                <strong>Her kütle, diğer her kütleyi çeker!</strong>
+            </p>
+
+            <p>
+                Bu kuvvet sadece dünyada değil, <strong>evrenin her yerinde</strong> geçerli.
+                Gezegenler güneşin etrafında döner, ay dünya etrafında döner - hepsi bu kuvvet sayesinde.
+            </p>
+
+            <div class="image-container">
+                <img src="https://raw.githubusercontent.com/nature-of-code/noc-book-2/main/content/images/02_forces/02_forces_6.png"
+                     alt="Kütlesel çekim" class="content-image">
+                <figcaption>Şekil 2.5: İki kütle arasındaki çekim kuvveti - kuvvet her iki cisme de eşit büyüklükte ama zıt yönde etki eder</figcaption>
+            </div>
+        </section>
+
+        <!-- FORMÜL -->
+        <section class="content-section">
+            <h2>Newton'un Evrensel Çekim Yasası <span class="term-en">(Universal Gravitation)</span></h2>
+
+            <div class="formula-box">
+                <div class="formula">F⃗ = G × (m₁ × m₂) / r² × r̂</div>
+                <div class="formula-desc">Çekim Kuvveti <span class="term-en">(Gravitational Force)</span> = G × (kütle₁ × kütle₂) / (mesafe)² × (yön birim vektörü)</div>
+            </div>
+
+            <h3>Formülün Parçaları</h3>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">G</span>
+                    <div class="explanation-text">
+                        <strong>Evrensel çekim sabiti</strong>. Gerçekte çok küçük bir sayı
+                        (6.674 × 10⁻¹¹). Simülasyonda istediğimiz değeri kullanabiliriz.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">m₁ × m₂</span>
+                    <div class="explanation-text">
+                        <strong>Kütlelerin çarpımı</strong>. İki cisim de büyükse, çekim kuvveti
+                        çok büyük olur.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">r²</span>
+                    <div class="explanation-text">
+                        <strong>Mesafenin karesi</strong>. Cisimler uzaklaştıkça çekim hızla azalır.
+                        Mesafe 2x → Kuvvet 4x azalır!
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box note">
+                <h4>💡 Ters Kare Yasası</h4>
+                <p>
+                    r² (mesafe karesi) birçok fizik yasasında görülür: ışık, ses, elektrik...
+                    Buna "ters kare yasası" denir. Uzaklaştıkça etki hızla zayıflar.
+                </p>
+            </div>
+        </section>
+
+        <!-- KOD UYGULAMASI -->
+        <section class="content-section">
+            <h2>Kütlesel Çekimi Kodla Uygulama</h2>
+
+            <p>
+                Bir "çekici" (attractor) nesne oluşturalım. Bu nesne tüm diğer nesneleri kendine çeker.
+            </p>
+
+            <pre><code class="language-javascript">class Attractor {
+  constructor(x, y, mass) {
+    this.position = createVector(x, y);
+    this.mass = mass;
+  }
+
+  // Mover'a çekim kuvveti uygula
+  attract(mover) {
+    // 1. Yön vektörü: mover'dan attractor'a
+    let force = p5.Vector.sub(this.position, mover.position);
+
+    // 2. Mesafe hesapla
+    let distance = force.mag();
+
+    // 3. Mesafeyi sınırla (çok yakın = patlama önleme)
+    distance = constrain(distance, 5, 25);
+
+    // 4. Kuvvet büyüklüğü: G × m1 × m2 / r²
+    let G = 1;  // Simülasyon için
+    let strength = (G * this.mass * mover.mass) / (distance * distance);
+
+    // 5. Birim vektör yap ve büyüklük uygula
+    force.normalize();
+    force.mult(strength);
+
+    return force;
+  }
+}</code></pre>
+
+            <h3>Adım Adım Açıklama</h3>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">p5.Vector.sub()</span>
+                    <div class="explanation-text">
+                        İki konum arasındaki farkı hesaplar. Sonuç, mover'dan attractor'a
+                        işaret eden bir vektördür.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">force.mag()</span>
+                    <div class="explanation-text">
+                        Vektörün büyüklüğünü (uzunluğunu) verir. Bu bizim "mesafe"miz.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">constrain()</span>
+                    <div class="explanation-text">
+                        <strong>Çok önemli!</strong> Mesafe çok küçükse (cisimler çok yakınsa),
+                        r² çok küçük olur ve kuvvet patlar. Bunu önlemek için sınırlıyoruz.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <h4>⚠️ constrain() Neden Gerekli?</h4>
+                <p>
+                    Mesafe 1 piksel olsa: r² = 1, kuvvet devasa olur!<br>
+                    Mesafe 0.1 piksel olsa: r² = 0.01, kuvvet FELAKETTİR!
+                </p>
+                <p>
+                    <code>constrain(distance, 5, 25)</code> mesafeyi 5-25 arasında tutar.
+                    Hem patlamayı önler hem de çok uzakta etkisiz kalmasını engeller.
+                </p>
+            </div>
+        </section>
+
+        <!-- İNTERAKTİF ÖRNEK 1 -->
+        <section class="content-section">
+            <h2>Örnek: Tek Çekici</h2>
+
+            <p>
+                Ortada büyük bir çekici, etrafında dönen toplar. Gezegen sistemi gibi!
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        Topların yörüngelerini izleyin. Elips mi, daire mi?
+                    </li>
+                    <li>
+                        <strong>attractor.js Satır 17:</strong> G değerini <code>2</code> yapın.
+                        <span class="expectation">Daha güçlü çekim, toplar merkeze çekilir</span>
+                    </li>
+                    <li>
+                        <strong>sketch.js:</strong> Daha fazla mover ekleyin.
+                    </li>
+                    <li>
+                        <strong>Mouse ile:</strong> Attractor'ı mouse konumuna taşıyın.
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- MOUSE İLE ÇEKİCİ -->
+        <section class="content-section">
+            <h2>Örnek: Mouse ile Çekici</h2>
+
+            <p>
+                Çekiciyi mouse ile kontrol edelim. Mouse'a tıklayınca çekici aktif olsun!
+            </p>
+
+            <div id="editor2"></div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        Canvas'ta farklı yerlere tıklayarak topları çekin.
+                    </li>
+                    <li>
+                        Basılı tutun ve hareket edin - toplar sizi takip eder!
+                    </li>
+                    <li>
+                        Topları birbirine yaklaştırmaya çalışın.
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- İKİ CİSİM PROBLEMİ -->
+        <section class="content-section">
+            <h2>Örnek: İki Cisim Birbirini Çeker</h2>
+
+            <p>
+                Newton'un 3. yasasını hatırlayın: <strong>"Her etkiye eşit ve zıt tepki vardır."</strong>
+                İki cisim birbirini eşit kuvvetle çeker!
+            </p>
+
+            <div id="editor3"></div>
+
+            <div class="explanation-list">
+                <h4>Dikkat Edilecekler:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">İki yönlü çekim</span>
+                    <div class="explanation-text">
+                        Her cisim diğerini çeker. Ama büyük cisim az hareket eder
+                        (a = F/m, büyük kütle = küçük ivme).
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Yörünge</span>
+                    <div class="explanation-text">
+                        Başlangıç hızları doğru ayarlanırsa, cisimler birbirinin etrafında döner!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- N-BODY -->
+        <section class="content-section">
+            <h2>İleri Seviye: N-Body Simülasyonu</h2>
+
+            <p>
+                Birden fazla cisim birbirini çekerse ne olur? Bu "N-body problemi" olarak bilinir
+                ve çok karmaşık yörüngeler oluşur.
+            </p>
+
+            <div id="editor4"></div>
+
+            <div class="info-box tip">
+                <h4>🎮 Oyun Fikirleri</h4>
+                <ul>
+                    <li><strong>Gravity Wars:</strong> Gezegen sisteminde uzay gemisi yönlendirme</li>
+                    <li><strong>Solar System:</strong> Güneş sistemi simülasyonu</li>
+                    <li><strong>Black Hole:</strong> Kara delik etrafında hayatta kalma</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Evrensel Çekim:</strong> F = G × m₁ × m₂ / r²</li>
+                <li><strong>Ters kare:</strong> Mesafe 2x → Kuvvet 4x azalır</li>
+                <li><strong>constrain():</strong> Mesafeyi sınırla, patlamayı önle</li>
+                <li><strong>İki yönlü:</strong> İki cisim birbirini eşit kuvvetle çeker</li>
+                <li><strong>N-body:</strong> Birden fazla cisim karmaşık dans eder</li>
+            </ul>
+        </section>
+
+        <!-- TAMAMLANDI -->
+        <section class="content-section">
+            <h2>🎉 Tebrikler!</h2>
+
+            <p>
+                <strong>Kuvvetler bölümünü tamamladınız!</strong> Artık şunları biliyorsunuz:
+            </p>
+
+            <ul>
+                <li>✅ Newton'un hareket yasaları</li>
+                <li>✅ Kuvvet biriktirme</li>
+                <li>✅ Kütle ve ivme ilişkisi</li>
+                <li>✅ Sürtünme kuvveti</li>
+                <li>✅ Sürüklenme (akışkan direnci)</li>
+                <li>✅ Kütlesel çekim</li>
+            </ul>
+
+            <p>
+                Bu bilgilerle gerçekçi fizik simülasyonları, oyunlar ve
+                interaktif sanat eserleri oluşturabilirsiniz!
+            </p>
+
+            <div class="info-box tip">
+                <h4>📚 Sonraki Adımlar</h4>
+                <p>
+                    Nature of Code'un devamında <strong>Oscillation (Salınım)</strong>,
+                    <strong>Particle Systems</strong> ve daha fazlası var.
+                    Öğrenmeye devam edin!
+                </p>
+            </div>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="suruklenme.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Sürüklenme</span>
+                </div>
+            </a>
+            <a href="../index.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Ana Sayfa</span>
+                    <span class="nav-link-title">Tüm Konular</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+        <p class="contribution-notice">Bu projeye katkıda bulunmak ister misiniz? <a href="https://github.com/gusanmaz/noc-turkce" target="_blank">GitHub</a>'daki bu repoya pull request göndererek kitabın geliştirilmesine destek olabilirsiniz! 🤝</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Tek çekici
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let attractor;
+let movers = [];
+
+function setup() {
+  createCanvas(400, 400);
+
+  // Ortada büyük çekici
+  attractor = new Attractor(width / 2, height / 2, 20);
+
+  // Etrafında dönen toplar
+  for (let i = 0; i < 5; i++) {
+    let x = random(50, 150);
+    let y = random(height);
+    let m = random(0.5, 2);
+    movers.push(new Mover(x, y, m));
+  }
+}
+
+function draw() {
+  background(30);
+
+  // Çekiciyi çiz
+  attractor.show();
+
+  for (let mover of movers) {
+    // Çekim kuvvetini hesapla ve uygula
+    let force = attractor.attract(mover);
+    mover.applyForce(force);
+
+    mover.update();
+    mover.show();
+  }
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor(x, y, mass) {
+    this.position = createVector(x, y);
+    // Başlangıç hızı (yörünge için)
+    this.velocity = createVector(0, random(1, 3));
+    this.acceleration = createVector(0, 0);
+    this.mass = mass;
+    this.diameter = mass * 16;
+  }
+
+  applyForce(force) {
+    let f = p5.Vector.div(force, this.mass);
+    this.acceleration.add(f);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    fill(100, 200, 255);
+    stroke(255);
+    strokeWeight(1);
+    circle(this.position.x, this.position.y, this.diameter);
+
+    // Hız vektörü (kuyruk)
+    stroke(100, 200, 255, 100);
+    strokeWeight(2);
+    line(
+      this.position.x, this.position.y,
+      this.position.x - this.velocity.x * 5,
+      this.position.y - this.velocity.y * 5
+    );
+  }
+}`
+                },
+                {
+                    name: 'attractor.js',
+                    content: `class Attractor {
+  constructor(x, y, mass) {
+    this.position = createVector(x, y);
+    this.mass = mass;
+  }
+
+  attract(mover) {
+    // 1. Yön vektörü
+    let force = p5.Vector.sub(this.position, mover.position);
+
+    // 2. Mesafe
+    let distance = force.mag();
+
+    // 3. Mesafeyi sınırla!
+    distance = constrain(distance, 5, 25);
+
+    // 4. Kuvvet büyüklüğü
+    let G = 1;
+    let strength = (G * this.mass * mover.mass) / (distance * distance);
+
+    // 5. Birim vektör ve büyüklük
+    force.normalize();
+    force.mult(strength);
+
+    return force;
+  }
+
+  show() {
+    // Işıldayan çekici
+    noStroke();
+    for (let i = 5; i > 0; i--) {
+      fill(255, 200, 100, 50 / i);
+      circle(this.position.x, this.position.y, this.mass * 3 + i * 10);
+    }
+    fill(255, 200, 100);
+    circle(this.position.x, this.position.y, this.mass * 2);
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Mouse ile çekici
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let attractor;
+let movers = [];
+
+function setup() {
+  createCanvas(400, 400);
+
+  attractor = new Attractor(width / 2, height / 2, 30);
+
+  // Rastgele toplar
+  for (let i = 0; i < 10; i++) {
+    let x = random(width);
+    let y = random(height);
+    movers.push(new Mover(x, y, random(0.5, 2)));
+  }
+}
+
+function draw() {
+  background(30, 30, 50);
+
+  // Mouse basılıyken çekici aktif
+  if (mouseIsPressed) {
+    attractor.position.set(mouseX, mouseY);
+    attractor.show();
+
+    for (let mover of movers) {
+      let force = attractor.attract(mover);
+      mover.applyForce(force);
+    }
+  }
+
+  for (let mover of movers) {
+    mover.update();
+    mover.checkEdges();
+    mover.show();
+  }
+
+  // Talimat
+  fill(200);
+  noStroke();
+  textSize(12);
+  if (!mouseIsPressed) {
+    text("Tıkla ve basılı tut - topları çek!", 10, height - 15);
+  } else {
+    text("🧲 Çekim aktif!", 10, height - 15);
+  }
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor(x, y, mass) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(random(-1, 1), random(-1, 1));
+    this.acceleration = createVector(0, 0);
+    this.mass = mass;
+    this.diameter = mass * 20;
+  }
+
+  applyForce(force) {
+    let f = p5.Vector.div(force, this.mass);
+    this.acceleration.add(f);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(5);  // Maksimum hız
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  checkEdges() {
+    // Ekrandan çıkmasın
+    if (this.position.x < 0) this.position.x = width;
+    if (this.position.x > width) this.position.x = 0;
+    if (this.position.y < 0) this.position.y = height;
+    if (this.position.y > height) this.position.y = 0;
+  }
+
+  show() {
+    fill(150, 200, 255, 200);
+    stroke(255);
+    strokeWeight(1);
+    circle(this.position.x, this.position.y, this.diameter);
+  }
+}`
+                },
+                {
+                    name: 'attractor.js',
+                    content: `class Attractor {
+  constructor(x, y, mass) {
+    this.position = createVector(x, y);
+    this.mass = mass;
+  }
+
+  attract(mover) {
+    let force = p5.Vector.sub(this.position, mover.position);
+    let distance = force.mag();
+    distance = constrain(distance, 10, 50);
+
+    let G = 2;
+    let strength = (G * this.mass * mover.mass) / (distance * distance);
+
+    force.normalize();
+    force.mult(strength);
+
+    return force;
+  }
+
+  show() {
+    noStroke();
+    // Glow effect
+    for (let i = 3; i > 0; i--) {
+      fill(255, 100, 100, 30 / i);
+      circle(this.position.x, this.position.y, this.mass * 2 + i * 20);
+    }
+    fill(255, 100, 100);
+    circle(this.position.x, this.position.y, this.mass);
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 3: İki cisim
+        new LiveEditor('#editor3', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let bodyA;
+let bodyB;
+
+function setup() {
+  createCanvas(400, 400);
+
+  // İki cisim - farklı kütleler
+  bodyA = new Body(150, 200, 15);  // Büyük
+  bodyB = new Body(300, 200, 3);   // Küçük
+
+  // Başlangıç hızları (yörünge için)
+  bodyA.velocity = createVector(0, 0.5);
+  bodyB.velocity = createVector(0, -2.5);
+}
+
+function draw() {
+  background(20);
+
+  // Her cisim diğerini çeker
+  let forceOnA = bodyB.attract(bodyA);
+  let forceOnB = bodyA.attract(bodyB);
+
+  bodyA.applyForce(forceOnA);
+  bodyB.applyForce(forceOnB);
+
+  bodyA.update();
+  bodyB.update();
+
+  bodyA.show();
+  bodyB.show();
+
+  // Bilgi
+  fill(200);
+  noStroke();
+  textSize(11);
+  text("İki cisim birbirini çeker", 10, 20);
+  text("Büyük cisim az hareket eder (a = F/m)", 10, 35);
+}`
+                },
+                {
+                    name: 'body.js',
+                    content: `class Body {
+  constructor(x, y, mass) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.mass = mass;
+  }
+
+  attract(other) {
+    let force = p5.Vector.sub(this.position, other.position);
+    let distance = force.mag();
+    distance = constrain(distance, 10, 200);
+
+    let G = 5;
+    let strength = (G * this.mass * other.mass) / (distance * distance);
+
+    force.normalize();
+    force.mult(strength);
+
+    return force;
+  }
+
+  applyForce(force) {
+    let f = p5.Vector.div(force, this.mass);
+    this.acceleration.add(f);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    let r = this.mass * 3;
+
+    // Kütle büyüklüğüne göre renk
+    if (this.mass > 10) {
+      fill(255, 200, 100);  // Büyük = sarı
+    } else {
+      fill(100, 200, 255);  // Küçük = mavi
+    }
+
+    stroke(255);
+    strokeWeight(1);
+    circle(this.position.x, this.position.y, r * 2);
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 4: N-body
+        new LiveEditor('#editor4', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let bodies = [];
+
+function setup() {
+  createCanvas(400, 400);
+
+  // 5 cisim rastgele konumda
+  for (let i = 0; i < 5; i++) {
+    let x = random(100, width - 100);
+    let y = random(100, height - 100);
+    let mass = random(5, 15);
+    bodies.push(new Body(x, y, mass));
+
+    // Rastgele başlangıç hızı
+    bodies[i].velocity = p5.Vector.random2D();
+    bodies[i].velocity.mult(random(1, 2));
+  }
+}
+
+function draw() {
+  // Hafif iz bırakma efekti
+  background(20, 20, 30, 25);
+
+  // Her cisim diğer HER cismi çeker
+  for (let i = 0; i < bodies.length; i++) {
+    for (let j = 0; j < bodies.length; j++) {
+      if (i !== j) {
+        let force = bodies[j].attract(bodies[i]);
+        bodies[i].applyForce(force);
+      }
+    }
+  }
+
+  // Güncelle ve çiz
+  for (let body of bodies) {
+    body.update();
+    body.show();
+  }
+
+  // Bilgi
+  fill(200);
+  noStroke();
+  textSize(11);
+  text("N-Body: Her cisim diğer herkesi çeker", 10, 20);
+}`
+                },
+                {
+                    name: 'body.js',
+                    content: `class Body {
+  constructor(x, y, mass) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.mass = mass;
+    this.color = color(
+      random(150, 255),
+      random(150, 255),
+      random(150, 255)
+    );
+  }
+
+  attract(other) {
+    let force = p5.Vector.sub(this.position, other.position);
+    let distance = force.mag();
+    distance = constrain(distance, 20, 200);
+
+    let G = 2;
+    let strength = (G * this.mass * other.mass) / (distance * distance);
+
+    force.normalize();
+    force.mult(strength);
+
+    return force;
+  }
+
+  applyForce(force) {
+    let f = p5.Vector.div(force, this.mass);
+    this.acceleration.add(f);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(4);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+
+    // Ekran sınırları (yumuşak sekme)
+    if (this.position.x < 20 || this.position.x > width - 20) {
+      this.velocity.x *= -0.8;
+    }
+    if (this.position.y < 20 || this.position.y > height - 20) {
+      this.velocity.y *= -0.8;
+    }
+  }
+
+  show() {
+    let r = this.mass * 2;
+    noStroke();
+    fill(this.color);
+    circle(this.position.x, this.position.y, r);
+
+    // Parlama
+    fill(255, 255, 255, 50);
+    circle(this.position.x - r/4, this.position.y - r/4, r/3);
+  }
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

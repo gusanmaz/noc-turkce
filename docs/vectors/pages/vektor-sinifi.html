@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5.Vector Sınıfı - Vektörler</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>📦 p5.Vector Sınıfı</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>p5.Vector Sınıfı <span class="term-en">(The p5.Vector Class)</span></h2>
+
+            <p>
+                p5.js, vektörlerle çalışmayı kolaylaştıran bir <code>p5.Vector</code> sınıfı sunar.
+                Bu sınıf x ve y değerlerini bir arada tutar ve üzerinde matematiksel işlemler
+                yapmamızı sağlar.
+            </p>
+
+            <div class="info-box note">
+                <h4>💡 Sınıf (Class) Nedir?</h4>
+                <p>
+                    Sınıf, bir "şablon" gibidir. <code>p5.Vector</code> sınıfı, x ve y değerlerini
+                    tutan ve toplama, çıkarma gibi işlemler yapabilen nesneler oluşturur.
+                </p>
+            </div>
+        </section>
+
+        <!-- CREATEVECTOR -->
+        <section class="content-section">
+            <h2>createVector() ile Vektör Oluşturma</h2>
+
+            <p>
+                Yeni bir vektör oluşturmak için <code>createVector(x, y)</code> fonksiyonunu kullanırız:
+            </p>
+
+            <pre><code class="language-javascript">// Vektör oluşturma
+let position = createVector(100, 50);
+
+// x ve y değerlerine erişim
+console.log(position.x);  // 100
+console.log(position.y);  // 50
+
+// Değerleri değiştirme
+position.x = 200;
+position.y = 150;
+
+// Veya set() ile
+position.set(200, 150);</code></pre>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">createVector(x, y)</span>
+                    <div class="explanation-text">
+                        Yeni bir p5.Vector nesnesi oluşturur. x ve y başlangıç değerleridir.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">.x ve .y</span>
+                    <div class="explanation-text">
+                        Vektörün x ve y bileşenlerine erişmek için kullanılır.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">.set(x, y)</span>
+                    <div class="explanation-text">
+                        Her iki bileşeni aynı anda değiştirmek için.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- İLK VEKTÖRLÜİ ÖRNEK -->
+        <section class="content-section">
+            <h2>İlk Vektörlü Örnek: Zıplayan Top</h2>
+
+            <p>
+                Önceki bölümdeki zıplayan topu şimdi vektörlerle yazalım:
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Vektörsüz vs Vektörlü Karşılaştırma:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Önceki</span>
+                    <div class="explanation-text">
+                        <code>let x, y, xSpeed, ySpeed;</code> - 4 ayrı değişken
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Şimdi</span>
+                    <div class="explanation-text">
+                        <code>let position, velocity;</code> - 2 vektör nesnesi
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <h4>⚠️ Henüz add() Kullanmadık!</h4>
+                <p>
+                    Bu örnekte hala <code>position.x += velocity.x</code> yazıyoruz.
+                    Sonraki bölümde <code>position.add(velocity)</code> öğreneceğiz -
+                    çok daha temiz!
+                </p>
+            </div>
+        </section>
+
+        <!-- VEKTÖRLERİN AVANTAJLARI -->
+        <section class="content-section">
+            <h2>Vektör Kullanmanın Avantajları</h2>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_5.png"
+                     alt="Konum ve hız vektörleri bilgisayar grafiğinde" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.4:</strong> Bilgisayar grafiği penceresinde konum ve hız vektörleri.
+                    Konum vektörü (position) nesnenin <em>nerede</em> olduğunu, hız vektörü (velocity)
+                    ise nesnenin her frame'de <em>ne kadar</em> ve <em>hangi yönde</em> hareket edeceğini gösterir.
+                    Her frame'de: <code>position = position + velocity</code>
+                </figcaption>
+            </div>
+
+            <p>
+                Şimdilik kod çok farklı görünmüyor. Asıl güç, vektör işlemlerini
+                (toplama, çıkarma, çarpma) öğrendiğimizde ortaya çıkacak.
+            </p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>İşlem</th>
+                        <th>Vektörsüz</th>
+                        <th>Vektörlü</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Hareket</td>
+                        <td><code>x += vx; y += vy;</code></td>
+                        <td><code>pos.add(vel);</code></td>
+                    </tr>
+                    <tr>
+                        <td>Mesafe</td>
+                        <td><code>sqrt((x2-x1)² + (y2-y1)²)</code></td>
+                        <td><code>p5.Vector.dist(a, b)</code></td>
+                    </tr>
+                    <tr>
+                        <td>Yön</td>
+                        <td><code>atan2(y, x)</code></td>
+                        <td><code>v.heading()</code></td>
+                    </tr>
+                    <tr>
+                        <td>Normalize</td>
+                        <td>Karmaşık formüller</td>
+                        <td><code>v.normalize()</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- MOVER SINIFI -->
+        <section class="content-section">
+            <h2>Mover Sınıfı Tanıtımı <span class="term-en">(The Mover Class)</span></h2>
+
+            <p>
+                Hareket eden nesneler için bir <code>Mover</code> sınıfı oluşturalım.
+                Bu sınıf, position ve velocity vektörlerini içerecek:
+            </p>
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>Mover Sınıfı Yapısı:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">constructor()</span>
+                    <div class="explanation-text">
+                        Yeni Mover oluşturulduğunda çalışır. Rastgele konum ve hız atar.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">update()</span>
+                    <div class="explanation-text">
+                        Her frame'de çağrılır. Konumu hız kadar değiştirir.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">show()</span>
+                    <div class="explanation-text">
+                        Nesneyi ekrana çizer.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">checkEdges()</span>
+                    <div class="explanation-text">
+                        Kenar kontrolü - ekrandan çıkınca karşı taraftan girer.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>createVector(x, y):</strong> Yeni vektör oluşturur</li>
+                <li><strong>.x ve .y:</strong> Vektör bileşenlerine erişim</li>
+                <li><strong>.set(x, y):</strong> Bileşenleri değiştir</li>
+                <li><strong>p5.Vector:</strong> x ve y'yi bir arada tutan sınıf</li>
+                <li><strong>Mover:</strong> Hareket eden nesne sınıfı</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="vektor-nedir.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Vektör Nedir?</span>
+                </div>
+            </a>
+            <a href="vektor-toplama.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Vektör Toplama</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+        <p class="contribution-notice">Bu projeye katkıda bulunmak ister misiniz? <a href="https://github.com/gusanmaz/noc-turkce" target="_blank">GitHub</a>'daki bu repoya pull request göndererek kitabın geliştirilmesine destek olabilirsiniz! 🤝</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Vektörlü zıplayan top
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `// Artık vektör kullanıyoruz!
+let position;
+let velocity;
+
+function setup() {
+  createCanvas(400, 400);
+
+  // Vektör oluştur
+  position = createVector(width / 2, height / 2);
+  velocity = createVector(3, 2);
+}
+
+function draw() {
+  background(220);
+
+  // Konumu güncelle (henüz add() kullanmıyoruz)
+  position.x += velocity.x;
+  position.y += velocity.y;
+
+  // Kenar kontrolü
+  if (position.x > width - 15 || position.x < 15) {
+    velocity.x *= -1;
+  }
+  if (position.y > height - 15 || position.y < 15) {
+    velocity.y *= -1;
+  }
+
+  // Topu çiz
+  fill(127, 127, 220);
+  stroke(0);
+  strokeWeight(2);
+  circle(position.x, position.y, 30);
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Mover sınıfı
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let mover;
+
+function setup() {
+  createCanvas(400, 400);
+  mover = new Mover();
+}
+
+function draw() {
+  background(220);
+
+  mover.update();
+  mover.checkEdges();
+  mover.show();
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor() {
+    // Rastgele başlangıç konumu
+    this.position = createVector(
+      random(width),
+      random(height)
+    );
+
+    // Rastgele hız
+    this.velocity = createVector(
+      random(-3, 3),
+      random(-3, 3)
+    );
+  }
+
+  update() {
+    // Konumu hız kadar değiştir
+    this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
+  }
+
+  show() {
+    fill(127, 200, 127);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, 30);
+  }
+
+  checkEdges() {
+    // Ekrandan çıkınca karşı taraftan gir
+    if (this.position.x > width) {
+      this.position.x = 0;
+    } else if (this.position.x < 0) {
+      this.position.x = width;
+    }
+
+    if (this.position.y > height) {
+      this.position.y = 0;
+    } else if (this.position.y < 0) {
+      this.position.y = height;
+    }
+  }
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

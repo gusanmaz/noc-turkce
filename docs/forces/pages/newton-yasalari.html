@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newton Yasaları - Kuvvetler</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>⚖️ Newton Yasaları</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Hareketin Temeli: Newton Yasaları</h2>
+
+            <p>
+                Fizik simülasyonları oluşturmanın temeli, Sir Isaac Newton'un 17. yüzyılda keşfettiği
+                <strong>hareket yasalarını</strong> anlamaktan geçer. Bu yasalar, gerçek dünyada
+                nesnelerin nasıl hareket ettiğini açıklar.
+            </p>
+
+            <div class="info-box note">
+                <h4>💡 Neden Newton?</h4>
+                <p>
+                    p5.js'te bir daire çizip hareket ettirmek kolay. Ama gerçekçi görünmesi için
+                    fizik kurallarına ihtiyacımız var. Newton yasaları bize bu kuralları veriyor.
+                </p>
+            </div>
+        </section>
+
+        <!-- 1. YASA -->
+        <section class="content-section">
+            <h2>Newton'un 1. Yasası: Eylemsizlik <span class="term-en">(Inertia)</span></h2>
+
+            <div class="formula-box">
+                <div class="formula">"Hareketsiz cisim hareketsiz kalır, hareketli cisim hareketine devam eder"</div>
+                <div class="formula-desc">...dış bir kuvvet uygulanmadığı sürece</div>
+            </div>
+
+            <h3>Bu Ne Demek?</h3>
+            <p>
+                Bir topun masanın üzerinde durduğunu düşünün. Siz itmedikçe top orada duracak.
+                Şimdi topu yuvarladığınızı düşünün - sürtünme ve hava direnci olmasa,
+                top <strong>sonsuza kadar</strong> yuvarlanmaya devam ederdi!
+            </p>
+
+            <h3>Koddaki Karşılığı</h3>
+            <p>
+                Eğer bir nesneye hiç kuvvet uygulamazsak (<code>acceleration = 0</code>),
+                hızı (<code>velocity</code>) sabit kalır:
+            </p>
+
+            <pre><code class="language-javascript">// Kuvvet yoksa ivme sıfır
+// İvme sıfırsa hız değişmez
+// Hız değişmezse cisim aynı hızda devam eder
+
+update() {
+  // acceleration zaten (0, 0) ise:
+  this.velocity.add(this.acceleration);  // hız değişmez
+  this.position.add(this.velocity);       // aynı hızla hareket
+}</code></pre>
+
+            <div class="image-container">
+                <img src="https://raw.githubusercontent.com/nature-of-code/noc-book-2/main/content/images/02_forces/02_forces_2.png"
+                     alt="Oyuncak fare dengeli kuvvetler" class="content-image">
+                <figcaption>Şekil 2.1: Oyuncak fare hareket etmiyor çünkü tüm kuvvetler birbirini dengeliyor</figcaption>
+            </div>
+        </section>
+
+        <!-- 2. YASA -->
+        <section class="content-section">
+            <h2>Newton'un 2. Yasası: F⃗ = m × a⃗ <span class="term-en">(Force = Mass × Acceleration)</span></h2>
+
+            <div class="formula-box">
+                <div class="formula">F⃗ = m × a⃗</div>
+                <div class="formula-desc">Kuvvet (vektör) = Kütle (skaler) × İvme (vektör)</div>
+            </div>
+
+            <h3>Formülü Anlayalım</h3>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">F (Force)</span>
+                    <div class="explanation-text">
+                        <strong>Kuvvet</strong> - Bir cismi iten veya çeken şey.
+                        Vektördür: hem yönü hem büyüklüğü var.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">m (Mass)</span>
+                    <div class="explanation-text">
+                        <strong>Kütle</strong> - Cismin "ağırlığı". Daha ağır cismi hareket
+                        ettirmek daha zordur.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">a (Acceleration)</span>
+                    <div class="explanation-text">
+                        <strong>İvme</strong> - Hızın ne kadar hızlı değiştiği.
+                        Vektördür: hem yönü hem büyüklüğü var.
+                    </div>
+                </div>
+            </div>
+
+            <h3>Bizim İçin Önemli Form:</h3>
+
+            <div class="formula-box">
+                <div class="formula">a⃗ = F⃗ / m</div>
+                <div class="formula-desc">İvme (vektör) = Kuvvet (vektör) / Kütle (skaler)</div>
+            </div>
+
+            <p>
+                <strong>Neden bu form?</strong> Çünkü simülasyonlarda kuvveti biliyoruz (yerçekimi, rüzgar vb.)
+                ve ivmeyi hesaplamak istiyoruz. İvmeyi bulunca hareket formüllerimize ekleyebiliriz.
+            </p>
+
+            <h3>Gerçek Hayat Örneği</h3>
+            <p>
+                Aynı kuvvetle bir <strong>ping-pong topu</strong> ve bir <strong>bowling topu</strong> ittiğinizi düşünün:
+            </p>
+            <ul>
+                <li>Ping-pong topu (küçük kütle) → Büyük ivme → Hızla uçar</li>
+                <li>Bowling topu (büyük kütle) → Küçük ivme → Yavaş hareket eder</li>
+            </ul>
+        </section>
+
+        <!-- 3. YASA -->
+        <section class="content-section">
+            <h2>Newton'un 3. Yasası: Etki-Tepki <span class="term-en">(Action-Reaction)</span></h2>
+
+            <div class="formula-box">
+                <div class="formula">"Her etkiye eşit ve zıt bir tepki vardır"</div>
+                <div class="formula-desc">F⃗₁₂ = -F⃗₂₁</div>
+            </div>
+
+            <h3>Bu Ne Demek?</h3>
+            <p>
+                Duvara yumruk attığınızda, duvar da size aynı kuvvetle yumruk atar!
+                (O yüzden eliniz acır 😅)
+            </p>
+
+            <p>
+                Roketler böyle çalışır: roket gazı aşağı iter, gaz da roketi yukarı iter.
+            </p>
+
+            <div class="image-container">
+                <img src="https://raw.githubusercontent.com/nature-of-code/noc-book-2/main/content/images/02_forces/02_forces_3.png"
+                     alt="Newton'un 3. yasası - paten ile kamyon itme" class="content-image">
+                <figcaption>Şekil 2.2: Patenli birinin kamyonu itmesi - itme kuvveti eşit ve zıt, ama sonuçlar farklı</figcaption>
+            </div>
+
+            <div class="info-box tip">
+                <h4>🎮 Oyunlarda Kullanımı</h4>
+                <p>
+                    Bu yasayı her zaman modellemeyeceğiz. Basit simülasyonlarda genellikle
+                    sadece bir tarafa etki eden kuvveti düşünürüz. İleri seviyede
+                    (çarpışma fiziği gibi) bu yasa önemli olur.
+                </p>
+            </div>
+        </section>
+
+        <!-- İLK KOD ÖRNEĞİ -->
+        <section class="content-section">
+            <h2>En Basit Örnek: Düşen Top</h2>
+
+            <p>
+                Newton yasalarını anladık. Şimdi en basit fizik simülasyonunu yapalım:
+                <strong>yerçekimi etkisiyle düşen bir top</strong>.
+            </p>
+
+            <h3>Kodun Mantığı</h3>
+            <ol>
+                <li>Topun <strong>konumu</strong> (position) ve <strong>hızı</strong> (velocity) var</li>
+                <li>Her frame'de <strong>yerçekimi kuvveti</strong> uyguluyoruz</li>
+                <li>Kuvvet → İvme → Hız değişimi → Konum değişimi</li>
+            </ol>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Satır Satır Açıklama:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 1-2</span>
+                    <div class="explanation-text">
+                        <code>position</code> ve <code>velocity</code> vektörleri tanımlıyoruz.
+                        Bunlar topun nerede olduğunu ve ne hızla hareket ettiğini tutar.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 5-8</span>
+                    <div class="explanation-text">
+                        <code>setup()</code> fonksiyonu bir kez çalışır. Canvas oluşturuyoruz
+                        ve topun başlangıç değerlerini ayarlıyoruz.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 13</span>
+                    <div class="explanation-text">
+                        <strong>Yerçekimi kuvveti!</strong> <code>(0, 0.2)</code> vektörü
+                        x=0 (yatay yok), y=0.2 (aşağı doğru) demek.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 16</span>
+                    <div class="explanation-text">
+                        Newton'un 2. yasası! İvmeyi hıza ekliyoruz.
+                        Her frame'de hız biraz daha artar (hızlanma).
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 17</span>
+                    <div class="explanation-text">
+                        Hızı konuma ekliyoruz. Top aşağı doğru hareket eder.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 20-24</span>
+                    <div class="explanation-text">
+                        <strong>Yerden sekme!</strong> Top canvas'ın altına ulaşınca
+                        hızını tersine çeviriyoruz (<code>*= -0.9</code>).
+                        0.9 çarpanı enerji kaybını simüle eder.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 13:</strong> Yerçekimini <code>createVector(0, 0.5)</code> yapın.
+                        <span class="expectation">Beklenti: Top daha hızlı düşer (daha güçlü yerçekimi)</span>
+                    </li>
+                    <li>
+                        <strong>Satır 13:</strong> <code>createVector(0.1, 0.2)</code> yapın.
+                        <span class="expectation">Beklenti: Top hem aşağı hem sağa hareket eder</span>
+                    </li>
+                    <li>
+                        <strong>Satır 22:</strong> <code>-0.9</code> yerine <code>-1.0</code> yapın.
+                        <span class="expectation">Beklenti: Top enerji kaybetmeden seçer</span>
+                    </li>
+                    <li>
+                        <strong>Satır 22:</strong> <code>-0.5</code> yapın.
+                        <span class="expectation">Beklenti: Top çok az seçer (yüksek enerji kaybı)</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- MOVER CLASS -->
+        <section class="content-section">
+            <h2>Mover Sınıfı: Daha Düzenli Kod</h2>
+
+            <p>
+                Yukarıdaki kod çalışıyor ama birden fazla top istesek kod karmaşıklaşır.
+                <strong>Object-Oriented Programming (OOP)</strong> kullanarak bir
+                <code>Mover</code> sınıfı oluşturalım.
+            </p>
+
+            <div class="info-box note">
+                <h4>💡 Sınıf (Class) Nedir?</h4>
+                <p>
+                    Sınıf, bir "şablon" gibidir. Örneğin <code>Mover</code> sınıfı "hareket eden nesne"
+                    şablonudur. Bu şablondan istediğimiz kadar top oluşturabiliriz.
+                </p>
+            </div>
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>Mover Sınıfı Açıklaması:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">constructor()</span>
+                    <div class="explanation-text">
+                        Yeni Mover oluşturulduğunda çağrılır. Başlangıç değerlerini ayarlar.
+                        <code>this</code> "bu nesne" demek.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">applyForce()</span>
+                    <div class="explanation-text">
+                        <strong>EN ÖNEMLİ FONKSİYON!</strong> Dışarıdan kuvvet alır ve ivmeye ekler.
+                        Newton'un 2. yasası burada: <code>a = F/m</code> (şimdilik m=1).
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">update()</span>
+                    <div class="explanation-text">
+                        Fizik hesaplamalarını yapar. Sıralama önemli: önce hız güncellenir,
+                        sonra konum. Son olarak ivme sıfırlanır (bir sonraki frame için).
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">show()</span>
+                    <div class="explanation-text">
+                        Nesneyi ekrana çizer. Fizik ve çizim ayrı tutulur (iyi pratik!).
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">checkEdges()</span>
+                    <div class="explanation-text">
+                        Kenar kontrolü. Top canvas dışına çıkmasın diye.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <h4>⚠️ İvmeyi Neden Sıfırlıyoruz?</h4>
+                <p>
+                    <code>this.acceleration.mult(0)</code> satırı çok önemli!
+                    İvme, o anki kuvvetlerin toplamıdır. Her frame sonunda sıfırlamazsak,
+                    kuvvetler sürekli birikir ve top kontrolden çıkar.
+                </p>
+                <p>
+                    Düşünün: Yerçekimi her frame'de uygulanıyor. Sıfırlamazsak,
+                    her frame'de yerçekimi bir öncekinin üzerine eklenir!
+                </p>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>sketch.js Satır 8:</strong> <code>wind</code> değerini <code>createVector(0.05, 0)</code> yapın.
+                        <span class="expectation">Beklenti: Top sağa doğru rüzgarla itilir</span>
+                    </li>
+                    <li>
+                        <strong>mover.js Satır 26:</strong> <code>mult(0)</code> satırını silin veya yorum yapın.
+                        <span class="expectation">Beklenti: Top hızla kontrolden çıkar! (ivme birikiyor)</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>1. Yasa:</strong> Kuvvet yoksa hareket değişmez</li>
+                <li><strong>2. Yasa:</strong> F = ma → a = F/m</li>
+                <li><strong>3. Yasa:</strong> Her etkiye eşit-zıt tepki (şimdilik kullanmıyoruz)</li>
+                <li><strong>applyForce():</strong> Kuvveti ivmeye çevirir</li>
+                <li><strong>İvme sıfırlama:</strong> Her frame sonunda ivmeyi sıfırla!</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="../index.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Geri</span>
+                    <span class="nav-link-title">Ana Sayfa</span>
+                </div>
+            </a>
+            <a href="kuvvet-biriktirme.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Kuvvet Biriktirme</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+        <p class="contribution-notice">Bu projeye katkıda bulunmak ister misiniz? <a href="https://github.com/gusanmaz/noc-turkce" target="_blank">GitHub</a>'daki bu repoya pull request göndererek kitabın geliştirilmesine destek olabilirsiniz! 🤝</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: En basit düşen top
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let position;
+let velocity;
+
+function setup() {
+  createCanvas(400, 400);
+  position = createVector(width / 2, 50);
+  velocity = createVector(0, 0);
+}
+
+function draw() {
+  background(220);
+
+  // Yerçekimi kuvveti (aşağı yönlü)
+  let gravity = createVector(0, 0.2);
+
+  // Newton'un 2. yasası: F = ma (m=1 varsayıyoruz)
+  velocity.add(gravity);  // ivme hızı değiştirir
+  position.add(velocity); // hız konumu değiştirir
+
+  // Yerden sekme
+  if (position.y > height - 15) {
+    position.y = height - 15;
+    velocity.y *= -0.9; // enerji kaybıyla sekme
+  }
+
+  // Topu çiz
+  fill(127);
+  stroke(0);
+  strokeWeight(2);
+  circle(position.x, position.y, 30);
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Mover sınıfı ile
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let mover;
+
+function setup() {
+  createCanvas(400, 400);
+  mover = new Mover(width / 2, 50);
+}
+
+function draw() {
+  background(220);
+
+  // Kuvvetler
+  let gravity = createVector(0, 0.2);
+  let wind = createVector(0, 0); // Rüzgar yok
+
+  // Kuvvetleri uygula
+  mover.applyForce(gravity);
+  mover.applyForce(wind);
+
+  // Güncelle ve çiz
+  mover.update();
+  mover.checkEdges();
+  mover.show();
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor(x, y) {
+    // Başlangıç değerleri
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+  }
+
+  // Kuvvet uygula - Newton'un 2. yasası!
+  applyForce(force) {
+    // a = F / m (şimdilik m = 1)
+    this.acceleration.add(force);
+  }
+
+  // Fizik güncellemesi
+  update() {
+    // Hızı güncelle (ivme ekle)
+    this.velocity.add(this.acceleration);
+    // Konumu güncelle (hız ekle)
+    this.position.add(this.velocity);
+    // İvmeyi sıfırla! (çok önemli)
+    this.acceleration.mult(0);
+  }
+
+  // Çizim
+  show() {
+    fill(127);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, 30);
+  }
+
+  // Kenar kontrolü
+  checkEdges() {
+    if (this.position.y > height - 15) {
+      this.position.y = height - 15;
+      this.velocity.y *= -0.9;
+    }
+    if (this.position.x > width - 15) {
+      this.position.x = width - 15;
+      this.velocity.x *= -0.9;
+    }
+    if (this.position.x < 15) {
+      this.position.x = 15;
+      this.velocity.x *= -0.9;
+    }
+  }
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarkaç - Salınım</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>🕰️ Sarkaç</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Sarkaç Hareketi <span class="term-en">(Pendulum)</span></h2>
+
+            <p>
+                Sarkaç, fizikteki en klasik örneklerden biridir: bir ipin ucuna bağlı bir ağırlık,
+                yerçekimi etkisiyle ileri-geri sallanır. Bu hareket aslında
+                <strong>basit harmonik harekettir</strong> (küçük açılar için).
+            </p>
+
+            <div class="image-container">
+                <img src="../images/pendulum-net-force.png" alt="Sarkaç kuvvetleri" class="content-image">
+                <figcaption>Şekil 3.20: Sarkaç üzerindeki kuvvetler. Yerçekimi kuvveti (Fg) aşağı doğru çekerken, ip
+                    gerilimi (T) sarkacı merkeze doğru çeker. Hareket, yerçekiminin teğetsel bileşeni (Fp) tarafından
+                    sağlanır.</figcaption>
+            </div>
+
+            <div class="info-box note">
+                <h4>💡 Neden Sarkaç Önemli?</h4>
+                <p>
+                    Saatlerden sensörlere, müzik metronomlarından fizik deneylerlerine kadar
+                    sarkaçlar her yerde kullanılır. Ayrıca kuvvet tabanlı simülasyonlar için
+                    harika bir örnek!
+                </p>
+            </div>
+        </section>
+
+        <!-- FİZİK -->
+        <section class="content-section">
+            <h2>Sarkaç Fiziği <span class="term-en">(Pendulum Physics)</span></h2>
+
+            <p>
+                Sarkaç üzerinde iki ana kuvvet etkir:
+            </p>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">Yerçekimi (Fg)</span>
+                    <div class="explanation-text">
+                        Aşağı doğru çeker. Büyüklüğü: <code>m × g</code>
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">İp Gerilimi (T)</span>
+                    <div class="explanation-text">
+                        İp boyunca merkeze doğru. Sarkacın uzamasını engeller.
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                Sarkaç hareketi için önemli olan, yerçekiminin <strong>teğetsel bileşenidir</strong>
+                (salınım yönündeki bileşen):
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">F<sub>θ</sub> = -mg × sin(θ)</div>
+                <div class="formula-desc">Teğetsel kuvvet = -kütle × yerçekimi × sin(açı)</div>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/pendulum-gravity.png" alt="Sarkaç açısal ivme bileşenleri" class="content-image">
+                <figcaption>Şekil 3.19: Yerçekimi kuvvetinin bileşenlerine ayrılması.</figcaption>
+            </div>
+
+            <p>
+                Newton'un 2. yasası ile açısal ivmeyi bulabiliriz:
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">α = -(g/L) × sin(θ)</div>
+                <div class="formula-desc">Açısal ivme = -(yerçekimi/ip uzunluğu) × sin(açı)</div>
+            </div>
+
+            <div class="info-box tip">
+                <h4>🎮 Simülasyonda Sadeleştirme</h4>
+                <p>
+                    Gerçek dünyada g ≈ 9.8 m/s². Simülasyonda piksel kullandığımız için
+                    <code>g</code> değerini istediğimiz gibi ayarlayabiliriz.
+                    Genellikle 0.4 - 1.0 arası değerler iyi sonuç verir.
+                </p>
+            </div>
+        </section>
+
+        <!-- BASİT SARKAC -->
+        <section class="content-section">
+            <h2>Basit Sarkaç Örneği</h2>
+
+            <p>
+                Önce en basit haliyle sarkaç kodlayalım:
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Satır Satır Açıklama:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 1-5</span>
+                    <div class="explanation-text">
+                        Sarkaç değişkenleri: <code>angle</code> mevcut açı,
+                        <code>angularVelocity</code> açısal hız,
+                        <code>r</code> ip uzunluğu, <code>gravity</code> yerçekimi.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 14</span>
+                    <div class="explanation-text">
+                        <strong>Sarkaç formülü!</strong> Açısal ivme = -(g/L) × sin(θ).
+                        Negatif işaret: sarkacı dengeye doğru çeken geri getirici kuvvet.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 17-18</span>
+                    <div class="explanation-text">
+                        Klasik fizik güncellemesi: önce ivme hızı değiştirir,
+                        sonra hız açıyı değiştirir.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 21</span>
+                    <div class="explanation-text">
+                        <code>damping</code> enerji kaybını simüle eder.
+                        Gerçek dünyada sürtünme ve hava direnci yüzünden sarkaç yavaş yavaş durur.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 27-28</span>
+                    <div class="explanation-text">
+                        Kutupsal → Kartezyen dönüşümü. Pivot noktasına göre topu konumlandırıyoruz.
+                        Dikkat: angle - HALF_PI çünkü sarkaç aşağı doğru başlıyor.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 5:</strong> <code>gravity = 1.0</code> yapın.
+                        <span class="expectation">Beklenti: Daha hızlı salınım (güçlü yerçekimi)</span>
+                    </li>
+                    <li>
+                        <strong>Satır 3:</strong> <code>r = 200</code> yapın.
+                        <span class="expectation">Beklenti: Daha yavaş salınım (uzun ip)</span>
+                    </li>
+                    <li>
+                        <strong>Satır 21:</strong> <code>damping = 1.0</code> yapın.
+                        <span class="expectation">Beklenti: Sarkaç hiç yavaşlamaz (enerji kaybı yok)</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- PENDULUM SINIFI -->
+        <section class="content-section">
+            <h2>Pendulum Sınıfı <span class="term-en">(Pendulum Class)</span></h2>
+
+            <p>
+                Birden fazla sarkaç veya etkileşimli sarkaç için bir sınıf oluşturalım:
+            </p>
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>Sınıf Özellikleri:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">pivot</span>
+                    <div class="explanation-text">
+                        İpin bağlı olduğu nokta (sabit veya hareketli olabilir).
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">bob</span>
+                    <div class="explanation-text">
+                        Sallanan ağırlık. Pivot + açı + uzunluktan hesaplanır.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">dragging</span>
+                    <div class="explanation-text">
+                        Fare ile sarkacı sürükleme durumu.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÇİFT SARKAC -->
+        <section class="content-section">
+            <h2>İleri Seviye: Çift Sarkaç <span class="term-en">(Double Pendulum)</span></h2>
+
+            <p>
+                Bir sarkacın ucuna başka bir sarkaç bağlarsak <strong>çift sarkaç</strong> elde ederiz.
+                Bu sistem <strong>kaotik</strong> davranış gösterir - küçük başlangıç farkları
+                tamamen farklı hareketlere yol açar!
+            </p>
+
+
+
+            <div class="info-box warning">
+                <h4>⚠️ Kaos Teorisi</h4>
+                <p>
+                    Çift sarkaç, "deterministik kaos" için klasik bir örnektir.
+                    Denklemler tam olarak bilinmesine rağmen, başlangıç koşullarındaki
+                    minik farklılıklar zamanla büyük farklara yol açar
+                    (kelebek etkisi).
+                </p>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Sarkaç:</strong> İpe bağlı ağırlık, yerçekimi ile salınır</li>
+                <li><strong>α = -(g/L) × sin(θ):</strong> Açısal ivme formülü</li>
+                <li><strong>Damping:</strong> Enerji kaybı (sürtünme simülasyonu)</li>
+                <li><strong>Bob:</strong> Sallanan ağırlık</li>
+                <li><strong>Pivot:</strong> İpin bağlı olduğu sabit nokta</li>
+                <li><strong>Çift Sarkaç:</strong> Kaotik hareket örneği</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="basit-harmonik-hareket.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Basit Harmonik Hareket</span>
+                </div>
+            </a>
+            <a href="yaylar.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Yaylar</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+        <p class="contribution-notice">Bu projeye katkıda bulunmak ister misiniz? <a href="https://github.com/gusanmaz/noc-turkce" target="_blank">GitHub</a>'daki bu repoya pull request göndererek kitabın geliştirilmesine destek olabilirsiniz! 🤝</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Basit sarkaç
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let angle = PI / 4;    // Başlangıç açısı (45 derece)
+let angularVelocity = 0;
+let r = 150;           // İp uzunluğu
+let damping = 0.995;   // Enerji kaybı (sürtünme)
+let gravity = 0.4;     // Yerçekimi
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(220);
+
+  // Sarkaç formülü: açısal ivme
+  let angularAcceleration = (-gravity / r) * sin(angle);
+
+  // Fizik güncellemesi
+  angularVelocity += angularAcceleration;
+  angle += angularVelocity;
+
+  // Damping (enerji kaybı)
+  angularVelocity *= damping;
+
+  // Pivot noktası (üst orta)
+  let pivotX = width / 2;
+  let pivotY = 50;
+
+  // Bob pozisyonu (kutupsal → kartezyen)
+  let bobX = pivotX + r * sin(angle);
+  let bobY = pivotY + r * cos(angle);
+
+  // Çiz
+  stroke(0);
+  strokeWeight(2);
+
+  // İp
+  line(pivotX, pivotY, bobX, bobY);
+
+  // Pivot
+  fill(100);
+  circle(pivotX, pivotY, 10);
+
+  // Bob
+  fill(127, 127, 220);
+  circle(bobX, bobY, 40);
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Pendulum sınıfı (etkileşimli)
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let pendulum;
+
+function setup() {
+  createCanvas(400, 400);
+  // Pivot noktası, ip uzunluğu, başlangıç açısı
+  pendulum = new Pendulum(width/2, 50, 150, PI/4);
+}
+
+function draw() {
+  background(220);
+
+  pendulum.update();
+  pendulum.show();
+
+  // Kullanım ipucu
+  fill(100);
+  noStroke();
+  textAlign(CENTER);
+  text("Topu sürükleyip bırakın!", width/2, height - 20);
+}
+
+function mousePressed() {
+  pendulum.clicked(mouseX, mouseY);
+}
+
+function mouseDragged() {
+  pendulum.drag(mouseX, mouseY);
+}
+
+function mouseReleased() {
+  pendulum.stopDragging();
+}`
+                },
+                {
+                    name: 'pendulum.js',
+                    content: `class Pendulum {
+  constructor(x, y, len, startAngle) {
+    this.pivot = createVector(x, y);
+    this.len = len;
+    this.angle = startAngle;
+    this.angularVelocity = 0;
+    this.damping = 0.995;
+    this.gravity = 0.4;
+    this.ballRadius = 20;
+    this.dragging = false;
+
+    // Bob pozisyonunu hesapla
+    this.bob = createVector();
+    this.updateBob();
+  }
+
+  updateBob() {
+    this.bob.x = this.pivot.x + this.len * sin(this.angle);
+    this.bob.y = this.pivot.y + this.len * cos(this.angle);
+  }
+
+  update() {
+    // Sürükleniyorsa fizik uygulama
+    if (!this.dragging) {
+      let acc = (-this.gravity / this.len) * sin(this.angle);
+      this.angularVelocity += acc;
+      this.angle += this.angularVelocity;
+      this.angularVelocity *= this.damping;
+    }
+    this.updateBob();
+  }
+
+  show() {
+    stroke(0);
+    strokeWeight(2);
+
+    // İp
+    line(this.pivot.x, this.pivot.y, this.bob.x, this.bob.y);
+
+    // Pivot
+    fill(100);
+    circle(this.pivot.x, this.pivot.y, 10);
+
+    // Bob
+    fill(this.dragging ? color(200, 100, 100) : color(127, 127, 220));
+    circle(this.bob.x, this.bob.y, this.ballRadius * 2);
+  }
+
+  clicked(mx, my) {
+    let d = dist(mx, my, this.bob.x, this.bob.y);
+    if (d < this.ballRadius) {
+      this.dragging = true;
+      this.angularVelocity = 0;
+    }
+  }
+
+  drag(mx, my) {
+    if (this.dragging) {
+      let dx = mx - this.pivot.x;
+      let dy = my - this.pivot.y;
+      this.angle = atan2(dx, dy);
+    }
+  }
+
+  stopDragging() {
+    this.dragging = false;
+  }
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+
+</html>

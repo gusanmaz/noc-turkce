@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kütle ve İvme - Kuvvetler</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>🎱 Kütle ve İvme</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Kütle <span class="term-en">(Mass)</span> Neden Önemli?</h2>
+
+            <p>
+                Şimdiye kadar kütleyi görmezden geldik (<code>mass = 1</code> varsaydık).
+                Ama gerçek dünyada <strong>kütle <span class="term-en">(mass)</span></strong> çok önemli!
+            </p>
+
+            <p>
+                Newton'un 2. yasasını hatırlayalım:
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">a⃗ = F⃗ / m</div>
+                <div class="formula-desc">İvme <span class="term-en">(Acceleration)</span> = Kuvvet <span class="term-en">(Force)</span> / Kütle <span class="term-en">(Mass)</span></div>
+            </div>
+
+            <p>
+                Bu formülden şunu anlıyoruz: <strong>Aynı kuvvet, farklı kütlelere farklı ivme verir.</strong>
+            </p>
+
+            <ul>
+                <li>Küçük kütle → Büyük ivme (hafif nesneler kolay hareket eder)</li>
+                <li>Büyük kütle → Küçük ivme (ağır nesneleri hareket ettirmek zor)</li>
+            </ul>
+
+            <div class="info-box note">
+                <h4>💡 Örnek: Bowling Topu vs Ping-Pong Topu</h4>
+                <p>
+                    Aynı kuvvetle (10N diyelim) iki farklı topu iterseniz:
+                </p>
+                <ul>
+                    <li><strong>Ping-pong topu (m=0.003 kg):</strong> a = 10 / 0.003 = 3333 m/s² 🚀</li>
+                    <li><strong>Bowling topu (m=7 kg):</strong> a = 10 / 7 = 1.4 m/s² 🐢</li>
+                </ul>
+                <p>Ping-pong topu 2000 kat daha fazla ivmelenir!</p>
+            </div>
+        </section>
+
+        <!-- APPLYFORCE GÜNCELLEMESİ -->
+        <section class="content-section">
+            <h2>applyForce() Fonksiyonunu Güncelleme</h2>
+
+            <p>
+                Mover sınıfımıza <code>mass</code> (kütle) ekleyelim ve
+                <code>applyForce()</code> fonksiyonunu güncelleyelim:
+            </p>
+
+            <pre><code class="language-javascript">class Mover {
+  constructor(x, y, mass) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.mass = mass;  // Kütle eklendi!
+  }
+
+  applyForce(force) {
+    // Newton'un 2. yasası: a = F / m
+    // Kuvveti kütleye bölüyoruz!
+    let f = p5.Vector.div(force, this.mass);
+    this.acceleration.add(f);
+  }
+}</code></pre>
+
+            <h3>Neden p5.Vector.div() Kullanıyoruz?</h3>
+
+            <div class="info-box warning">
+                <h4>⚠️ Çok Önemli: force'u Değiştirmemek!</h4>
+                <p>
+                    <code>force.div(this.mass)</code> yazsaydık, <strong>orijinal force vektörünü
+                    değiştirirdik!</strong> Bu tehlikeli çünkü aynı force birden fazla nesneye uygulanabilir.
+                </p>
+                <p>
+                    <code>p5.Vector.div(force, this.mass)</code> ise <strong>yeni bir vektör</strong>
+                    oluşturur, orijinal force'a dokunmaz.
+                </p>
+            </div>
+
+            <pre><code class="language-javascript">// ❌ YANLIŞ - orijinal vektörü değiştirir!
+applyForce(force) {
+  force.div(this.mass);        // gravity değişti!
+  this.acceleration.add(force);
+}
+
+// ✅ DOĞRU - yeni vektör oluşturur
+applyForce(force) {
+  let f = p5.Vector.div(force, this.mass);  // yeni vektör
+  this.acceleration.add(f);
+}
+
+// Neden önemli?
+let gravity = createVector(0, 0.2);
+
+// Eğer yanlış yöntem kullanırsak:
+mover1.applyForce(gravity);  // gravity artık (0, 0.1) oldu (mass=2 ise)
+mover2.applyForce(gravity);  // mover2 yanlış gravity alıyor!</code></pre>
+        </section>
+
+        <!-- İNTERAKTİF ÖRNEK -->
+        <section class="content-section">
+            <h2>Örnek: Farklı Kütleler</h2>
+
+            <p>
+                Şimdi farklı kütlelere sahip topların nasıl davrandığını görelim.
+                Aynı yerçekimi kuvveti, farklı hızlarda hareket yaratacak.
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Kodun Açıklaması:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">constructor</span>
+                    <div class="explanation-text">
+                        Artık <code>mass</code> parametresi alıyoruz. Çap da kütleye bağlı
+                        (<code>mass * 16</code>) - büyük kütle = büyük top.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">applyForce</span>
+                    <div class="explanation-text">
+                        Kuvveti kütleye bölüyoruz: <code>p5.Vector.div(force, this.mass)</code>.
+                        Ağır toplar daha az ivmelenir.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Rastgele kütle</span>
+                    <div class="explanation-text">
+                        <code>random(0.5, 4)</code> ile 0.5 ile 4 arasında kütle veriyoruz.
+                        Her top farklı boyutta ve ağırlıkta.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Gözlem:</strong> Tüm toplar aynı anda düşüyor mu?
+                        <span class="expectation">Evet! Yerçekiminde kütle fark etmez (Galileo'nun keşfi)</span>
+                    </li>
+                    <li>
+                        <strong>Rüzgar ekleyin:</strong> <code>mouseIsPressed</code> ile rüzgar ekleyin.
+                        <span class="expectation">Hafif toplar daha çok etkilenir!</span>
+                    </li>
+                    <li>
+                        <strong>Çok kütle:</strong> <code>random(0.1, 10)</code> yapın.
+                        <span class="expectation">Daha dramatik farklar görürsünüz</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- YERÇEKİMİ DETAY -->
+        <section class="content-section">
+            <h2>Gerçek Yerçekimi ve Kütle</h2>
+
+            <p>
+                İlginç bir şey fark ettiniz mi? Farklı kütleli toplar <strong>aynı hızda düşüyor</strong>!
+                Bu, Galileo'nun ünlü deneyinin sonucu.
+            </p>
+
+            <div class="info-box note">
+                <h4>💡 Galileo'nun Keşfi</h4>
+                <p>
+                    1589'da Galileo, Pisa Kulesi'nden farklı ağırlıkta topları bıraktı
+                    (efsaneye göre). Hepsi aynı anda yere düştü!
+                </p>
+                <p>
+                    <strong>Neden?</strong> Yerçekimi kuvveti kütleyle orantılı (<code>F = m × g</code>),
+                    ama ivme de kütleyle ters orantılı (<code>a = F / m</code>). İkisi birbirini götürür!
+                </p>
+            </div>
+
+            <h3>Matematiksel İspat</h3>
+            <pre><code class="language-javascript">// Yerçekimi kuvveti (gerçek fizik)
+// F = m × g  (g = yerçekimi ivmesi = 9.8 m/s²)
+
+// Newton'un 2. yasası
+// a = F / m = (m × g) / m = g
+
+// Kütle sadeleşiyor! İvme hep g'ye eşit.</code></pre>
+
+            <p>
+                Ama <strong>rüzgar</strong> gibi kuvvetlerde kütle önemli! Rüzgar kuvveti kütleyle orantılı değil,
+                bu yüzden hafif nesneler daha çok etkilenir.
+            </p>
+        </section>
+
+        <!-- RÜZGAR ÖRNEĞİ -->
+        <section class="content-section">
+            <h2>Örnek: Rüzgar ve Kütle</h2>
+
+            <p>
+                Şimdi rüzgar ekleyerek kütlenin etkisini görelim.
+                Hafif toplar rüzgardan çok etkilenecek!
+            </p>
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>Dikkat Edilecekler:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Yerçekimi</span>
+                    <div class="explanation-text">
+                        Herkese aynı etkiyi yapar (kütleden bağımsız düşme).
+                        Ama biz basitlik için <code>F = m × g</code> yerine sabit F kullanıyoruz.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Rüzgar</span>
+                    <div class="explanation-text">
+                        <strong>Kütle farkı burada belli olur!</strong> Hafif toplar sağa daha hızlı gider.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        Canvas'a tıklayın ve rüzgarı gözlemleyin.
+                    </li>
+                    <li>
+                        Hangi toplar daha çok etkileniyor? Küçükler mi, büyükler mi?
+                    </li>
+                    <li>
+                        <strong>Rüzgar gücünü artırın:</strong> <code>createVector(0.5, 0)</code>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- GERÇEK YERÇEKİMİ -->
+        <section class="content-section">
+            <h2>Bonus: Gerçek Yerçekimi Formülü</h2>
+
+            <p>
+                Daha gerçekçi bir simülasyon için yerçekimini de kütleye bağlı yapabiliriz:
+            </p>
+
+            <pre><code class="language-javascript">// Gerçek yerçekimi: F = m × g
+// g = yerçekimi ivmesi (simülasyonda ~0.1)
+
+function draw() {
+  for (let mover of movers) {
+    // Her mover için kendi kütlesine göre yerçekimi
+    let g = 0.1;
+    let gravityForce = createVector(0, mover.mass * g);
+    mover.applyForce(gravityForce);
+
+    // Rüzgar (kütleden bağımsız)
+    if (mouseIsPressed) {
+      let wind = createVector(0.1, 0);
+      mover.applyForce(wind);
+    }
+
+    mover.update();
+    mover.checkEdges();
+    mover.show();
+  }
+}</code></pre>
+
+            <p>
+                Bu durumda tüm toplar aynı hızda düşer (Galileo'nun dediği gibi),
+                ama rüzgardan farklı etkilenirler.
+            </p>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Kütle (mass):</strong> Nesnenin "hareket ettirme zorluğu"</li>
+                <li><strong>a = F / m:</strong> Büyük kütle = küçük ivme</li>
+                <li><strong>p5.Vector.div():</strong> Orijinal vektörü değiştirmeden bölme</li>
+                <li><strong>Yerçekimi:</strong> Gerçekte tüm kütleler aynı hızda düşer</li>
+                <li><strong>Diğer kuvvetler:</strong> Rüzgar gibi kuvvetlerde kütle fark eder</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="kuvvet-biriktirme.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Kuvvet Biriktirme</span>
+                </div>
+            </a>
+            <a href="surtunme.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Sürtünme</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+        <p class="contribution-notice">Bu projeye katkıda bulunmak ister misiniz? <a href="https://github.com/gusanmaz/noc-turkce" target="_blank">GitHub</a>'daki bu repoya pull request göndererek kitabın geliştirilmesine destek olabilirsiniz! 🤝</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Farklı kütleler
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let movers = [];
+
+function setup() {
+  createCanvas(400, 400);
+  // Farklı kütlelerde 5 top
+  for (let i = 0; i < 5; i++) {
+    let mass = random(0.5, 4);
+    let x = random(50, width - 50);
+    movers.push(new Mover(x, 50, mass));
+  }
+}
+
+function draw() {
+  background(220);
+
+  // Yerçekimi
+  let gravity = createVector(0, 0.2);
+
+  for (let mover of movers) {
+    mover.applyForce(gravity);
+    mover.update();
+    mover.checkEdges();
+    mover.show();
+  }
+
+  // Bilgi
+  fill(50);
+  noStroke();
+  textSize(12);
+  text("Büyük top = büyük kütle", 10, 20);
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor(x, y, mass) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.mass = mass;
+    // Çap kütleye bağlı
+    this.diameter = mass * 16;
+  }
+
+  applyForce(force) {
+    // Newton'un 2. yasası: a = F / m
+    // p5.Vector.div() yeni vektör oluşturur
+    let f = p5.Vector.div(force, this.mass);
+    this.acceleration.add(f);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    // Kütle büyüdükçe renk koyulaşsın
+    let c = map(this.mass, 0.5, 4, 200, 50);
+    fill(c, c, 255);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, this.diameter);
+  }
+
+  checkEdges() {
+    let r = this.diameter / 2;
+    if (this.position.y > height - r) {
+      this.position.y = height - r;
+      this.velocity.y *= -0.9;
+    }
+    if (this.position.x > width - r) {
+      this.position.x = width - r;
+      this.velocity.x *= -0.9;
+    }
+    if (this.position.x < r) {
+      this.position.x = r;
+      this.velocity.x *= -0.9;
+    }
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Rüzgar ve kütle
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let movers = [];
+
+function setup() {
+  createCanvas(400, 400);
+  // 8 top, farklı kütlelerde
+  for (let i = 0; i < 8; i++) {
+    let mass = map(i, 0, 7, 0.5, 4);
+    let x = 50 + i * 40;
+    movers.push(new Mover(x, 50, mass));
+  }
+}
+
+function draw() {
+  background(220);
+
+  // Yerçekimi
+  let gravity = createVector(0, 0.2);
+
+  // Rüzgar - mouse basılıyken
+  let wind = createVector(0, 0);
+  if (mouseIsPressed) {
+    wind = createVector(0.2, 0);
+    // Rüzgar göstergesi
+    fill(100, 100, 255);
+    text("💨 Rüzgar!", 20, 30);
+  }
+
+  for (let mover of movers) {
+    mover.applyForce(gravity);
+    mover.applyForce(wind);
+    mover.update();
+    mover.checkEdges();
+    mover.show();
+  }
+
+  // Talimat
+  fill(80);
+  noStroke();
+  textSize(12);
+  text("Mouse'a basılı tutun - rüzgar essin!", 10, height - 15);
+  text("← Küçük (hafif)          Büyük (ağır) →", 10, height - 35);
+}`
+                },
+                {
+                    name: 'mover.js',
+                    content: `class Mover {
+  constructor(x, y, mass) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.mass = mass;
+    this.diameter = mass * 16;
+  }
+
+  applyForce(force) {
+    // a = F / m
+    let f = p5.Vector.div(force, this.mass);
+    this.acceleration.add(f);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  show() {
+    // Renk gradyanı
+    let r = map(this.mass, 0.5, 4, 255, 100);
+    let b = map(this.mass, 0.5, 4, 100, 255);
+    fill(r, 150, b);
+    stroke(0);
+    strokeWeight(2);
+    circle(this.position.x, this.position.y, this.diameter);
+  }
+
+  checkEdges() {
+    let r = this.diameter / 2;
+    if (this.position.y > height - r) {
+      this.position.y = height - r;
+      this.velocity.y *= -0.9;
+    }
+    if (this.position.x > width - r) {
+      this.position.x = width - r;
+      this.velocity.x *= -0.9;
+    }
+    if (this.position.x < r) {
+      this.position.x = r;
+      this.velocity.x *= -0.9;
+    }
+  }
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

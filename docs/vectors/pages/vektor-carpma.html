@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vektör Çarpma ve Bölme - Vektörler</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>✖️ Vektör Çarpma ve Bölme</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Vektörleri Ölçekleme <span class="term-en">(Vector Scaling)</span></h2>
+
+            <p>
+                Vektörleri bir <strong>skaler</strong> (tek sayı) ile çarparak veya bölerek
+                <strong>büyütebilir</strong> veya <strong>küçültebiliriz</strong>.
+                Bu, hız kontrolü için çok kullanışlıdır.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">n × v⃗ = (n×x, n×y)</div>
+                <div class="formula-desc">Skaler ile çarpma: her bileşeni çarp</div>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_10.png"
+                     alt="Vektörü skaler ile çarpma" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.9:</strong> Bir vektörü skaler ile çarpmak, vektörü <em>ölçeklendirir</em>.
+                    Örneğin v⃗ × 2 vektörün uzunluğunu 2 katına çıkarır, yön aynı kalır.
+                    v⃗ × 0.5 ise uzunluğu yarıya indirir. Negatif sayıyla çarpma yönü tersine çevirir!
+                </figcaption>
+            </div>
+        </section>
+
+        <!-- ÇARPMA -->
+        <section class="content-section">
+            <h2>mult() - Çarpma <span class="term-en">(Multiplication)</span></h2>
+
+            <pre><code class="language-javascript">let v = createVector(2, 3);
+
+v.mult(2);  // v = (4, 6) - 2 katı
+
+v.mult(0.5);  // v = (2, 3) - yarısı
+
+v.mult(-1);  // v = (-2, -3) - tersine çevir</code></pre>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">mult(n) n > 1</span>
+                    <div class="explanation-text">
+                        Vektörü <strong>büyütür</strong>. Yön aynı, uzunluk artar.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">mult(n) 0 < n < 1</span>
+                    <div class="explanation-text">
+                        Vektörü <strong>küçültür</strong>. Yön aynı, uzunluk azalır.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">mult(n) n < 0</span>
+                    <div class="explanation-text">
+                        Yönü <strong>tersine çevirir</strong>. mult(-1) ile tam tersi.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SVG Diyagram -->
+            <div class="vector-diagram">
+                <svg viewBox="0 0 400 150" class="vector-svg">
+                    <defs>
+                        <marker id="arrowV1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#6366f1"/>
+                        </marker>
+                        <marker id="arrowV2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#ef4444"/>
+                        </marker>
+                    </defs>
+
+                    <text x="50" y="20" fill="var(--text-primary)" font-size="12">Orijinal:</text>
+                    <line x1="50" y1="50" x2="130" y2="50" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowV1)"/>
+                    <text x="140" y="55" fill="#6366f1" font-size="12">v⃗ = (2, 0)</text>
+
+                    <text x="50" y="85" fill="var(--text-primary)" font-size="12">× 2:</text>
+                    <line x1="50" y1="115" x2="210" y2="115" stroke="#ef4444" stroke-width="3" marker-end="url(#arrowV2)"/>
+                    <text x="220" y="120" fill="#ef4444" font-size="12">v⃗ × 2 = (4, 0)</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- BÖLME -->
+        <section class="content-section">
+            <h2>div() - Bölme <span class="term-en">(Division)</span></h2>
+
+            <div class="formula-box">
+                <div class="formula">v⃗ / n = (x/n, y/n)</div>
+                <div class="formula-desc">Skaler ile bölme: her bileşeni böl</div>
+            </div>
+
+            <div class="image-container">
+                <img src="../images/01_vectors_11.png"
+                     alt="Vektörü skaler ile bölme" class="content-image">
+                <figcaption>
+                    <strong>Şekil 1.10:</strong> Bir vektörü skaler ile bölmek, vektörü <em>küçültür</em>.
+                    v⃗ / 2 vektörün uzunluğunu yarıya indirir, yön aynı kalır. Bu işlem özellikle
+                    <em>normalize</em> etmek için kullanılır: v⃗ / |v⃗| = birim vektör (uzunluğu 1)
+                </figcaption>
+            </div>
+
+            <pre><code class="language-javascript">let v = createVector(10, 20);
+
+v.div(2);  // v = (5, 10) - yarısı
+
+v.div(5);  // v = (1, 2) - beşte biri</code></pre>
+
+            <div class="info-box note">
+                <h4>💡 div() vs mult()</h4>
+                <p>
+                    <code>v.div(2)</code> ve <code>v.mult(0.5)</code> aynı sonucu verir!
+                    Hangisini kullanacağınız tercihe bağlı.
+                </p>
+            </div>
+        </section>
+
+        <!-- ÖRNEK: HIZ KONTROLÜ -->
+        <section class="content-section">
+            <h2>Örnek: Hız Kontrolü</h2>
+
+            <p>
+                mult() ve div() hızı kontrol etmek için mükemmel:
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Kontroller:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">↑ Yukarı Ok</span>
+                    <div class="explanation-text">
+                        <code>velocity.mult(1.1)</code> - Hızı %10 artırır
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">↓ Aşağı Ok</span>
+                    <div class="explanation-text">
+                        <code>velocity.mult(0.9)</code> - Hızı %10 azaltır
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATİK METODLAR -->
+        <section class="content-section">
+            <h2>Statik Metodlar <span class="term-en">(Static Methods)</span></h2>
+
+            <p>
+                Bazen orijinal vektörü değiştirmek istemeyiz. Bunun için <strong>statik metodlar</strong> kullanırız:
+            </p>
+
+            <pre><code class="language-javascript">let v = createVector(2, 3);
+
+// ❌ Orijinali değiştirir
+v.mult(2);  // v artık (4, 6)
+
+// ✅ Yeni vektör oluşturur, orijinal aynı kalır
+let w = p5.Vector.mult(v, 2);  // w = (4, 6), v hala (2, 3)</code></pre>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Metod</th>
+                        <th>Kullanım</th>
+                        <th>Orijinal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>v.mult(n)</code></td>
+                        <td>v'yi n ile çarp</td>
+                        <td>Değişir ⚠️</td>
+                    </tr>
+                    <tr>
+                        <td><code>p5.Vector.mult(v, n)</code></td>
+                        <td>Yeni vektör döner</td>
+                        <td>Aynı kalır ✅</td>
+                    </tr>
+                    <tr>
+                        <td><code>v.div(n)</code></td>
+                        <td>v'yi n'e böl</td>
+                        <td>Değişir ⚠️</td>
+                    </tr>
+                    <tr>
+                        <td><code>p5.Vector.div(v, n)</code></td>
+                        <td>Yeni vektör döner</td>
+                        <td>Aynı kalır ✅</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box warning">
+                <h4>⚠️ Ne Zaman Statik Kullanmalı?</h4>
+                <p>
+                    Kuvvetlerle çalışırken sıkça kullanacağız! Örneğin: aynı yerçekimi kuvvetini
+                    birden fazla nesneye uygularken, orijinal kuvvet vektörünü korumamız gerekir.
+                </p>
+            </div>
+        </section>
+
+        <!-- COPY() -->
+        <section class="content-section">
+            <h2>copy() - Vektör Kopyalama</h2>
+
+            <p>
+                Bazen bir vektörün kopyasını alıp üzerinde işlem yapmak isteriz:
+            </p>
+
+            <pre><code class="language-javascript">let original = createVector(3, 4);
+
+// ❌ YANLIŞ - aynı vektöre referans!
+let copy1 = original;
+copy1.mult(2);  // original da değişir!
+
+// ✅ DOĞRU - gerçek kopya
+let copy2 = original.copy();
+copy2.mult(2);  // sadece copy2 değişir</code></pre>
+
+            <div id="editor2"></div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>v.mult(n):</strong> Vektörü n ile çarp (büyüt/küçült)</li>
+                <li><strong>v.div(n):</strong> Vektörü n'e böl</li>
+                <li><strong>p5.Vector.mult(v, n):</strong> Yeni vektör döner</li>
+                <li><strong>v.copy():</strong> Vektörün kopyasını al</li>
+                <li><strong>mult(-1):</strong> Yönü tersine çevir</li>
+                <li><strong>mult(0.5):</strong> div(2) ile aynı</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="vektor-toplama.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Vektör Toplama</span>
+                </div>
+            </a>
+            <a href="vektor-buyukluk.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Vektör Büyüklüğü</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+        <p class="contribution-notice">Bu projeye katkıda bulunmak ister misiniz? <a href="https://github.com/gusanmaz/noc-turkce" target="_blank">GitHub</a>'daki bu repoya pull request göndererek kitabın geliştirilmesine destek olabilirsiniz! 🤝</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Hız kontrolü
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let position;
+let velocity;
+
+function setup() {
+  createCanvas(400, 400);
+  position = createVector(width / 2, height / 2);
+  velocity = createVector(2, 1.5);
+}
+
+function draw() {
+  background(220);
+
+  // Hareket
+  position.add(velocity);
+
+  // Kenar kontrolü
+  if (position.x > width - 15 || position.x < 15) {
+    velocity.x *= -1;
+  }
+  if (position.y > height - 15 || position.y < 15) {
+    velocity.y *= -1;
+  }
+
+  // Top çiz
+  fill(127, 127, 220);
+  stroke(0);
+  strokeWeight(2);
+  circle(position.x, position.y, 30);
+
+  // Hız göster
+  fill(0);
+  noStroke();
+  textSize(14);
+  text("Hız: " + velocity.mag().toFixed(2), 10, 25);
+  text("↑/↓ tuşları ile hızı değiştir", 10, 45);
+}
+
+function keyPressed() {
+  if (keyCode === UP_ARROW) {
+    velocity.mult(1.1);  // %10 hızlan
+  } else if (keyCode === DOWN_ARROW) {
+    velocity.mult(0.9);  // %10 yavaşla
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Copy örneği
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `function setup() {
+  createCanvas(400, 400);
+
+  let original = createVector(50, 50);
+
+  // Kopya al
+  let doubled = original.copy();
+  doubled.mult(2);
+
+  let halved = original.copy();
+  halved.mult(0.5);
+
+  console.log("Original:", original.x, original.y);
+  console.log("Doubled:", doubled.x, doubled.y);
+  console.log("Halved:", halved.x, halved.y);
+}
+
+function draw() {
+  background(220);
+  translate(50, 200);
+
+  let original = createVector(100, 0);
+
+  // Orijinal (mavi)
+  stroke(0, 0, 255);
+  strokeWeight(3);
+  line(0, 0, original.x, original.y);
+  fill(0, 0, 255);
+  circle(original.x, original.y, 10);
+
+  // 2x (kırmızı)
+  let doubled = original.copy();
+  doubled.mult(2);
+  stroke(255, 0, 0);
+  line(0, 20, doubled.x, 20);
+  fill(255, 0, 0);
+  circle(doubled.x, 20, 10);
+
+  // 0.5x (yeşil)
+  let halved = original.copy();
+  halved.mult(0.5);
+  stroke(0, 150, 0);
+  line(0, -20, halved.x, -20);
+  fill(0, 150, 0);
+  circle(halved.x, -20, 10);
+
+  // Etiketler
+  fill(0);
+  noStroke();
+  textSize(12);
+  text("original", original.x + 15, 5);
+  text("× 2", doubled.x + 15, 25);
+  text("× 0.5", halved.x + 15, -15);
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

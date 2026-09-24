@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Walker - Rastgelelik</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>🚶 Random Walker</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Rastgele Yürüyüş <span class="term-en">(Random Walk)</span></h2>
+
+            <p>
+                <strong>Random walker</strong>, en temel hareket simülasyonudur. Her adımda
+                rastgele bir yön seçer ve o yönde hareket eder. Basit görünse de,
+                birçok doğal olayı (molekül hareketi, hayvan göçleri) modeller!
+            </p>
+
+
+            <div class="info-box note">
+                <h4>💡 Neden Random Walker ile Başlıyoruz?</h4>
+                <p>
+                    Random walker, OOP (nesne yönelimli programlama), animasyon döngüsü
+                    (setup/draw) ve rastgelelik kavramlarını tek bir örnekte birleştirir.
+                    Mükemmel bir başlangıç noktası!
+                </p>
+            </div>
+        </section>
+
+        <!-- WALKER SINIFI -->
+        <section class="content-section">
+            <h2>Walker Sınıfı <span class="term-en">(The Walker Class)</span></h2>
+
+            <p>
+                Bir <code>Walker</code> sınıfı oluşturalım. Bu nesne:
+            </p>
+
+            <ul>
+                <li>Bir konuma (x, y) sahip</li>
+                <li>Her frame'de rastgele bir yöne hareket eder</li>
+                <li>Kendini ekrana çizer</li>
+            </ul>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Satır Satır Açıklama:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">constructor()</span>
+                    <div class="explanation-text">
+                        Walker oluşturulduğunda canvas ortasından başlar.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">step()</span>
+                    <div class="explanation-text">
+                        <code>random(-1, 1)</code> -1 ile 1 arasında rastgele ondalık sayı üretir.
+                        Her frame'de x ve y bu kadar değişir.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">show()</span>
+                    <div class="explanation-text">
+                        Walker'ı tek bir piksel olarak çizer. <code>point()</code> fonksiyonu
+                        tek nokta çizer.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4 YÖNLÜ WALKER -->
+        <section class="content-section">
+            <h2>4 Yönlü Walker <span class="term-en">(Traditional Random Walk)</span></h2>
+
+            <p>
+                Klasik random walk sadece 4 yöne gider: yukarı, aşağı, sola, sağa.
+                <code>floor(random(4))</code> ile 0, 1, 2 veya 3 seçeriz:
+            </p>
+
+            <div class="image-container">
+                <img src="https://raw.githubusercontent.com/nature-of-code/noc-book-2/main/content/images/00_randomness/00_randomness_3.png"
+                     alt="4 yönlü ve 8 yönlü random walk" class="content-image">
+                <figcaption>Şekil 0.3: Sol - 4 yönlü hareket (yukarı, aşağı, sol, sağ). Sağ - 9 olası konum (çapraz dahil)</figcaption>
+            </div>
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>random() ve floor():</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">random(4)</span>
+                    <div class="explanation-text">
+                        0 ile 4 arasında ondalık sayı: 0.0, 1.5, 3.99... (4 dahil değil)
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">floor(random(4))</span>
+                    <div class="explanation-text">
+                        Aşağı yuvarla → 0, 1, 2 veya 3. Her biri %25 olasılıkla.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>step() içinde:</strong> Adım boyutunu 5 yapın (1 yerine)
+                        <span class="expectation">Beklenti: Daha büyük adımlar, daha hızlı yayılma</span>
+                    </li>
+                    <li>
+                        <strong>Çapraz ekleyin:</strong> 8 yönlü hareket için case 4-7 ekleyin
+                        <span class="expectation">Beklenti: Daha organik görünüm</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- OLASILIĞI DEĞİŞTİRME -->
+        <section class="content-section">
+            <h2>Olasılığı Değiştirme <span class="term-en">(Biased Random Walk)</span></h2>
+
+            <p>
+                Ya walker'ın sağa gitme olasılığı daha yüksek olsun istiyorsak?
+                <strong>Eşit olmayan olasılıklar</strong> kullanabiliriz:
+            </p>
+
+            <div id="editor3"></div>
+
+            <div class="explanation-list">
+                <h4>Olasılık Dağılımı:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">r < 0.4</span>
+                    <div class="explanation-text">
+                        %40 olasılıkla sağa git (0.0 - 0.4 arası)
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">r < 0.6</span>
+                    <div class="explanation-text">
+                        %20 olasılıkla sola git (0.4 - 0.6 arası)
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">r < 0.8</span>
+                    <div class="explanation-text">
+                        %20 olasılıkla aşağı git (0.6 - 0.8 arası)
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">else</span>
+                    <div class="explanation-text">
+                        %20 olasılıkla yukarı git (0.8 - 1.0 arası)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAREYE DOĞRU -->
+        <section class="content-section">
+            <h2>Fareye Doğru Eğilimli Walker <span class="term-en">(Walker Towards Mouse)</span></h2>
+
+            <p>
+                Walker'a %50 olasılıkla fareye doğru gitme eğilimi verelim:
+            </p>
+
+            <div id="editor4"></div>
+
+            <div class="info-box tip">
+                <h4>🎮 Akıllı Rastgelelik</h4>
+                <p>
+                    Tamamen rastgele değil, ama tamamen öngörülebilir de değil!
+                    Bu tür "biased randomness" oyunlarda düşman AI'ları için sıkça kullanılır.
+                </p>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Random Walker:</strong> Her adımda rastgele yön seçen nesne</li>
+                <li><strong>random(min, max):</strong> min-max arası rastgele ondalık sayı</li>
+                <li><strong>floor():</strong> Aşağı yuvarlama (tam sayı elde etmek için)</li>
+                <li><strong>Biased walk:</strong> Eşit olmayan olasılıklarla yönlendirme</li>
+                <li><strong>OOP:</strong> Walker sınıfı ile nesne yönelimli tasarım</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="../index.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Geri</span>
+                    <span class="nav-link-title">Ana Sayfa</span>
+                </div>
+            </a>
+            <a href="olasilik-dagilim.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Sonraki</span>
+                    <span class="nav-link-title">Olasılık ve Dağılım</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+        <p class="contribution-notice">Bu projeye katkıda bulunmak ister misiniz? <a href="https://github.com/gusanmaz/noc-turkce" target="_blank">GitHub</a>'daki bu repoya pull request göndererek kitabın geliştirilmesine destek olabilirsiniz! 🤝</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Temel random walker
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let walker;
+
+function setup() {
+  createCanvas(400, 400);
+  background(220);
+  walker = new Walker();
+}
+
+function draw() {
+  walker.step();
+  walker.show();
+}`
+                },
+                {
+                    name: 'walker.js',
+                    content: `class Walker {
+  constructor() {
+    // Canvas ortasından başla
+    this.x = width / 2;
+    this.y = height / 2;
+  }
+
+  step() {
+    // Rastgele -1 ile 1 arası değişim
+    this.x += random(-1, 1);
+    this.y += random(-1, 1);
+  }
+
+  show() {
+    stroke(0);
+    strokeWeight(2);
+    point(this.x, this.y);
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 2: 4 yönlü walker
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let walker;
+
+function setup() {
+  createCanvas(400, 400);
+  background(220);
+  walker = new Walker();
+}
+
+function draw() {
+  walker.step();
+  walker.show();
+}`
+                },
+                {
+                    name: 'walker.js',
+                    content: `class Walker {
+  constructor() {
+    this.x = width / 2;
+    this.y = height / 2;
+  }
+
+  step() {
+    // 0, 1, 2 veya 3 seç
+    let choice = floor(random(4));
+
+    // Seçime göre hareket et
+    switch(choice) {
+      case 0:
+        this.x += 1;  // Sağa
+        break;
+      case 1:
+        this.x -= 1;  // Sola
+        break;
+      case 2:
+        this.y += 1;  // Aşağı
+        break;
+      case 3:
+        this.y -= 1;  // Yukarı
+        break;
+    }
+  }
+
+  show() {
+    stroke(0);
+    strokeWeight(2);
+    point(this.x, this.y);
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 3: Biased walker
+        new LiveEditor('#editor3', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let walker;
+
+function setup() {
+  createCanvas(400, 400);
+  background(220);
+  walker = new Walker();
+}
+
+function draw() {
+  walker.step();
+  walker.show();
+}`
+                },
+                {
+                    name: 'walker.js',
+                    content: `class Walker {
+  constructor() {
+    this.x = width / 2;
+    this.y = height / 2;
+  }
+
+  step() {
+    let r = random(1);  // 0-1 arası
+
+    // Sağa gitme olasılığı %40!
+    if (r < 0.4) {
+      this.x += 1;  // Sağa (%40)
+    } else if (r < 0.6) {
+      this.x -= 1;  // Sola (%20)
+    } else if (r < 0.8) {
+      this.y += 1;  // Aşağı (%20)
+    } else {
+      this.y -= 1;  // Yukarı (%20)
+    }
+  }
+
+  show() {
+    stroke(0, 100, 200);
+    strokeWeight(2);
+    point(this.x, this.y);
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 4: Fareye doğru eğilimli
+        new LiveEditor('#editor4', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let walker;
+
+function setup() {
+  createCanvas(400, 400);
+  background(220);
+  walker = new Walker();
+}
+
+function draw() {
+  walker.step();
+  walker.show();
+
+  // Fare pozisyonunu göster
+  fill(255, 0, 0, 100);
+  noStroke();
+  circle(mouseX, mouseY, 20);
+}`
+                },
+                {
+                    name: 'walker.js',
+                    content: `class Walker {
+  constructor() {
+    this.x = width / 2;
+    this.y = height / 2;
+  }
+
+  step() {
+    let r = random(1);
+
+    if (r < 0.5) {
+      // %50: Fareye doğru git
+      if (mouseX > this.x) this.x++;
+      else this.x--;
+
+      if (mouseY > this.y) this.y++;
+      else this.y--;
+    } else {
+      // %50: Rastgele git
+      this.x += random(-2, 2);
+      this.y += random(-2, 2);
+    }
+
+    // Sınırları kontrol et
+    this.x = constrain(this.x, 0, width);
+    this.y = constrain(this.y, 0, height);
+  }
+
+  show() {
+    stroke(0, 150, 100);
+    strokeWeight(3);
+    point(this.x, this.y);
+  }
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
+

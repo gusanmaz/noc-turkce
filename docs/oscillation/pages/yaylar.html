@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yaylar - Salınım</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body>
+    <header class="page-header">
+        <a href="../index.html" class="back-link">← Ana Sayfa</a>
+        <h1>🧵 Yaylar</h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <!-- GİRİŞ -->
+        <section class="content-section">
+            <h2>Yay Kuvveti <span class="term-en">(Spring Force)</span></h2>
+
+            <p>
+                Yaylar, doğadaki en temel elastik sistemlerden biridir. Bir yayı gerdiğinizde veya
+                sıkıştırdığınızda, yay sizi orijinal uzunluğuna doğru geri iter. Bu davranış
+                <strong>Hooke Yasası</strong> ile tanımlanır.
+            </p>
+
+            <div class="image-container">
+                <img src="../images/spring-system.png" alt="Yay sistemi" class="content-image">
+                <figcaption>Şekil 3.14: Bir çiviye (anchor) ve bir ağırlığa (bob) sahip yay sistemi.</figcaption>
+            </div>
+
+            <div class="info-box note">
+                <h4>💡 Yaylar Nerede Kullanılır?</h4>
+                <p>
+                    Oyunlarda karakterlerin zıplaması, araçların süspansiyonu, kumaş simülasyonları,
+                    yumuşak cisimler (soft body physics) ve hatta ses dalgaları yay fiziğine dayanır!
+                </p>
+            </div>
+        </section>
+
+        <!-- HOOKE YASASI -->
+        <section class="content-section">
+            <h2>Hooke Yasası <span class="term-en">(Hooke's Law)</span></h2>
+
+            <p>
+                17. yüzyılda Robert Hooke tarafından keşfedilen bu yasa, yay kuvvetini tanımlar:
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">F⃗ = -k × x⃗</div>
+                <div class="formula-desc">Yay Kuvveti = -(yay sabiti) × (uzama miktarı)</div>
+            </div>
+
+            <div class="image-pair">
+                <div class="image-container">
+                    <img src="../images/spring-extension.png" alt="Yay uzaması" class="content-image">
+                    <figcaption>Şekil 3.15: Yayın uzaması (x), şu anki uzunluk ile doğal uzunluk arasındaki farktır.
+                    </figcaption>
+                </div>
+                <div class="image-container">
+                    <img src="../images/spring-force.png" alt="Yay kuvveti yönü" class="content-image">
+                    <figcaption>Şekil 3.16: Yay kuvveti, yer değiştirme vektörüne zıt yöndedir.</figcaption>
+                </div>
+            </div>
+
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <span class="line-ref">F⃗ (Force)</span>
+                    <div class="explanation-text">
+                        <strong>Yay kuvveti</strong> - Yayın uyguladığı geri çekme/itme kuvveti (vektör).
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">k (Spring Constant)</span>
+                    <div class="explanation-text">
+                        <strong>Yay sabiti</strong> - Yayın ne kadar sert olduğu.
+                        Büyük k = sert yay, küçük k = yumuşak yay.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">x⃗ (Displacement)</span>
+                    <div class="explanation-text">
+                        <strong>Uzama/sıkışma miktarı</strong> - Yayın orijinal uzunluğundan ne kadar uzadığı/sıkıştığı.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">- (Negatif)</span>
+                    <div class="explanation-text">
+                        <strong>Geri getirici</strong> - Kuvvet her zaman uzamaya ZIT yönde.
+                        Yay gerilirse çeker, sıkışırsa iter.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <h4>🎮 Simülasyonda</h4>
+                <p>
+                    x = (şu anki uzunluk) - (doğal uzunluk). Pozitif x = yay gerilmiş,
+                    negatif x = yay sıkışmış. Kuvvet her zaman dengeye doğru!
+                </p>
+            </div>
+        </section>
+
+        <!-- BASİT YAY -->
+        <section class="content-section">
+            <h2>Basit Yay Örneği <span class="term-en">(Simple Spring)</span></h2>
+
+            <p>
+                Bir noktaya bağlı, dikey salınan bir yay:
+            </p>
+
+            <div id="editor1"></div>
+
+            <div class="explanation-list">
+                <h4>Satır Satır Açıklama:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 2-3</span>
+                    <div class="explanation-text">
+                        <code>restLength</code> yayın doğal uzunluğu (gerilmeden).
+                        <code>k</code> yay sabiti (sertlik).
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 19-20</span>
+                    <div class="explanation-text">
+                        Yayın şu anki uzunluğunu hesaplıyoruz. <code>sub()</code> ile
+                        anchor'dan bob'a vektör, <code>mag()</code> ile uzunluk.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 23</span>
+                    <div class="explanation-text">
+                        <strong>x = uzama miktarı</strong>. Pozitif ise yay gerilmiş,
+                        negatif ise sıkışmış.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">Satır 26-29</span>
+                    <div class="explanation-text">
+                        <strong>Hooke Yasası!</strong> Kuvvetin yönü = bob'dan anchor'a (normalize).
+                        Büyüklüğü = k × x. Negatif işaret geri getirici kuvvet için.
+                    </div>
+                </div>
+            </div>
+
+            <div class="try-box">
+                <h4>🔬 Deneyin:</h4>
+                <ol>
+                    <li>
+                        <strong>Satır 3:</strong> <code>k = 0.2</code> yapın.
+                        <span class="expectation">Beklenti: Daha sert yay, hızlı salınım</span>
+                    </li>
+                    <li>
+                        <strong>Satır 3:</strong> <code>k = 0.01</code> yapın.
+                        <span class="expectation">Beklenti: Çok yumuşak yay, yavaş salınım</span>
+                    </li>
+                    <li>
+                        <strong>Satır 4:</strong> <code>damping = 1.0</code> yapın.
+                        <span class="expectation">Beklenti: Sürtünme yok, sonsuza kadar salınır</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ETKİLEŞİMLİ YAY -->
+        <section class="content-section">
+            <h2>Etkileşimli Yay <span class="term-en">(Interactive Spring)</span></h2>
+
+            <p>
+                Fare ile sürüklenebilen bir bob ekleyelim:
+            </p>
+
+            <div id="editor2"></div>
+
+            <div class="explanation-list">
+                <h4>Etkileşim Özellikleri:</h4>
+                <div class="explanation-item">
+                    <span class="line-ref">clicked()</span>
+                    <div class="explanation-text">
+                        Fare tıklandığında bob'a yeterince yakınsa sürüklemeye başla.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">drag()</span>
+                    <div class="explanation-text">
+                        Sürükleme sırasında bob'u fare pozisyonuna taşı.
+                    </div>
+                </div>
+                <div class="explanation-item">
+                    <span class="line-ref">stopDragging()</span>
+                    <div class="explanation-text">
+                        Fare bırakıldığında sürüklemeyi durdur, yay fiziği devreye girsin.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÇOK NOKTALİ YAY -->
+        <section class="content-section">
+            <h2>Çok Noktalı Yay (Zincir) <span class="term-en">(Multi-Point Spring / Chain)</span></h2>
+
+            <p>
+                Birden fazla noktayı yaylarla birbirine bağlayarak <strong>zincir</strong> veya
+                <strong>halat</strong> simülasyonu oluşturabiliriz:
+            </p>
+
+
+
+            <div id="editor3"></div>
+
+            <div class="info-box note">
+                <h4>💡 Bu Teknik Nerelerde Kullanılır?</h4>
+                <ul>
+                    <li><strong>Kumaş simülasyonu:</strong> 2D yay ağı</li>
+                    <li><strong>Halat/ip:</strong> Tek boyutlu zincir</li>
+                    <li><strong>Yumuşak cisimler:</strong> Jöle, balık gibi</li>
+                    <li><strong>Saç/tüy:</strong> Animasyonlarda</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ÖZET -->
+        <section class="content-section">
+            <h2>📝 Bu Bölümün Özeti</h2>
+
+            <ul>
+                <li><strong>Hooke Yasası:</strong> F = -k × x</li>
+                <li><strong>k (Yay Sabiti):</strong> Yayın sertliği</li>
+                <li><strong>x (Uzama):</strong> Doğal uzunluktan sapma</li>
+                <li><strong>Geri Getirici Kuvvet:</strong> Her zaman dengeye doğru</li>
+                <li><strong>Damping:</strong> Enerji kaybı, salınımı sönümler</li>
+                <li><strong>Zincir:</strong> Çok noktalı yay sistemi</li>
+            </ul>
+        </section>
+
+        <!-- NAVİGASYON -->
+        <nav class="page-navigation">
+            <a href="sarkac.html" class="nav-link prev">
+                <span>←</span>
+                <div>
+                    <span class="nav-link-label">Önceki</span>
+                    <span class="nav-link-title">Sarkaç</span>
+                </div>
+            </a>
+            <a href="../index.html" class="nav-link next">
+                <div>
+                    <span class="nav-link-label">Bitti!</span>
+                    <span class="nav-link-title">Ana Sayfa</span>
+                </div>
+                <span>→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="main-footer">
+        <p>Nature of Code Türkçe | Daniel Shiffman'ın kitabından uyarlanmıştır</p>
+        <p class="contribution-notice">Bu projeye katkıda bulunmak ister misiniz? <a href="https://github.com/gusanmaz/noc-turkce" target="_blank">GitHub</a>'daki bu repoya pull request göndererek kitabın geliştirilmesine destek olabilirsiniz! 🤝</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/live-editor.js"></script>
+
+    <script>
+        // Editor 1: Basit yay
+        new LiveEditor('#editor1', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let anchor;      // Sabit nokta
+let restLength = 100;  // Doğal uzunluk
+let k = 0.05;    // Yay sabiti
+let damping = 0.98;  // Sürtünme
+
+let bob;         // Sallanan nokta
+let velocity;
+
+function setup() {
+  createCanvas(400, 400);
+  anchor = createVector(width / 2, 50);
+  bob = createVector(width / 2, 200);  // Başlangıçta gerilmiş
+  velocity = createVector(0, 0);
+}
+
+function draw() {
+  background(220);
+
+  // Yay uzunluğunu hesapla
+  let force = p5.Vector.sub(bob, anchor);
+  let currentLength = force.mag();
+
+  // Uzama miktarı
+  let x = currentLength - restLength;
+
+  // Hooke Yasası: F = -k * x
+  force.normalize();
+  force.mult(-k * x);
+
+  // Yerçekimi ekle
+  let gravity = createVector(0, 0.1);
+
+  // Toplam kuvvet
+  velocity.add(force);
+  velocity.add(gravity);
+  velocity.mult(damping);  // Sürtünme
+  bob.add(velocity);
+
+  // Çiz
+  stroke(0);
+  strokeWeight(2);
+
+  // Yay (zigzag çizgi)
+  drawSpring(anchor.x, anchor.y, bob.x, bob.y, 10);
+
+  // Anchor
+  fill(100);
+  circle(anchor.x, anchor.y, 15);
+
+  // Bob
+  fill(127, 200, 127);
+  circle(bob.x, bob.y, 40);
+}
+
+function drawSpring(x1, y1, x2, y2, coils) {
+  let dx = x2 - x1;
+  let dy = y2 - y1;
+  let len = sqrt(dx*dx + dy*dy);
+  let angle = atan2(dy, dx);
+
+  push();
+  translate(x1, y1);
+  rotate(angle);
+
+  beginShape();
+  vertex(0, 0);
+  for (let i = 0; i < coils; i++) {
+    let x = (i + 0.25) * len / coils;
+    let y = (i % 2 === 0) ? 10 : -10;
+    vertex(x, y);
+  }
+  vertex(len, 0);
+  endShape();
+  pop();
+}`
+                }
+            ]
+        });
+
+        // Editor 2: Etkileşimli yay
+        new LiveEditor('#editor2', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let spring;
+
+function setup() {
+  createCanvas(400, 400);
+  spring = new Spring(width/2, 50, 150, 0.05);
+}
+
+function draw() {
+  background(220);
+
+  spring.update();
+  spring.show();
+
+  // İpucu
+  fill(100);
+  noStroke();
+  textAlign(CENTER);
+  text("Topu sürükleyip bırakın!", width/2, height - 20);
+}
+
+function mousePressed() {
+  spring.clicked(mouseX, mouseY);
+}
+
+function mouseDragged() {
+  spring.drag(mouseX, mouseY);
+}
+
+function mouseReleased() {
+  spring.stopDragging();
+}`
+                },
+                {
+                    name: 'spring.js',
+                    content: `class Spring {
+  constructor(x, y, len, k) {
+    this.anchor = createVector(x, y);
+    this.restLength = len;
+    this.k = k;
+    this.damping = 0.98;
+
+    this.bob = createVector(x, y + len);
+    this.velocity = createVector(0, 0);
+
+    this.bobRadius = 20;
+    this.dragging = false;
+  }
+
+  update() {
+    if (!this.dragging) {
+      // Yay kuvveti
+      let force = p5.Vector.sub(this.bob, this.anchor);
+      let currentLength = force.mag();
+      let x = currentLength - this.restLength;
+
+      force.normalize();
+      force.mult(-this.k * x);
+
+      // Yerçekimi
+      let gravity = createVector(0, 0.1);
+
+      // Güncelle
+      this.velocity.add(force);
+      this.velocity.add(gravity);
+      this.velocity.mult(this.damping);
+      this.bob.add(this.velocity);
+    }
+  }
+
+  show() {
+    stroke(0);
+    strokeWeight(2);
+    line(this.anchor.x, this.anchor.y, this.bob.x, this.bob.y);
+
+    fill(100);
+    circle(this.anchor.x, this.anchor.y, 10);
+
+    fill(this.dragging ? color(220, 100, 100) : color(127, 200, 127));
+    circle(this.bob.x, this.bob.y, this.bobRadius * 2);
+  }
+
+  clicked(mx, my) {
+    let d = dist(mx, my, this.bob.x, this.bob.y);
+    if (d < this.bobRadius) {
+      this.dragging = true;
+      this.velocity.set(0, 0);
+    }
+  }
+
+  drag(mx, my) {
+    if (this.dragging) {
+      this.bob.set(mx, my);
+    }
+  }
+
+  stopDragging() {
+    this.dragging = false;
+  }
+}`
+                }
+            ]
+        });
+
+        // Editor 3: Zincir
+        new LiveEditor('#editor3', {
+            files: [
+                {
+                    name: 'sketch.js',
+                    content: `let particles = [];
+let springs = [];
+let numParticles = 8;
+let restLength = 30;
+let k = 0.3;
+
+function setup() {
+  createCanvas(400, 400);
+
+  // Partikülleri oluştur
+  for (let i = 0; i < numParticles; i++) {
+    let x = width / 2;
+    let y = 50 + i * restLength;
+    let p = new Particle(x, y);
+
+    // İlk partikül sabit
+    if (i === 0) p.locked = true;
+
+    particles.push(p);
+  }
+
+  // Yayları oluştur (ardışık partiküller arası)
+  for (let i = 0; i < particles.length - 1; i++) {
+    springs.push({
+      a: particles[i],
+      b: particles[i + 1]
+    });
+  }
+}
+
+function draw() {
+  background(220);
+
+  // Yay kuvvetlerini uygula
+  for (let s of springs) {
+    applySpring(s.a, s.b);
+  }
+
+  // Partikülleri güncelle ve çiz
+  for (let p of particles) {
+    p.applyGravity();
+    p.update();
+    p.show();
+  }
+
+  // Yayları çiz
+  stroke(0);
+  strokeWeight(2);
+  for (let s of springs) {
+    line(s.a.pos.x, s.a.pos.y, s.b.pos.x, s.b.pos.y);
+  }
+
+  // Fare ile son partiküli sürükle
+  if (mouseIsPressed) {
+    particles[particles.length-1].pos.set(mouseX, mouseY);
+  }
+}
+
+function applySpring(a, b) {
+  let force = p5.Vector.sub(b.pos, a.pos);
+  let currentLen = force.mag();
+  let x = currentLen - restLength;
+
+  force.normalize();
+  force.mult(k * x);
+
+  if (!a.locked) a.applyForce(force);
+  force.mult(-1);
+  if (!b.locked) b.applyForce(force);
+}`
+                },
+                {
+                    name: 'particle.js',
+                    content: `class Particle {
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+    this.vel = createVector(0, 0);
+    this.acc = createVector(0, 0);
+    this.damping = 0.98;
+    this.locked = false;
+  }
+
+  applyForce(force) {
+    this.acc.add(force);
+  }
+
+  applyGravity() {
+    this.acc.add(createVector(0, 0.1));
+  }
+
+  update() {
+    if (!this.locked) {
+      this.vel.add(this.acc);
+      this.vel.mult(this.damping);
+      this.pos.add(this.vel);
+    }
+    this.acc.set(0, 0);
+  }
+
+  show() {
+    fill(this.locked ? color(100) : color(127, 200, 200));
+    stroke(0);
+    strokeWeight(2);
+    circle(this.pos.x, this.pos.y, 20);
+  }
+}`
+                }
+            ]
+        });
+    </script>
+</body>
+
+</html>
